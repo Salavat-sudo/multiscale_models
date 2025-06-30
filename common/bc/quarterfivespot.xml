@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+
+<!-- 
+Adds a quarter 5-spot pattern flow boundary conditions with constant rate 
+injection in corners and constant pressure production in the center.
+
+Contract: 
+1. The model must define the following parameters:
+   * sinkPressure (pressure at producing cells [Pa])
+   * sourceFlux (injection rate at each injector [kg/s])
+   * injectionRegion (name of the element region that will contain sources/sinks)
+2. The model must contain element sets: sink, source.
+-->
+
+<Problem>
+
+  <Functions>
+    <SymbolicFunction
+      name="injectionSchedule"
+      inputVarNames="{ time }"
+      variableNames="{ t }"
+      expression="1.0"/>
+  </Functions>
+	
+  <FieldSpecifications>
+    <FieldSpecification
+      name="sinkPressure"
+      setNames="{ sink }"
+      objectPath="ElementRegions/$injectionRegion$"
+      fieldName="pressure"
+      scale="$sinkPressure$"/>
+ 
+    <SourceFlux
+      name="sourceTerm"
+      objectPath="ElementRegions/$injectionRegion$"
+      scale="-$sourceFlux$"
+      functionName="injectionSchedule"
+      setNames="{ source }"/>
+  </FieldSpecifications>
+
+</Problem>

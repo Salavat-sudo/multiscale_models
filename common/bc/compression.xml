@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+
+<!-- 
+Contract: 
+1. The model must define parameters:
+   * T (total time [s])
+   * Lz (domain vertical size [m])
+   * loadingSurface (name of the node set to apply load to)
+2. The model must contain node set defined by $loadingSurface$
+-->
+
+<Problem>
+
+  <Functions>
+    <SymbolicFunction
+      name="loadingSchedule"
+      inputVarNames="{ time }"
+      variableNames="{ t }"
+      expression="t/$T$"/>
+  </Functions>
+	
+  <FieldSpecifications>
+    <FieldSpecification
+      name="zCompression"
+      objectPath="nodeManager"
+      fieldName="totalDisplacement"
+      component="2"
+      functionName="loadingSchedule"
+      scale="`-$Lz$/100`"
+      setNames="{ $loadingSurface$ }"/>
+  </FieldSpecifications>
+
+</Problem>

@@ -1,0 +1,64 @@
+<?xml version="1.0" ?>
+
+<Problem>
+
+  <Parameters>
+
+    <!-- Path to model root (absolute or relative) -->
+    <Parameter
+      name="root"
+      value="."/>
+
+    <!-- Enable visualization output: [0 | 1] -->
+    <Parameter
+      name="plot"
+      value="0"/>
+
+    <!-- Poisson ratio: [0.0-0.5] -->
+    <Parameter
+      name="nu"
+      value="0.25"/>
+
+    <!-- Gravity enabled: [0 | 1] -->
+    <Parameter
+      name="gravity"
+      value="0"/>
+
+    <!-- Solver/preconditioner verbosity: [0-] -->
+    <Parameter
+      name="logLevel"
+      value="3"/>
+
+    <!-- Solver type: [richardson | cg | bicgstab | gmres] -->
+    <Parameter
+      name="solver"
+      value="gmres"/>
+
+    <!-- Krylov solver tolerance -->
+    <Parameter
+      name="krylovTol"
+      value="1e-8"/>
+
+    <!-- Krylov solver tolerance -->
+    <Parameter
+      name="krylovMaxIter"
+      value="500"/>
+
+    <!-- Preconditioner: [multiscale | amg] -->
+    <Parameter
+      name="prec"
+      value="multiscale"/>
+
+    <!-- Smoother: [l1sgs | sgs | jacobi | l1jacobi | fgs | bgs] -->
+    <Parameter
+      name="smoother"
+      value="l1sgs"/>
+
+    <!-- Number of smoother sweeps [1-] -->
+    <Parameter
+      name="sweeps"
+      value="1"/>
+
+  </Parameters>
+
+</Problem>

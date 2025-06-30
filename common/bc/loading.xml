@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+
+<!-- 
+Contract: 
+1. The model must define parameters:
+   * T (total time [s])
+   * loadingPressure (presribed force per unit area [Pa])
+   * loadingSurface (name of the node set to apply load to)
+2. The model must contain node set defined by $loadingSurface$
+-->
+
+<Problem>
+
+  <Functions>
+    <SymbolicFunction
+      name="loadingSchedule"
+      inputVarNames="{ time }"
+      variableNames="{ t }"
+      expression="t/$T$"/>
+  </Functions>
+	
+  <FieldSpecifications>
+    <Traction
+      name="loading"
+      objectPath="faceManager"
+      tractionType="normal"
+      functionName="loadingSchedule"
+      scale="`-$loadingPressure$`"
+      setNames="{ $loadingSurface$ }"/>
+  </FieldSpecifications>
+
+</Problem>

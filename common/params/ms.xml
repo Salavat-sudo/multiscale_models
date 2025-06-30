@@ -1,0 +1,89 @@
+<?xml version="1.0" ?>
+
+<Problem>
+
+  <Parameters>
+
+    <!-- Multiscale max levels: [1-] -->
+    <Parameter
+      name="msMaxLevels"
+      value="20"/>
+
+    <!-- Multiscale coarsening limit: [0-] -->
+    <Parameter
+      name="msMaxCoarseDof"
+      value="4096"/>
+
+    <!-- Multiscale coarse solver: [direct | amg] -->
+    <Parameter
+      name="msCoarse"
+      value="direct"/>
+
+    <!-- Multiscale coarse solver in parallel (only for direct): [0 | 1] -->
+    <Parameter
+      name="msCoarsePar"
+      value="0"/>
+
+    <!-- Coupled multiscale coarse solver: [direct | block] -->
+    <Parameter
+      name="msCoarseCoupled"
+      value="direct"/>
+
+    <!-- Multiscale coarse solver: [pre | post | both] -->
+    <Parameter
+      name="msPrePost"
+      value="both"/>
+
+    <!-- Multiscale support type: [layers | matching] -->
+    <Parameter
+      name="msSupport"
+      value="matching"/>
+
+    <!-- Multiscale support type: [0-] -->
+    <Parameter
+      name="msNumLayers"
+      value="3"/>
+
+    <!-- Multiscale coarse solver: [0.0] -->
+    <Parameter
+      name="msDropTol"
+      value="0.0"/>
+
+    <!-- Multiscale matrix-based graph edge weight multiplier: [0-] -->
+    <Parameter
+      name="msMatrixWeights"
+      value="0"/>
+
+    <!-- Multiscale graph partitioning method: [metis | scotch] -->
+    <Parameter
+      name="msGraphMethod"
+      value="metis"/>
+
+    <!-- Multiscale matrix-based graph edge weight multiplier: [0-] -->
+    <Parameter
+      name="msMetisUfactor"
+      value="30"/>
+
+    <!-- Multiscale matrix-based graph edge weight multiplier: [0-] -->
+    <Parameter
+      name="msMetisSeed"
+      value="2020"/>
+
+    <!-- Multiscale coarse solver: [direct | amg] -->
+    <Parameter
+      name="msTol"
+      value="1e-1"/>
+
+    <!-- Multiscale coarse solver: [direct | amg] -->
+    <Parameter
+      name="msMaxIter"
+      value="20"/>
+
+    <!-- Multiscale debug level: [0-] -->
+    <Parameter
+      name="msDebug"
+      value="1"/>
+
+  </Parameters>
+
+</Problem>

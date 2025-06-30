@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+
+<!-- 
+Contract:
+1. The model must contain 5 node sets: xneg, xpos, yneg, ypos, zneg.
+-->
+
+<Problem>
+	
+  <FieldSpecifications>
+    
+    <FieldSpecification
+      name="xRoller"
+      objectPath="nodeManager"
+      fieldName="totalDisplacement"
+      component="0"
+      scale="0.0"
+      setNames="{ xneg, xpos }"/>
+
+    <FieldSpecification
+      name="yRoller"
+      objectPath="nodeManager"
+      fieldName="totalDisplacement"
+      component="1"
+      scale="0.0"
+      setNames="{ yneg, ypos }"/>
+      
+    <FieldSpecification
+      name="zRoller"
+      objectPath="nodeManager"
+      fieldName="totalDisplacement"
+      component="2"
+      scale="0.0"
+      setNames="{ zneg }"/>
+  </FieldSpecifications>
+
+</Problem>

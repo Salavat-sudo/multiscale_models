@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+
+<Problem>
+
+  <Parameters>
+
+    <!-- AMG coarsening limit: [0-] -->
+    <Parameter
+      name="amgMaxCoarse"
+      value="9"/>
+
+    <!-- AMG number of aggressive coarsening levels: [0-] -->
+    <Parameter
+      name="amgAggLevels"
+      value="0"/>
+
+    <!-- AMG strength-of-connection threshold for mechanics: [0.0-1.0] -->
+    <Parameter
+      name="amgThreshold"
+      value="0.8"/>
+
+    <!-- AMG null space type: [constantModes | rigidBodyModes] -->
+    <Parameter
+      name="amgNullSpaceType"
+      value="constantModes"/>
+
+  </Parameters>
+
+</Problem>

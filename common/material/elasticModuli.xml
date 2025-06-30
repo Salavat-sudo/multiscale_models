@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+
+<!-- 
+Computes elastic moduli required by GEOSX (bulk, shear) from
+a (heterogeneous) Young's modulus function and (constant) Poisson ratio value.
+
+Contract: 
+1. The model must define parameters:
+   * nu (Poisson ratio)
+   * solidName (name of the solid model)
+2. The model must contain a functio named 'youngsModulus'
+-->
+
+<Problem>
+
+  <Functions>
+    <CompositeFunction
+      name="bulkModulus"
+      functionNames="{ youngsModulus }"
+      variableNames="{ e }"
+      expression="e/`3*(1-2*$nu$)`"/>
+
+    <CompositeFunction
+      name="shearModulus"
+      functionNames="{ youngsModulus }"
+      variableNames="{ e }"
+      expression="e/`2*(1+$nu$)`"/>
+  </Functions>
+
+  <FieldSpecifications>
+    <FieldSpecification
+      name="bulkModulus"
+      initialCondition="1"
+      setNames="{ all }"
+      objectPath="ElementRegions"
+      fieldName="$solidName$_bulkModulus"
+      functionName="bulkModulus"
+      scale="1.0"/>
+
+    <FieldSpecification
+      name="shearModulus"
+      initialCondition="1"
+      setNames="{ all }"
+      objectPath="ElementRegions"
+      fieldName="$solidName$_shearModulus"
+      functionName="shearModulus"
+      scale="1.0"/>
+  </FieldSpecifications>
+
+</Problem>

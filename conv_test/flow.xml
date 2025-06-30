@@ -1,0 +1,207 @@
+<?xml version="1.0" ?>
+
+<Problem>
+
+  <Included>
+    <File name="/home/sal/GEOS_code2/test_mod/conv_test/base.xml"/>
+  </Included>
+
+  <Parameters>
+
+    <Parameter
+      name="name"
+      value="flow"/>
+
+    <!-- Time step size (s) -->
+    <Parameter
+      name="dt"
+      value="1e5"/>
+
+    <!-- Total simulation time (s) -->
+    <Parameter
+      name="T"
+      value="1e5"/>
+
+    <!-- Fluid compressibility: [Pa^-1] -->
+    <Parameter
+      name="fluidComp"
+      value="1e-10"/>
+
+    <!-- Rock compressibility: [Pa^-1] -->
+    <Parameter
+      name="rockComp"
+      value="1e-9"/>
+
+    <!-- Flux BC [kg/s] -->
+    <Parameter
+      name="sourceFlux"
+      value="10"/>
+
+    <!-- Initial pressure [Pa] -->
+    <Parameter
+      name="initPressure"
+      value="1e7"/>
+
+    <!-- Sink pressure [Pa] -->
+    <Parameter
+      name="sinkPressure"
+      value="1e6"/>
+
+    <!-- Anisotropy factor for z-permeability -->
+    <Parameter
+      name="zAnisotropy"
+      value="1e-2"/>
+
+  </Parameters>
+
+  <Solvers
+    gravityVector="{ 0.0, 0.0, -`$gravity$*9.81` }">
+
+    <SinglePhaseFVM
+      name="flowSolver"
+      discretization="tpfa"
+      logLevel="1"
+      targetRegions="{ reservoir, barrier }">
+      <NonlinearSolverParameters
+        newtonTol="1e-2"
+        newtonMaxIter="10"
+        lineSearchAction="None"
+        lineSearchMaxCuts="1"
+        maxTimeStepCuts="1"
+        maxAllowedResidualNorm="1e99"/>
+      <LinearSolverParameters
+        solverType="$solver$"
+        krylovTol="$krylovTol$"
+        krylovMaxIter="$krylovMaxIter$"
+        preconditionerType="$prec$"
+        directParallel="$msCoarsePar$"
+        amgSmootherType="$smoother$"
+        amgNumSweeps="$sweeps$"
+        amgMaxCoarseSize="$amgMaxCoarse$"
+        amgAggressiveCoarseningLevels="$amgAggLevels$"
+        logLevel="$logLevel$">
+        <Multiscale
+          basisType="msrsb"
+          maxLevels="$msMaxLevels$"
+          boundarySets="{xneg,xpos,yneg,ypos,zneg,zpos}"
+          debugLevel="$msDebug$"
+          coarseType="$msCoarse$"
+          droptol="$msDropTol$"
+          galerkin="1">
+          <Smoother
+            type="$smoother$"
+            preOrPost="$msPrePost$"
+            numSweeps="$sweeps$"/>
+          <Coarsening
+            partitionType="cartesian"
+            ratio="{ $CRF$ }"
+            maxCoarseDof="$msMaxCoarseDof$">
+            <Structured
+              semicoarsening="$SCF$"/>
+          </Coarsening>
+          <MsRSB
+            supportType="$msSupport$"
+            numLayers="$msNumLayers$"
+            maxIter="$msMaxIter$"
+            tolerance="$msTol$"
+            relaxation="0.6666666666666666"
+            checkFrequency="5"/>
+        </Multiscale>
+      </LinearSolverParameters>
+    </SinglePhaseFVM>
+    
+  </Solvers>
+
+  <Constitutive>
+    <CompressibleSinglePhaseFluid
+      name="water"
+      defaultDensity="1000"
+      defaultViscosity="0.001"
+      referencePressure="0.0"
+      compressibility="$fluidComp$"
+      viscosibility="0.0"/>
+
+    <NullModel
+      name="nullSolid"/>
+
+    <PressurePorosity
+      name="rockPorosity"
+      defaultReferencePorosity="0.2"
+      referencePressure="0.0"
+      compressibility="$rockComp$"/>
+
+    <ConstantPermeability
+      name="rockPermeability"
+      permeabilityComponents="{ 1.0e-12, 1.0e-12, 1.0e-12 }"/>
+
+    <CompressibleSolidConstantPermeability
+      name="rock"
+      solidModelName="nullSolid"
+      porosityModelName="rockPorosity"
+      permeabilityModelName="rockPermeability"/>
+  </Constitutive>
+
+  <Functions>
+    <TableFunction
+      name="permeability"
+      inputVarNames="{ elementCenter }"
+      inputVarScale="{ `1000/$Lx$`, `1000/$Ly$`, `100/$Lz$` }"
+      coordinateFiles="{ $root$/data/x.txt, $root$/data/y.txt, $root$/data/z.txt }"
+      voxelFile="$root$/data/perm.txt"
+      interpolation="nearest"/>
+  </Functions>
+
+  <FieldSpecifications>
+    <FieldSpecification
+      name="permX"
+      initialCondition="1"
+      setNames="{ all }"
+      objectPath="ElementRegions"
+      fieldName="rockPermeability_permeability"
+      functionName="permeability"
+      component="0"
+      scale="1.0"/>
+
+    <FieldSpecification
+      name="permY"
+      initialCondition="1"
+      setNames="{ all }"
+      objectPath="ElementRegions"
+      fieldName="rockPermeability_permeability"
+      functionName="permeability"
+      component="1"
+      scale="1.0"/>
+
+    <FieldSpecification
+      name="permZ"
+      initialCondition="1"
+      setNames="{ all }"
+      objectPath="ElementRegions"
+      fieldName="rockPermeability_permeability"
+      functionName="permeability"
+      component="2"
+      scale="$zAnisotropy$"/>
+
+    <FieldSpecification
+      name="initialPressure"
+      initialCondition="1"
+      setNames="{ all }"
+      objectPath="ElementRegions"
+      fieldName="pressure"
+      scale="$initPressure$"/>
+  </FieldSpecifications>
+
+  <Included>
+    <File name="../common/bc/quarterfivespot.xml"/>
+  </Included>
+
+  <Outputs>
+    <VTK
+      name="vtkOutput"/>
+
+    <Restart
+      name="restartOutput"/>
+    
+  </Outputs>
+  
+</Problem>

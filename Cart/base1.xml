@@ -1,0 +1,90 @@
+<?xml version="1.0" ?>
+
+<Problem>
+
+  <Included>
+    <File name="../common/params/base.xml"/>
+  </Included>
+
+  <Included>
+    <File name="../common/params/ms.xml"/>
+  </Included>
+
+  <Included>
+    <File name="../common/params/amg.xml"/>
+  </Included>
+
+  <Parameters>
+
+    <!-- Num cells in x: [1-] -->
+    <Parameter
+      name="Nx"
+      value="35"/>
+
+    <!-- Num cells in y: [1-] -->
+    <Parameter
+      name="Ny"
+      value="35"/>
+
+    <!-- Num cells in x: [1-] -->
+    <Parameter
+      name="Nz"
+      value="35"/>
+
+    <!-- Linear solver options -->
+
+    <!-- Multiscale flow coarsening ratio: [1-] -->
+    <Parameter
+      name="CRF"
+      value="5,5,5"/>
+
+    <!-- Use z-semicoarsening for flow problem -->
+    <Parameter
+      name="SCF"
+      value="1"/>
+
+    <!-- Multiscale mech coarsening ratio: [1-] -->
+    <Parameter
+      name="CRM"
+      value="5,5,5"/>
+
+    <!-- Use z-semicoarsening for mech problem -->
+    <Parameter
+      name="SCM"
+      value="1"/>
+
+    <!-- Parameters inherent to the model, should not be overridden -->
+
+    <!-- Domain size in x: [m] -->
+    <Parameter
+      name="Lx"
+      value="1000.0"/>
+
+    <!-- Domain size in x: [m] -->
+    <Parameter
+      name="Ly"
+      value="1000.0"/>
+
+    <!-- Domain size in z: [m] -->
+    <Parameter
+      name="Lz"
+      value="100.0"/>
+
+    <!-- Fraction of Lx to apply loading to -->
+    <Parameter
+      name="Ax"
+      value="1.0"/>
+
+    <!-- Fraction of Ly to apply loading to -->
+    <Parameter
+      name="Ay"
+      value="1.0"/>
+
+    <!-- Name of region for well injection -->
+    <Parameter
+      name="injectionRegion"
+      value="reservoir"/>
+
+  </Parameters>
+ 
+</Problem>

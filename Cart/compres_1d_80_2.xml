@@ -1,0 +1,280 @@
+<?xml version="1.0" ?>
+
+<Problem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../GEOS/src/coreComponents/schema/schema.xsd">
+
+  <Included>
+    <File name="base1.xml"/>
+  </Included>
+
+  <Parameters>
+
+    <Parameter
+      name="name"
+      value="flow"/>
+
+    <!-- Time step size (s) -->
+    <Parameter
+      name="dt"
+      value="1e5"/>
+
+    <!-- Total simulation time (s) -->
+    <Parameter
+      name="T"
+      value="1e5"/>
+
+    <!-- Fluid compressibility: [Pa^-1] -->
+    <Parameter
+      name="fluidComp"
+      value="0e-10"/>
+
+    <!-- Rock compressibility: [Pa^-1] -->
+    <Parameter
+      name="rockComp"
+      value="0e-9"/>
+
+    <!-- Flux BC [kg/s] -->
+    <Parameter
+      name="sourceFlux"
+      value="10"/>
+
+    <!-- Initial pressure [Pa] -->
+    <Parameter
+      name="initPressure"
+      value="1e7"/>
+
+    <!-- Sink pressure [Pa] -->
+    <Parameter
+      name="sinkPressure"
+      value="1e6"/>
+
+    <!-- Anisotropy factor for z-permeability -->
+    <Parameter
+      name="zAnisotropy"
+      value="1"/>
+
+  </Parameters>
+
+  <Solvers
+    gravityVector="{ 0.0, 0.0, -`$gravity$*9.81` }">
+    <SinglePhaseFVM
+      name="SinglePhaseFlow"
+      discretization="singlePhaseTPFA"
+      logLevel="1"
+      targetRegions="{ Region1 }">
+      <NonlinearSolverParameters
+        newtonTol="1e-2"
+        newtonMaxIter="10"
+        lineSearchAction="None"
+        lineSearchMaxCuts="1"
+        maxTimeStepCuts="1"
+        maxAllowedResidualNorm="1e99"/>
+      <LinearSolverParameters
+        solverType="$solver$"
+        krylovTol="$krylovTol$"
+        krylovMaxIter="$krylovMaxIter$"
+        preconditionerType="$prec$"
+        directParallel="$msCoarsePar$"
+        amgSmootherType="$smoother$"
+        amgNumSweeps="$sweeps$"
+        amgMaxCoarseSize="$amgMaxCoarse$"
+        amgAggressiveCoarseningLevels="$amgAggLevels$"
+        logLevel="$logLevel$">
+        <Multiscale
+          basisType="msrsb"
+          maxLevels="$msMaxLevels$"
+          boundarySets="{xneg,xpos,yneg,ypos,zneg,zpos}"
+          debugLevel="$msDebug$"
+          coarseType="$msCoarse$"
+          droptol="$msDropTol$"
+          galerkin="1">
+          <Smoother
+            type="$smoother$"
+            preOrPost="$msPrePost$"
+            numSweeps="$sweeps$"/>
+          <Coarsening
+            partitionType="cartesian"
+            ratio="{ $CRF$ }"
+            maxCoarseDof="$msMaxCoarseDof$">
+            <Structured
+              semicoarsening="$SCF$"/>
+          </Coarsening>
+          <MsRSB
+            supportType="$msSupport$"
+            numLayers="$msNumLayers$"
+            maxIter="$msMaxIter$"
+            tolerance="$msTol$"
+            relaxation="0.6666666666666666"
+            checkFrequency="5"/>
+        </Multiscale>
+      </LinearSolverParameters>
+    </SinglePhaseFVM>
+  </Solvers>
+
+
+  <Mesh>
+    <InternalMesh
+      name="mesh1"
+      elementTypes="{ C3D8 }"
+      xCoords="{ 0, 10 }"
+      yCoords="{ 0, 10 }"
+      zCoords="{ 0, 1 }"
+      nx="{ 80 }"
+      ny="{ 80 }"
+      nz="{ 1 }"
+      cellBlockNames="{ block1 }"/>
+  </Mesh>
+
+  <Geometry>
+    <Box
+      name="all"
+      xMin="{-1e9,-1e9,-1e9 }"
+      xMax="{ 1e9, 1e9, 1e9 }"/>
+    <Box
+      name="source"
+      xMin="{  1.01, -0.01, -0.01 }"
+      xMax="{ 10.01, 10.01,  1.01 }"/>
+    <Box
+      name="westBC"
+      xMin="{-0.001, 0.0, 0.0}"
+      xMax="{ 0.001, 10.0, 1.0}"/>
+    <Box
+      name="eastBC"
+      xMin="{ 9.999, 0.0, 0.0}"
+      xMax="{ 10.001, 10.0, 1.0}"/>
+    <Box
+      name="northBC"
+      xMin="{ 0.0, 9.999, 0.0}"
+      xMax="{10.0, 10.001, 1.0}"/>
+    <Box
+      name="southBC"
+      xMin="{0.0, -0.001, 0.0}"
+      xMax="{10.0, 0.001, 1.0}"/>
+  </Geometry>
+
+  <Events
+    maxTime="1e2">
+    <PeriodicEvent
+      name="outputs"
+      timeFrequency="100.0"
+      target="/Outputs/vtkOutput"/>
+
+    <PeriodicEvent
+      name="solverApplications"
+      forceDt="1e2"
+      target="/Solvers/SinglePhaseFlow"/>
+
+<!--     <PeriodicEvent
+      name="restarts"
+      timeFrequency="1e3"
+      targetExactTimestep="0"
+      target="/Outputs/restartOutput"/>
+ -->  
+  </Events>
+
+  <NumericalMethods>
+    <FiniteVolume>
+      <TwoPointFluxApproximation
+        name="singlePhaseTPFA"/>
+    </FiniteVolume>
+  </NumericalMethods>
+
+  <ElementRegions>
+    <CellElementRegion
+      name="Region1"
+      cellBlocks="{ * }"
+      materialList="{ water, rock }"/>
+  </ElementRegions>
+
+  <Constitutive>
+    <CompressibleSinglePhaseFluid
+      name="water"
+      defaultDensity="1"
+      defaultViscosity="1"
+      referencePressure="0.0"
+      compressibility="0e-10"
+      viscosibility="0.0"/>
+
+    <CompressibleSolidConstantPermeability
+      name="rock"
+      solidModelName="nullSolid"
+      porosityModelName="rockPorosity"
+      permeabilityModelName="rockPerm"/>
+
+    <NullModel
+      name="nullSolid"/>
+
+    <PressurePorosity
+      name="rockPorosity"
+      defaultReferencePorosity="0.05"
+      referencePressure="0.0"
+      compressibility="0.0e-9"/>
+
+    <ConstantPermeability
+      name="rockPerm"
+      permeabilityComponents="{ 1.0e-10, 1.0e-10, 1.0e-10 }"/>
+  </Constitutive>
+
+  <FieldSpecifications>
+    <FieldSpecification
+      name="Porosity"
+      initialCondition="1"
+      setNames="{ all }"
+      objectPath="ElementRegions/Region1/block1"
+      fieldName="rockPorosity_referencePorosity"
+      scale="0.05"/>
+
+    <FieldSpecification
+      name="initialPressure"
+      initialCondition="1"
+      setNames="{ all }"
+      objectPath="ElementRegions/Region1/block1"
+      fieldName="pressure"
+      scale="0.0"/>
+
+    <FieldSpecification
+      name="west_pressure"
+      setNames="{ westBC }"
+      objectPath="faceManager"
+      fieldName="pressure"
+      scale="0.0e7" />
+    
+    <FieldSpecification
+      name="east_pressure"
+      setNames="{ eastBC }"
+      objectPath="faceManager"
+      fieldName="pressure"
+      scale="0.0e6" />
+    
+    <FieldSpecification
+      name="north_pressure"
+      setNames="{ northBC }"
+      objectPath="faceManager"
+      fieldName="pressure"
+      scale="0.0e6" />
+    
+    <FieldSpecification
+      name="south_pressure"
+      setNames="{ southBC }"
+      objectPath="faceManager"
+      fieldName="pressure"
+      scale="0.0e6" />
+    
+    <SourceFlux
+      name="sourceTerm"
+      objectPath="ElementRegions/Region1/block1"
+      scale="-1.0"
+      setNames="{ source }"/>
+
+  </FieldSpecifications>
+
+  <Outputs>
+    <VTK
+      name="vtkOutput"
+      plotFileRoot="compres_1d"/>
+    
+    <!-- <Restart 
+      name="restartOutput"/> -->
+      
+  </Outputs>
+</Problem>

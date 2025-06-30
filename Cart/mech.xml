@@ -1,0 +1,138 @@
+<?xml version="1.0" ?>
+
+<Problem>
+
+  <Included>
+    <File name="base.xml"/>
+  </Included>
+
+  <Parameters>
+
+    <Parameter
+      name="name"
+      value="mech"/>
+
+    <!-- Time step size (s) -->
+    <Parameter
+      name="dt"
+      value="1e5"/>
+
+    <!-- Total simulation time (s) -->
+    <Parameter
+      name="T"
+      value="1e5"/>
+
+    <!-- Name of the set to apply loading to -->
+    <Parameter
+      name="loadingSurface"
+      value="footing"/>
+
+    <!-- Loading pressure to apply (Pa) -->
+    <Parameter
+      name="loadingPressure"
+      value="1e7"/>
+
+    <!-- Name of the solid material -->
+    <Parameter
+      name="solidName"
+      value="rock"/>
+
+  </Parameters>
+
+  <Solvers
+    gravityVector="{ 0.0, 0.0, -`$gravity$*9.81` }">
+
+    <SolidMechanicsLagrangianSSLE
+      name="mechSolver"
+      timeIntegrationOption="QuasiStatic"
+      discretization="FE1"
+      logLevel="1"
+      targetRegions="{ reservoir, barrier }">
+      <NonlinearSolverParameters
+        newtonTol="1e99"
+        newtonMaxIter="2"
+        lineSearchAction="None"
+        lineSearchMaxCuts="1"
+        maxTimeStepCuts="1"
+        maxAllowedResidualNorm="1e99"/>
+      <LinearSolverParameters
+        solverType="$solver$"
+        krylovTol="$krylovTol$"
+        krylovMaxIter="$krylovMaxIter$"
+        preconditionerType="$prec$"
+        directParallel="$msCoarsePar$"
+        amgSmootherType="$smoother$"
+        amgNumSweeps="$sweeps$"
+        amgMaxCoarseSize="$amgMaxCoarse$"
+        amgAggressiveCoarseningLevels="$amgAggLevels$"
+        amgNumFunctions="3"
+        amgSeparateComponents="0"
+        amgThreshold="$amgThreshold$"
+        amgNullSpaceType="$amgNullSpaceType$"
+        logLevel="$logLevel$">
+        <Multiscale
+          basisType="msrsb"
+          maxLevels="$msMaxLevels$"
+          boundarySets="{xneg,xpos,yneg,ypos,zneg,zpos}"
+          debugLevel="$msDebug$"
+          coarseType="$msCoarse$"
+          droptol="$msDropTol$"
+          galerkin="1">
+          <Smoother
+            type="$smoother$"
+            preOrPost="$msPrePost$"
+            numSweeps="$sweeps$"/>
+          <Coarsening
+            partitionType="cartesian"
+            ratio="{ $CRM$ }"
+            maxCoarseDof="$msMaxCoarseDof$">
+            <Structured
+              semicoarsening="$SCM$"/>
+          </Coarsening>
+          <MsRSB
+            supportType="$msSupport$"
+            numLayers="$msNumLayers$"
+            maxIter="$msMaxIter$"
+            tolerance="$msTol$"
+            relaxation="0.6666666666666666"
+            checkFrequency="5"/>
+        </Multiscale>
+      </LinearSolverParameters>
+    </SolidMechanicsLagrangianSSLE>
+
+  </Solvers>
+
+  <Constitutive>
+    <ElasticIsotropic
+      name="rock"
+      defaultDensity="2700"
+      defaultYoungModulus="5e9"
+      defaultPoissonRatio="$nu$"/>
+
+    <NullModel
+      name="water"/>
+  </Constitutive>
+
+  <Functions>
+    <TableFunction
+      name="youngsModulus"
+      inputVarNames="{ elementCenter }"
+      inputVarScale="{ `1000/$Lx$`, `1000/$Ly$`, `100/$Lz$` }"
+      coordinateFiles="{ $root$/data/x.txt, $root$/data/y.txt, $root$/data/z.txt }"
+      voxelFile="$root$/data/young.txt"
+      interpolation="nearest"/>
+  </Functions>
+
+  <Included>
+    <File name="../common/material/elasticModuli.xml"/>
+  </Included>
+
+  <Included>
+    <File name="../common/bc/bathtub.xml"/>
+  </Included>
+
+  <Included>
+    <File name="../common/bc/loading.xml"/>
+  </Included>
+
+</Problem>

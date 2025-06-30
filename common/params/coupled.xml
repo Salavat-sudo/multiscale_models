@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+
+<Problem>
+
+  <Parameters>
+
+    <!-- Linear system scaling -->
+    <Parameter
+      name="systemScaling"
+      value="1"/>
+
+    <!-- Coupled preconditioner: [multiscale | block] -->
+    <Parameter
+      name="cprec"
+      value="multiscale"/>
+
+    <!-- Mechanics preconditioner: [multiscale | amg] -->
+    <Parameter
+      name="mprec"
+      value=""/>
+
+    <!-- Flow preconditioner: [multiscale | amg] -->
+    <Parameter
+      name="fprec"
+      value=""/>
+
+    <!-- Block smoother enabled: [0 | 1] -->
+    <Parameter
+      name="blockSmoother"
+      value="1"/>
+
+    <!-- Block smoother shape: [D | DU | LD | LDU] -->
+    <Parameter
+      name="blockShape"
+      value="LD"/>
+
+    <!-- Block smoother shape: [none | diagonal | probing] -->
+    <Parameter
+      name="blockSchur"
+      value="diagonal"/>
+
+    <!-- Block smoother shape: [none | frobenius] -->
+    <Parameter
+      name="blockScaling"
+      value="none"/>
+
+  </Parameters>
+
+</Problem>
