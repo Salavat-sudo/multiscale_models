@@ -1,0 +1,131 @@
+classdef PermxMesh
+    properties
+        nx
+        ny
+        dx = 1; % cell width
+        dy = 1; % cell height
+
+        permx            % Matrix of permx values
+        initPermx        % Default permx value
+        pathPermx        % Value along path
+        pathWidth        % Number of cells across (odd preferred)
+        xCenters         % X coordinates of cell centers
+        yCenters         % Y coordinates of cell centers
+        currentI         % Current row index (y-direction)
+        currentJ         % Current column index (x-direction)
+    end
+
+    methods
+        function obj = PermxMesh(nx, ny, initPermx, pathPermx, startI, startJ, pathWidth)
+            obj.nx = nx;
+            obj.ny = ny;
+            obj.initPermx = initPermx;
+            obj.pathPermx = pathPermx;
+            obj.pathWidth = pathWidth;
+
+            obj.permx = initPermx * ones(ny, nx); % row = i, col = j
+            obj.currentI = startI;
+            obj.currentJ = startJ;
+
+            % Apply initial path cell
+            obj = obj.setPathValue(startI, startJ, 'center');
+
+            % Cell centers
+            obj.xCenters = ((1:nx) - 0.5) * obj.dx;
+            obj.yCenters = ((1:ny) - 0.5) * obj.dy;
+        end
+
+        function obj = step(obj, direction, numSteps)
+            i = obj.currentI;
+            j = obj.currentJ;
+
+            for k = 1:numSteps
+                nextI = i;
+                nextJ = j;
+
+                switch direction
+                    case 'up'
+                        nextI = i - 1;
+                    case 'down'
+                        nextI = i + 1;
+                    case 'left'
+                        nextJ = j - 1;
+                    case 'right'
+                        nextJ = j + 1;
+                    otherwise
+                        error('Invalid direction. Use: up, down, left, right');
+                end
+
+                % Stop if next step goes out of bounds
+                if nextI < 1 || nextI > obj.ny || nextJ < 1 || nextJ > obj.nx
+                    fprintf('Path stopped at edge: (%d, %d) is out of bounds.\n', nextI, nextJ);
+                    break;
+                end
+
+                % Update position and apply path value
+                i = nextI;
+                j = nextJ;
+                obj = obj.setPathValue(i, j, direction);
+            end
+
+            obj.currentI = i;
+            obj.currentJ = j;
+        end
+
+        function obj = setPathValue(obj, iCenter, jCenter, direction)
+            halfWidth = floor(obj.pathWidth / 2);
+
+            switch direction
+                case {'up', 'down'}
+                    jStart = max(jCenter - halfWidth, 1);
+                    jEnd   = min(jCenter + halfWidth, obj.nx);
+                    for jj = jStart:jEnd
+                        obj.permx(iCenter, jj) = obj.pathPermx;
+                    end
+                case {'left', 'right'}
+                    iStart = max(iCenter - halfWidth, 1);
+                    iEnd   = min(iCenter + halfWidth, obj.ny);
+                    for ii = iStart:iEnd
+                        obj.permx(ii, jCenter) = obj.pathPermx;
+                    end
+                otherwise
+                    % initial point
+                    obj.permx(iCenter, jCenter) = obj.pathPermx;
+            end
+        end
+
+        function saveToFile(obj, folder)
+            if ~exist(folder, 'dir')
+                mkdir(folder);
+            end
+
+            % Assume uniform spacing
+            dx = obj.dx;
+            dy = obj.dy;
+            dz = 1;
+            zMin = 0;
+            zMax = 1;
+            nz = 1;
+
+            xMin = 0; xMax = obj.nx * dx;
+            yMin = 0; yMax = obj.ny * dy;
+
+            Xi = xMin + dx/2 : dx : xMax - dx/2;
+            Yi = yMin + dy/2 : dy : yMax - dy/2;
+            Zi = zMin + dz/2 : dz : zMax - dz/2;
+
+            % Save coordinate lines
+            dlmwrite(fullfile(folder, 'xlin.geos'), Xi', 'delimiter', '\n', 'precision', 6);
+            dlmwrite(fullfile(folder, 'ylin.geos'), Yi', 'delimiter', '\n', 'precision', 6);
+            dlmwrite(fullfile(folder, 'zlin.geos'), Zi', 'delimiter', '\n', 'precision', 6);
+
+            % Flatten permx in GEOS order: x-fastest, then y, then z
+            PermxFlat = reshape(permute(obj.permx, [2 1]), [], 1); % [nx x ny] to [nx*ny x 1]
+            PermxFull = repmat(PermxFlat, nz, 1); % for 3D format (nz = 1)
+
+            dlmwrite(fullfile(folder, 'permx.geos'), PermxFull, 'delimiter', '\n', 'precision', 6);
+
+            fprintf('Saved permx and coordinate lines to folder: %s\n', folder);
+        end
+    end
+end

@@ -17,13 +17,15 @@ dx = (xMax - xMin)./(nx);
 dy = (yMax - yMin)./(ny);
 dz = (zMax - zMin)./(nz);
 
-Xi = xMin+dx/2: dx: xMax-dx/2
-Yi = yMin+dy/2: dy: yMax-dy/2
-Zi = zMin+dz/2: dz: zMax-dz/2
+Xi = xMin+dx/2: dx: xMax-dx/2;
+Yi = yMin+dy/2: dy: yMax-dy/2;
+Zi = zMin+dz/2: dz: zMax-dz/2;
+
+[x2d, y2d] = ndgrid(Xi, Yi);
 
 dlmwrite('heterogen/xlin.geos', Xi, 'delimiter', '\n', 'precision', 6);
 dlmwrite('heterogen/ylin.geos', Yi, 'delimiter', '\n', 'precision', 6);
 dlmwrite('heterogen/zlin.geos', Zi, 'delimiter', '\n', 'precision', 6);
 
-Permx = PermxAv * rand(nx*ny*nz);
+Permx = PermxAv * rand(nx*ny*nz, 1);
 dlmwrite('heterogen/permx.geos', Permx, 'delimiter', '\n', 'precision', 6);

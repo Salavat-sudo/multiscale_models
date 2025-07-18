@@ -118,8 +118,8 @@
       xCoords="{ 0, 10 }"
       yCoords="{ 0, 10 }"
       zCoords="{ 0, 1 }"
-      nx="{ 20 }"
-      ny="{ 20 }"
+      nx="{ 80 }"
+      ny="{ 80 }"
       nz="{ 1 }"
       cellBlockNames="{ block1 }"/>
   </Mesh>
