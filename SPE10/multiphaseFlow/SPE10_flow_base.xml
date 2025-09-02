@@ -1,0 +1,200 @@
+<?xml version="1.0" ?>
+
+<Problem>
+
+  <Geometry>
+
+    <Box
+      name="source"
+      xMin="{182.85, 335.25, -0.01}"
+      xMax="{189.00, 338.35, 52.0}"/>
+    <Box
+      name="sink1"
+      xMin="{-0.01, -0.01, -0.01}"
+      xMax="{6.126, 3.078, 51.90}"/>
+    <Box
+      name="sink2"
+      xMin="{-0.01, 667.482, -0.01}"
+      xMax="{6.126, 670.60, 51.90}"/>
+    <Box
+      name="sink3"
+      xMin="{359.634, -0.01, -0.01}"
+      xMax="{365.8, 3.048, 51.90}"/>
+    <Box
+      name="sink4"
+      xMin="{359.634, 667.482, -0.01}"
+      xMax="{365.8, 670.60, 51.90}"/>
+
+  </Geometry>
+
+  <NumericalMethods>
+    <FiniteVolume>
+      <TwoPointFluxApproximation
+        name="singlePhaseTPFA"/>
+    </FiniteVolume>
+  </NumericalMethods>
+
+  <ElementRegions>
+    <CellElementRegion
+      name="reservoir"
+      cellBlocks="{ * }"
+      materialList="{ water, rock }"/>
+  </ElementRegions>
+
+  <Constitutive>
+    <CompressibleSinglePhaseFluid
+      name="water"
+      defaultDensity="1000"
+      defaultViscosity="0.001"
+      referencePressure="0.0"
+      compressibility="0.0"
+      viscosibility="0.0"/>
+
+    <CompressibleSolidConstantPermeability
+      name="rock"
+      solidModelName="nullSolid"
+      porosityModelName="rockPorosity"
+      permeabilityModelName="rockPerm"/>
+
+    <NullModel
+      name="nullSolid"/>
+
+    <PressurePorosity
+      name="rockPorosity"
+      defaultReferencePorosity="0.1"
+      referencePressure="0.0"
+      compressibility="1.0e-9"/>
+    <!-- 
+    <ConstantPermeability
+      name="rockPermeability"
+      permeabilityComponents="{ 1.0e-12, 1.0e-12, 1.0e-12 }"/>
+    -->
+    <ConstantPermeability
+      name="rockPerm"
+      permeabilityComponents="{ 1.0e-12, 1.0e-12, 1.0e-15 }"/>
+  </Constitutive>
+
+  <FieldSpecifications>
+    <!--   <FieldSpecification
+      name="permx"
+      component="0"
+      initialCondition="1"
+      setNames="{ all }"
+      objectPath="ElementRegions/reservoir"
+      fieldName="rockPerm_permeability"
+      functionName="permxFunc"
+      scale="9.869233e-16"/>
+    <FieldSpecification
+      name="permy"
+      component="1"
+      initialCondition="1"
+      setNames="{ all }"
+      objectPath="ElementRegions/reservoir"
+      fieldName="rockPerm_permeability"
+      functionName="permyFunc"
+      scale="9.869233e-16"/>
+    <FieldSpecification
+      name="permz"
+      component="2"
+      initialCondition="1"
+      setNames="{ all }"
+      objectPath="ElementRegions/reservoir"
+      fieldName="rockPerm_permeability"
+      functionName="permzFunc"
+      scale="9.869233e-16"/>
+
+    <FieldSpecification
+      name="referencePorosity"
+      initialCondition="1"
+      setNames="{ all }"
+      objectPath="ElementRegions/reservoir"
+      fieldName="rockPorosity_referencePorosity"
+      functionName="poroFunc"
+      scale="1.0"/>
+    -->
+    <FieldSpecification
+      name="initialPressure"
+      initialCondition="1"
+      setNames="{ all }"
+      objectPath="ElementRegions/reservoir"
+      fieldName="pressure"
+      scale="4.1369e+7"/>
+    
+    <FieldSpecification
+      name="sourceTerm"
+      objectPath="ElementRegions/reservoir"
+      fieldName="pressure"
+      scale="4.1369e+10"
+      setNames="{ source }"/>
+
+<!--     <SourceFlux
+      name="sourceTerm"
+      objectPath="ElementRegions/reservoir"
+      scale="-100"
+      functionName="injectionSchedule"
+      setNames="{ source }"/>
+
+    <SourceFlux
+      name="sinkTerm"
+      objectPath="ElementRegions/reservoir"
+      scale="100"
+      functionName="injectionSchedule"
+      setNames="{ sink1 }"/>
+ -->
+  </FieldSpecifications>
+
+  <Functions>
+    <!-- 
+    <TableFunction
+      name="permxFunc"
+      inputVarNames="{elementCenter}"
+      coordinateFiles="{../common/xlin.geos,../common/ylin.geos,../common/zlin.geos}"
+      voxelFile="../common/permx.geos"
+      interpolation="linear" />
+    <TableFunction
+      name="permyFunc"
+      inputVarNames="{elementCenter}"
+      coordinateFiles="{../common/xlin.geos,../common/ylin.geos,../common/zlin.geos}"
+      voxelFile="../common/permy.geos"
+      interpolation="linear" />
+    <TableFunction
+      name="permzFunc"
+      inputVarNames="{elementCenter}"
+      coordinateFiles="{../common/xlin.geos,../common/ylin.geos,../common/zlin.geos}"
+      voxelFile="../common/permz.geos"
+      interpolation="linear" />
+    <TableFunction
+      name="poroFunc"
+      inputVarNames="{elementCenter}"
+      coordinateFiles="{../common/xlin.geos,../common/ylin.geos,../common/zlin.geos}"
+      voxelFile="../common/newNewPoro.geos"
+      interpolation="linear" />
+    -->
+    <TableFunction
+      name="B_o_table"
+      coordinateFiles="{ pres_pvdo.txt }"
+      voxelFile="B_o_pvdo.txt"
+      interpolation="linear"/>
+
+    <TableFunction
+      name="visc_o_table"
+      coordinateFiles="{ pres_pvdo.txt }"
+      voxelFile="visc_pvdo.txt"
+      interpolation="linear"/>
+
+ <!--     <TableFunction
+      name="injectionSchedule"
+      inputVarNames="{ time }"
+      coordinates="{ 0.0, 10.0 }"
+      values="{ 0.0, 1.0 }"
+      interpolation="linear"/>
+ -->
+  </Functions>
+
+<!--   <Outputs>
+    <VTK
+      name="vtkOutputPoro"
+    />
+  </Outputs>
+ -->
+</Problem>

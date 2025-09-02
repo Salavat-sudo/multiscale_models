@@ -1,0 +1,198 @@
+<?xml version="1.0" ?>
+
+<Problem>
+
+  <Mesh>
+    <InternalMesh
+      name="mesh1"
+      elementTypes="{ C3D8 }"
+      xCoords="{ 0, 365.76 }"
+      yCoords="{ 0, 670.56 }"
+      zCoords="{ 0, 51.816 }"
+      nx="{ 30 }"
+      ny="{ 55 }"
+      nz="{ 21 }"
+      cellBlockNames="{ hex }"/>
+  </Mesh>
+
+  <Included>
+    <File name="./SPE10_poro_base.xml" />
+  </Included>
+
+  <Solvers
+    gravityVector="{ 0.0, 0.0, 0.0 }">
+
+    <SolidMechanicsLagrangianFEM
+      name="mechSolver"
+      timeIntegrationOption="QuasiStatic"
+      discretization="FE1"
+      logLevel="2"
+      targetRegions="{ reservoir }">
+      <NonlinearSolverParameters
+        newtonTol="1e-6"
+        newtonMaxIter="10"
+        lineSearchAction="None"
+        lineSearchMaxCuts="3"
+        maxTimeStepCuts="3"
+        maxAllowedResidualNorm="1e6"/>
+      <LinearSolverParameters
+        solverType="gmres"
+        krylovTol="1e-8"
+        krylovMaxIter="500"
+        directParallel="0"
+        preconditionerType="ilu"
+        amgSmootherType="l1sgs"
+        amgNumSweeps="2"
+        amgMaxCoarseSize="1000"
+        amgAggressiveCoarseningLevels="2"
+        amgCoarseningType="HMIS"
+        amgInterpolationType="extended"
+        logLevel="2">
+        <Multiscale
+          basisType="msrsb"
+          maxLevels="20"
+          boundarySets="{ xneg, xpos, yneg, ypos, zneg, zpos }"
+          debugLevel="1"
+          coarseType="direct"
+          droptol="0.0"
+          galerkin="1">
+          <Smoother
+            type="l1sgs"
+            preOrPost="both"
+            numSweeps="1"/>
+          <Coarsening
+            partitionType="cartesian"
+            ratio="{ 5, 5, 5 }"
+            maxCoarseDof="4096">
+            <Structured
+              semicoarsening="1"/>
+          </Coarsening>
+          <MsRSB
+            supportType="matching"
+            numLayers="3"
+            maxIter="20"
+            tolerance="1e-1"
+            relaxation="0.6666666666666666"
+            checkFrequency="5"/>
+        </Multiscale>
+      </LinearSolverParameters>
+    </SolidMechanicsLagrangianFEM>
+    
+    <SinglePhaseFVM
+      name="flowSolver"
+      logLevel="2"
+      discretization="tpfa"
+      targetRegions="{ reservoir }">
+      <LinearSolverParameters
+        solverType="gmres"
+        krylovTol="1e-8"
+        krylovMaxIter="500"
+        directParallel="0"
+        preconditionerType="ilu"
+        amgSmootherType="l1sgs"
+        amgNumSweeps="2"
+        amgMaxCoarseSize="1000"
+        amgAggressiveCoarseningLevels="2"
+        amgCoarseningType="HMIS"
+        amgInterpolationType="extended"
+        logLevel="2">
+        <Multiscale
+          basisType="msrsb"
+          maxLevels="20"
+          boundarySets="{ xneg, xpos, yneg, ypos, zneg, zpos }"
+          debugLevel="1"
+          coarseType="direct"
+          droptol="0.0"
+          galerkin="1">
+          <Smoother
+            type="l1sgs"
+            preOrPost="both"
+            numSweeps="1"/>
+          <Coarsening
+            partitionType="cartesian"
+            ratio="{ 5, 5, 5 }"
+            maxCoarseDof="4096">
+            <Structured
+              semicoarsening="1"/>
+          </Coarsening>
+          <MsRSB
+            supportType="matching"
+            numLayers="3"
+            maxIter="20"
+            tolerance="1e-1"
+            relaxation="0.6666666666666666"
+            checkFrequency="5"/>
+        </Multiscale>
+      </LinearSolverParameters>
+    </SinglePhaseFVM>
+
+    <SinglePhasePoromechanics
+      name="poroSolver"
+      solidSolverName="mechSolver"
+      flowSolverName="flowSolver"
+      linearSystemScaling="1"
+      logLevel="2"
+      targetRegions="{ reservoir }">
+      <NonlinearSolverParameters
+        newtonMaxIter="2"
+        newtonTol="1.0e-2"
+        maxTimeStepCuts="1"
+        lineSearchMaxCuts="0"
+        maxAllowedResidualNorm="1e99"/>
+      <LinearSolverParameters
+        solverType="gmres"
+        krylovTol="1e-8"
+        krylovMaxIter="500"
+        preconditionerType="multiscale"
+        logLevel="3">
+        <Block
+          shape="DU"
+          schurType="probing"
+          scaling="none"/>
+        <Multiscale
+          basisType="msrsb"
+          maxLevels="3"
+          boundarySets="{xneg,xpos,yneg,ypos,zneg,zpos}"
+          debugLevel="1"
+          coarseType="direct">
+          <Coupled
+            useBlockSmoother="1"/>
+          <Coarsening
+            maxCoarseDof="1000"/>
+          <Smoother
+            type="l1sgs"
+            preOrPost="both"
+            numSweeps="2"/>
+          <MsRSB
+            maxIter="200"
+            tolerance="1e-3"
+            relaxation="0.5"
+            checkFrequency="10"/>
+        </Multiscale>
+      </LinearSolverParameters>
+    </SinglePhasePoromechanics>
+  </Solvers>
+
+
+
+  <!-- Add this Events section to trigger output -->
+  <Events maxTime="5000.0">
+    <PeriodicEvent
+        name="solverApplications"
+        forceDt="1000.0"
+        target="/Solvers/poroSolver"/>
+    <PeriodicEvent
+        name="vtkOutputs"
+        timeFrequency="1000.0"
+        target="/Outputs/vtkOutputPoro"/>
+  </Events>
+
+  <Outputs>
+    <VTK
+      name="vtkOutputPoro"
+      plotFileRoot="SPE10_poro_mgr"
+      plotLevel="2"
+      format="binary"/>
+
+  </Outputs>
+</Problem>

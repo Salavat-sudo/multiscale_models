@@ -1,0 +1,103 @@
+<?xml version="1.0" ?>
+
+<Problem>
+
+  <Mesh>
+    <InternalMesh
+      name="mesh1"
+      elementTypes="{ C3D8 }"
+      xCoords="{ 0, 365.76 }"
+      yCoords="{ 0, 670.56 }"
+      zCoords="{ 0, 51.816 }"
+      nx="{ 30 }"
+      ny="{ 55 }"
+      nz="{ 21 }"
+      cellBlockNames="{ hex }"/>
+  </Mesh>
+
+  <Included>
+    <File name="./SPE10_poro_base.xml" />
+  </Included>
+
+  <Solvers
+    gravityVector="{ 0.0, 0.0, 0.0 }">
+
+    <SolidMechanicsLagrangianFEM
+      name="mechSolver"
+      timeIntegrationOption="QuasiStatic"
+      discretization="FE1"
+      logLevel="5"
+      targetRegions="{ reservoir }">
+      <NonlinearSolverParameters
+        newtonTol="1e-6"
+        newtonMaxIter="10"
+        lineSearchAction="None"
+        lineSearchMaxCuts="3"
+        maxTimeStepCuts="3"
+        maxAllowedResidualNorm="1e6"/>
+      <LinearSolverParameters
+        solverType="gmres"
+        krylovTol="1e-8"
+        krylovMaxIter="500"
+        directParallel="0"
+        preconditionerType="iluk"
+        logLevel="5"/>
+    </SolidMechanicsLagrangianFEM>
+    <SinglePhaseFVM
+      name="flowSolver"
+      logLevel="1"
+      discretization="tpfa"
+      targetRegions="{ reservoir }">
+      <LinearSolverParameters
+        solverType="gmres"
+        krylovTol="1e-8"
+        krylovMaxIter="500"
+        directParallel="0"
+        preconditionerType="iluk"
+        logLevel="5"/>
+    </SinglePhaseFVM>
+
+    <SinglePhasePoromechanics
+      name="poroSolver"
+      solidSolverName="mechSolver"
+      flowSolverName="flowSolver"
+      logLevel="1"
+      targetRegions="{ reservoir }">
+      <NonlinearSolverParameters
+        newtonMaxIter="2"
+        newtonTol="1.0e-2"
+        maxTimeStepCuts="1"
+        lineSearchMaxCuts="0"
+        maxAllowedResidualNorm="1e99"/>
+      <LinearSolverParameters
+        solverType="gmres"
+        krylovTol="1e-8"
+        krylovMaxIter="500"
+        preconditionerType="mgr"
+        logLevel="5"/>
+    </SinglePhasePoromechanics>
+  </Solvers>
+
+
+
+  <!-- Add this Events section to trigger output -->
+  <Events maxTime="5000.0">
+    <PeriodicEvent
+        name="solverApplications"
+        forceDt="1000.0"
+        target="/Solvers/poroSolver"/>
+    <PeriodicEvent
+        name="vtkOutputs"
+        timeFrequency="1000.0"
+        target="/Outputs/vtkOutputPoro"/>
+  </Events>
+
+  <Outputs>
+    <VTK
+      name="vtkOutputPoro"
+      plotFileRoot="SPE10_poro_mgr"
+      plotLevel="2"
+      format="binary"/>
+
+  </Outputs>
+</Problem>

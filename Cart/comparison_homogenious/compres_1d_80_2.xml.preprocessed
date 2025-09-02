@@ -1,0 +1,216 @@
+<?xml version="1.0" ?>
+
+<Problem>
+  <Solvers
+    gravityVector="{ 0.0, 0.0, -0 }">
+    <SinglePhaseFVM
+      name="SinglePhaseFlow"
+      discretization="singlePhaseTPFA"
+      logLevel="1"
+      targetRegions="{ Region1 }">
+      <NonlinearSolverParameters
+        newtonTol="1e-2"
+        newtonMaxIter="10"
+        lineSearchAction="None"
+        lineSearchMaxCuts="1"
+        maxTimeStepCuts="1"
+        maxAllowedResidualNorm="1e99"/>
+      <LinearSolverParameters
+        solverType="gmres"
+        krylovTol="1e-8"
+        krylovMaxIter="500"
+        preconditionerType="multiscale"
+        directParallel="0"
+        logLevel="3">
+        <Multiscale
+          basisType="msrsb"
+          maxLevels="20"
+          boundarySets="{ xneg, xpos, yneg, ypos, zneg, zpos }"
+          debugLevel="1"
+          coarseType="direct"
+          droptol="0.0"
+          galerkin="1">
+          <Smoother
+            type="l1sgs"
+            preOrPost="both"
+            numSweeps="1"/>
+          <Coarsening
+            partitionType="cartesian"
+            ratio="{ 5, 5, 5 }"
+            maxCoarseDof="4096">
+            <Structured
+              semicoarsening="1"/>
+          </Coarsening>
+          <MsRSB
+            supportType="matching"
+            numLayers="3"
+            maxIter="20"
+            tolerance="1e-1"
+            relaxation="0.6666666666666666"
+            checkFrequency="5"/>
+        </Multiscale>
+      </LinearSolverParameters>
+    </SinglePhaseFVM>
+  </Solvers>
+
+  <Mesh>
+    <InternalMesh
+      name="mesh1"
+      elementTypes="{ C3D8 }"
+      xCoords="{ 0, 10 }"
+      yCoords="{ 0, 10 }"
+      zCoords="{ 0, 1 }"
+      nx="{ 80 }"
+      ny="{ 80 }"
+      nz="{ 1 }"
+      cellBlockNames="{ block1 }"/>
+  </Mesh>
+
+  <Geometry>
+    <Box
+      name="all"
+      xMin="{ -1e9, -1e9, -1e9 }"
+      xMax="{ 1e9, 1e9, 1e9 }"/>
+
+    <Box
+      name="source"
+      xMin="{ 1.01, -0.01, -0.01 }"
+      xMax="{ 10.01, 10.01, 1.01 }"/>
+
+    <Box
+      name="westBC"
+      xMin="{ -0.001, 0.0, 0.0 }"
+      xMax="{ 0.001, 10.0, 1.0 }"/>
+
+    <Box
+      name="eastBC"
+      xMin="{ 9.999, 0.0, 0.0 }"
+      xMax="{ 10.001, 10.0, 1.0 }"/>
+
+    <Box
+      name="northBC"
+      xMin="{ 0.0, 9.999, 0.0 }"
+      xMax="{ 10.0, 10.001, 1.0 }"/>
+
+    <Box
+      name="southBC"
+      xMin="{ 0.0, -0.001, 0.0 }"
+      xMax="{ 10.0, 0.001, 1.0 }"/>
+  </Geometry>
+
+  <Events
+    maxTime="1e2">
+    <PeriodicEvent
+      name="outputs"
+      timeFrequency="100.0"
+      target="/Outputs/vtkOutput"/>
+
+    <PeriodicEvent
+      name="solverApplications"
+      forceDt="1e2"
+      target="/Solvers/SinglePhaseFlow"/>
+  </Events>
+
+  <NumericalMethods>
+    <FiniteVolume>
+      <TwoPointFluxApproximation
+        name="singlePhaseTPFA"/>
+    </FiniteVolume>
+  </NumericalMethods>
+
+  <ElementRegions>
+    <CellElementRegion
+      name="Region1"
+      cellBlocks="{ * }"
+      materialList="{ water, rock }"/>
+  </ElementRegions>
+
+  <Constitutive>
+    <CompressibleSinglePhaseFluid
+      name="water"
+      defaultDensity="1"
+      defaultViscosity="1"
+      referencePressure="0.0"
+      compressibility="0e-10"
+      viscosibility="0.0"/>
+
+    <CompressibleSolidConstantPermeability
+      name="rock"
+      solidModelName="nullSolid"
+      porosityModelName="rockPorosity"
+      permeabilityModelName="rockPerm"/>
+
+    <NullModel
+      name="nullSolid"/>
+
+    <PressurePorosity
+      name="rockPorosity"
+      defaultReferencePorosity="0.05"
+      referencePressure="0.0"
+      compressibility="0.0e-9"/>
+
+    <ConstantPermeability
+      name="rockPerm"
+      permeabilityComponents="{ 1.0e-10, 1.0e-10, 1.0e-10 }"/>
+  </Constitutive>
+
+  <FieldSpecifications>
+    <FieldSpecification
+      name="Porosity"
+      initialCondition="1"
+      setNames="{ all }"
+      objectPath="ElementRegions/Region1/block1"
+      fieldName="rockPorosity_referencePorosity"
+      scale="0.05"/>
+
+    <FieldSpecification
+      name="initialPressure"
+      initialCondition="1"
+      setNames="{ all }"
+      objectPath="ElementRegions/Region1/block1"
+      fieldName="pressure"
+      scale="0.0"/>
+
+    <FieldSpecification
+      name="west_pressure"
+      setNames="{ westBC }"
+      objectPath="faceManager"
+      fieldName="pressure"
+      scale="0.0e7"/>
+
+    <FieldSpecification
+      name="east_pressure"
+      setNames="{ eastBC }"
+      objectPath="faceManager"
+      fieldName="pressure"
+      scale="0.0e6"/>
+
+    <FieldSpecification
+      name="north_pressure"
+      setNames="{ northBC }"
+      objectPath="faceManager"
+      fieldName="pressure"
+      scale="0.0e6"/>
+
+    <FieldSpecification
+      name="south_pressure"
+      setNames="{ southBC }"
+      objectPath="faceManager"
+      fieldName="pressure"
+      scale="0.0e6"/>
+
+    <SourceFlux
+      name="sourceTerm"
+      objectPath="ElementRegions/Region1/block1"
+      scale="-1.0"
+      setNames="{ source }"/>
+  </FieldSpecifications>
+
+  <!--<Included xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><File name="../common/params/base.xml"/><File name="../common/params/ms.xml"/><File name="../common/params/amg.xml"/><File name="base1.xml"/></Included>-->
+  <!--<Parameters xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><Parameter name="name" value="flow"/><Parameter name="dt" value="1e5"/><Parameter name="T" value="1e5"/><Parameter name="fluidComp" value="0e-10"/><Parameter name="rockComp" value="0e-9"/><Parameter name="sourceFlux" value="10"/><Parameter name="initPressure" value="1e7"/><Parameter name="sinkPressure" value="1e6"/><Parameter name="root" value="."/><Parameter name="plot" value="0"/><Parameter name="nu" value="0.25"/><Parameter name="gravity" value="0"/><Parameter name="logLevel" value="3"/><Parameter name="solver" value="gmres"/><Parameter name="krylovTol" value="1e-8"/><Parameter name="krylovMaxIter" value="500"/><Parameter name="prec" value="multiscale"/><Parameter name="smoother" value="l1sgs"/><Parameter name="sweeps" value="1"/><Parameter name="msMaxLevels" value="20"/><Parameter name="msMaxCoarseDof" value="4096"/><Parameter name="msCoarse" value="direct"/><Parameter name="msCoarsePar" value="0"/><Parameter name="msCoarseCoupled" value="direct"/><Parameter name="msPrePost" value="both"/><Parameter name="msSupport" value="matching"/><Parameter name="msNumLayers" value="3"/><Parameter name="msDropTol" value="0.0"/><Parameter name="msMatrixWeights" value="0"/><Parameter name="msGraphMethod" value="metis"/><Parameter name="msMetisUfactor" value="30"/><Parameter name="msMetisSeed" value="2020"/><Parameter name="msTol" value="1e-1"/><Parameter name="msMaxIter" value="20"/><Parameter name="msDebug" value="1"/><Parameter name="amgMaxCoarse" value="9"/><Parameter name="amgAggLevels" value="0"/><Parameter name="amgThreshold" value="0.8"/><Parameter name="amgNullSpaceType" value="constantModes"/><Parameter name="Nx" value="35"/><Parameter name="Ny" value="35"/><Parameter name="Nz" value="35"/><Parameter name="CRF" value="5,5,5"/><Parameter name="SCF" value="1"/><Parameter name="CRM" value="5,5,5"/><Parameter name="SCM" value="1"/><Parameter name="Lx" value="1000.0"/><Parameter name="Ly" value="1000.0"/><Parameter name="Lz" value="100.0"/><Parameter name="Ax" value="1.0"/><Parameter name="Ay" value="1.0"/><Parameter name="injectionRegion" value="reservoir"/><Parameter name="zAnisotropy" value="1"/></Parameters>-->
+  <Outputs>
+    <VTK
+      name="vtkOutput"
+      plotFileRoot="compres_1d"/>
+  </Outputs>
+</Problem>

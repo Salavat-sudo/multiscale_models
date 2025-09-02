@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+
+<Problem>
+
+  <Mesh>
+    <InternalMesh
+      name="mesh1"
+      elementTypes="{ C3D8 }"
+      xCoords="{ 0, 365.76 }"
+      yCoords="{ 0, 670.56 }"
+      zCoords="{ 0, 51.816 }"
+      nx="{ 30 }"
+      ny="{ 55 }"
+      nz="{ 21 }"
+      cellBlockNames="{ block}"/>
+  </Mesh>
+
+  <Included>
+    <File name="./SPE10_base2_singlephase.xml" />
+  </Included>
+
+  <Solvers>
+    <SinglePhaseFVM
+      name="SinglePhaseFlow"
+      logLevel="1"
+      discretization="singlePhaseTPFA"
+      targetRegions="{ reservoir }">
+      <NonlinearSolverParameters
+        newtonTol="1.0e-6"
+        newtonMaxIter="8"/>
+      <LinearSolverParameters
+        solverType="gmres"
+	preconditionerType="amg" 
+        krylovTol="1.0e-10"/>
+    </SinglePhaseFVM>
+  </Solvers>
+
+  <!-- Add this Events section to trigger output -->
+  <Events maxTime="5000.0">
+    <PeriodicEvent
+        name="solverApplications"
+        forceDt="20.0"
+        target="/Solvers/SinglePhaseFlow"/>
+    <PeriodicEvent
+        name="vtkOutputs"
+        timeFrequency="100.0"
+        target="/Outputs/vtkOutput"/>
+  </Events>
+
+  <Outputs>
+    <VTK
+      name="vtkOutput"
+      plotFileRoot="SPE10_fim_lvl0a"
+      plotLevel="2"
+      format="binary"/>
+
+  </Outputs>
+
+</Problem>

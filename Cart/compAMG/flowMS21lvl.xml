@@ -1,0 +1,243 @@
+<?xml version="1.0" ?>
+
+<Problem>
+  <Solvers
+    gravityVector="{ 0.0, 0.0, -0 }">
+    <SinglePhaseFVM
+      name="flowSolver"
+      discretization="tpfa"
+      logLevel="1"
+      targetRegions="{ reservoir, barrier }">
+      <NonlinearSolverParameters
+        newtonTol="1e-2"
+        newtonMaxIter="10"
+        lineSearchAction="None"
+        lineSearchMaxCuts="1"
+        maxTimeStepCuts="1"
+        maxAllowedResidualNorm="1e99"/>
+      <LinearSolverParameters
+        solverType="gmres"
+        krylovTol="1e-8"
+        krylovMaxIter="500"
+        preconditionerType="multiscale"
+        directParallel="0"
+        amgSmootherType="l1sgs"
+        amgNumSweeps="1"
+        amgMaxCoarseSize="9"
+        amgAggressiveCoarseningLevels="0"
+        logLevel="3">
+        <Multiscale
+          basisType="msrsb"
+          maxLevels="2"
+          boundarySets="{ xneg, xpos, yneg, ypos, zneg, zpos }"
+          debugLevel="1"
+          coarseType="direct"
+          droptol="0.0"
+          galerkin="1">
+          <Smoother
+            type="l1sgs"
+            preOrPost="both"
+            numSweeps="1"/>
+          <Coarsening
+            partitionType="cartesian"
+            ratio="{ 5, 5, 5 }"
+            maxCoarseDof="4096">
+            <Structured
+              semicoarsening="1"/>
+          </Coarsening>
+          <MsRSB
+            supportType="matching"
+            numLayers="3"
+            maxIter="20"
+            tolerance="1e-1"
+            relaxation="0.6666666666666666"
+            checkFrequency="5"/>
+        </Multiscale>
+      </LinearSolverParameters>
+    </SinglePhaseFVM>
+  </Solvers>
+
+  <Constitutive>
+    <CompressibleSinglePhaseFluid
+      name="water"
+      defaultDensity="1000"
+      defaultViscosity="0.001"
+      referencePressure="0.0"
+      compressibility="5e-10"
+      viscosibility="0.0"/>
+
+    <NullModel
+      name="nullSolid"/>
+
+    <PressurePorosity
+      name="rockPorosity"
+      defaultReferencePorosity="0.2"
+      referencePressure="0.0"
+      compressibility="1e-9"/>
+
+    <ConstantPermeability
+      name="rockPermeability"
+      permeabilityComponents="{ 1.0e-12, 1.0e-12, 1.0e-12 }"/>
+
+    <CompressibleSolidConstantPermeability
+      name="rock"
+      solidModelName="nullSolid"
+      porosityModelName="rockPorosity"
+      permeabilityModelName="rockPermeability"/>
+  </Constitutive>
+
+  <Functions>
+    <SymbolicFunction
+      name="injectionSchedule"
+      inputVarNames="{ time }"
+      variableNames="{ t }"
+      expression="1.0"/>
+
+    <TableFunction
+      name="permeability"
+      inputVarNames="{ elementCenter }"
+      inputVarScale="{ 1, 1, 1 }"
+      coordinateFiles="{ .././data/x.txt, .././data/y.txt, .././data/z.txt }"
+      voxelFile=".././data/perm.txt"
+      interpolation="nearest"/>
+  </Functions>
+
+  <FieldSpecifications>
+    <FieldSpecification
+      name="permX"
+      initialCondition="1"
+      setNames="{ all }"
+      objectPath="ElementRegions"
+      fieldName="rockPermeability_permeability"
+      functionName="permeability"
+      component="0"
+      scale="1.0"/>
+
+    <FieldSpecification
+      name="permY"
+      initialCondition="1"
+      setNames="{ all }"
+      objectPath="ElementRegions"
+      fieldName="rockPermeability_permeability"
+      functionName="permeability"
+      component="1"
+      scale="1.0"/>
+
+    <FieldSpecification
+      name="permZ"
+      initialCondition="1"
+      setNames="{ all }"
+      objectPath="ElementRegions"
+      fieldName="rockPermeability_permeability"
+      functionName="permeability"
+      component="2"
+      scale="1e-2"/>
+
+    <FieldSpecification
+      name="sinkPressure"
+      setNames="{ sink }"
+      objectPath="ElementRegions/reservoir"
+      fieldName="pressure"
+      scale="1e6"/>
+
+    <SourceFlux
+      name="sourceTerm"
+      objectPath="ElementRegions/reservoir"
+      scale="-10"
+      functionName="injectionSchedule"
+      setNames="{ source }"/>
+
+    <FieldSpecification
+      name="initialPressure"
+      initialCondition="1"
+      setNames="{ all }"
+      objectPath="ElementRegions"
+      fieldName="pressure"
+      scale="1e7"/>
+  </FieldSpecifications>
+
+  <Events
+    maxTime="1e7">
+    <PeriodicEvent
+      name="solverApplications"
+      forceDt="1e5"
+      target="/Solvers/flowSolver"/>
+
+    <PeriodicEvent
+      name="outputs"
+      timeFrequency="1e5"
+      targetExactTimestep="1"
+      endTime="0"
+      target="/Outputs/vtk"/>
+  </Events>
+
+  <Mesh>
+    <InternalMesh
+      name="mesh"
+      elementTypes="{ C3D8 }"
+      xCoords="{ 0, 1000.0 }"
+      yCoords="{ 0, 1000.0 }"
+      zCoords="{ 0, 2e1, 4e1, 6e1, 8e1, 100.0 }"
+      nx="{ 35 }"
+      ny="{ 35 }"
+      nz="{ 7, 7, 7, 7, 7 }"
+      cellBlockNames="{ barrier, reservoir, barrier, reservoir, barrier }"/>
+  </Mesh>
+
+  <ElementRegions>
+    <CellElementRegion
+      name="reservoir"
+      cellBlocks="{ reservoir }"
+      materialList="{ rock, water }"/>
+
+    <CellElementRegion
+      name="barrier"
+      cellBlocks="{ barrier }"
+      materialList="{ rock, water }"/>
+  </ElementRegions>
+
+  <Geometry>
+    <Box
+      name="source"
+      xMin="{ -0.01, -0.01, -0.01 }"
+      xMax="{ 5.001e1, 5.001e1, 1.0001e2 }"/>
+
+    <Box
+      name="sink"
+      xMin="{ 9.4999e2, 9.4999e2, -0.01 }"
+      xMax="{ 1.00001e3, 1.00001e3, 1.0001e2 }"/>
+
+    <Box
+      name="footing"
+      xMin="{ -0.01, -0.01, 9.999e1 }"
+      xMax="{ 1.00001e3, 1.00001e3, 1.0001e2 }"/>
+  </Geometry>
+
+  <NumericalMethods>
+    <FiniteElements>
+      <FiniteElementSpace
+        name="FE1"
+        order="1"/>
+    </FiniteElements>
+
+    <FiniteVolume>
+      <TwoPointFluxApproximation
+        name="tpfa"/>
+    </FiniteVolume>
+  </NumericalMethods>
+
+  <!--<Included><File name="../common/params/base.xml"/><File name="../common/params/ms.xml"/><File name="../common/params/amg.xml"/><File name="../base.xml"/></Included>-->
+  <!--<Included><File name="../../common/bc/quarterfivespot.xml"/></Included>-->
+  <!--<Parameters><Parameter name="name" value="flow"/><Parameter name="dt" value="1e5"/><Parameter name="T" value="1e7"/><Parameter name="fluidComp" value="5e-10"/><Parameter name="rockComp" value="1e-9"/><Parameter name="sourceFlux" value="10"/><Parameter name="initPressure" value="1e7"/><Parameter name="sinkPressure" value="1e6"/><Parameter name="root" value="."/><Parameter name="plot" value="0"/><Parameter name="nu" value="0.25"/><Parameter name="gravity" value="0"/><Parameter name="logLevel" value="3"/><Parameter name="solver" value="gmres"/><Parameter name="krylovTol" value="1e-8"/><Parameter name="krylovMaxIter" value="500"/><Parameter name="prec" value="multiscale"/><Parameter name="smoother" value="l1sgs"/><Parameter name="sweeps" value="1"/><Parameter name="msMaxLevels" value="20"/><Parameter name="msMaxCoarseDof" value="4096"/><Parameter name="msCoarse" value="direct"/><Parameter name="msCoarsePar" value="0"/><Parameter name="msCoarseCoupled" value="direct"/><Parameter name="msPrePost" value="both"/><Parameter name="msSupport" value="matching"/><Parameter name="msNumLayers" value="3"/><Parameter name="msDropTol" value="0.0"/><Parameter name="msMatrixWeights" value="0"/><Parameter name="msGraphMethod" value="metis"/><Parameter name="msMetisUfactor" value="30"/><Parameter name="msMetisSeed" value="2020"/><Parameter name="msTol" value="1e-1"/><Parameter name="msMaxIter" value="20"/><Parameter name="msDebug" value="1"/><Parameter name="amgMaxCoarse" value="9"/><Parameter name="amgAggLevels" value="0"/><Parameter name="amgThreshold" value="0.8"/><Parameter name="amgNullSpaceType" value="constantModes"/><Parameter name="Nx" value="35"/><Parameter name="Ny" value="35"/><Parameter name="Nz" value="35"/><Parameter name="CRF" value="5,5,5"/><Parameter name="SCF" value="1"/><Parameter name="CRM" value="5,5,5"/><Parameter name="SCM" value="1"/><Parameter name="Lx" value="1000.0"/><Parameter name="Ly" value="1000.0"/><Parameter name="Lz" value="100.0"/><Parameter name="Ax" value="1.0"/><Parameter name="Ay" value="1.0"/><Parameter name="injectionRegion" value="reservoir"/><Parameter name="zAnisotropy" value="1e-2"/></Parameters>-->
+  <Outputs>
+    <VTK
+      name="vtkOutput"/>
+
+    <VTK
+      name="vtk"
+      plotFileRoot="Cart_flow_35x35x35"/>
+
+    <Restart
+      name="restartOutput"/>
+  </Outputs>
+</Problem>

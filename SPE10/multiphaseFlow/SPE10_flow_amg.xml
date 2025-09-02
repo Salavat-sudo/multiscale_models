@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+
+<Problem>
+
+  <Mesh>
+    <InternalMesh
+      name="mesh1"
+      elementTypes="{ C3D8 }"
+      xCoords="{ 0, 365.76 }"
+      yCoords="{ 0, 670.56 }"
+      zCoords="{ 0, 51.816 }"
+      nx="{ 30 }"
+      ny="{ 55 }"
+      nz="{ 21 }"
+      cellBlockNames="{ hex }"/>
+  </Mesh>
+
+  <Included>
+    <File name="./SPE10_flow_base.xml" />
+  </Included>
+
+  <Solvers>
+    <SinglePhaseFVM
+      name="flowSolver"
+      logLevel="1"
+      discretization="singlePhaseTPFA"
+      targetRegions="{ reservoir }">
+      <NonlinearSolverParameters
+        newtonTol="1.0e-6"
+        newtonMaxIter="8"/>
+      <LinearSolverParameters
+        solverType="gmres"
+	    preconditionerType="amg" 
+        krylovTol="1.0e-10"/>
+    </SinglePhaseFVM>
+  </Solvers>
+
+  <!-- Add this Events section to trigger output -->
+  <Events maxTime="50000.0">
+    <PeriodicEvent
+        name="solverApplications"
+        forceDt="1000.0"
+        target="/Solvers/flowSolver"/>
+    <PeriodicEvent
+        name="vtkOutputs"
+        timeFrequency="10000.0"
+        target="/Outputs/vtkOutputPoro"/>
+  </Events>
+
+  <Outputs>
+    <VTK
+      name="vtkOutputPoro"
+      plotFileRoot="SPE10_flow_msml"
+      plotLevel="2"
+      format="binary"/>
+
+  </Outputs>
+</Problem>

@@ -1,0 +1,1336 @@
+Num ranks: 64
+Max threads: 1
+MKL max threads: 1
+
+GEOS version: 1.0.1 (develop, sha1: c29c4ec47)
+  - c++ compiler: gcc 12.1.1
+  - openmp version: 201511
+  - MPI version: MVAPICH2 Version      :	2.3.7
+MVAPICH2 Release date :	Wed March 02 22:00:00 EST 2022
+MVAPICH2 Device       :	ch3:psm
+MVAPICH2 configure    :	--prefix=/usr/tce/backend/installations/linux-rhel8-x86_64/gcc-12.1.1/mvapich2-2.3.7-hlwzsja33ivcoycpcoluwasfr525id7q --enable-shared --enable-romio --disable-silent-rules --disable-new-dtags --enable-fortran=all --enable-threads=multiple --with-ch3-rank-bits=32 --enable-wrapper-rpath=yes --disable-alloca --enable-fast=all --disable-cuda --enable-registration-cache --with-pm=hydra --with-device=ch3:psm --with-psm2=/usr --with-file-system=lustre+nfs+ufs --enable-llnl-site-specific-options --enable-debuginfo
+MVAPICH2 CC           :	/usr/tce/spack/lib/spack/env/gcc/gcc    -DNDEBUG -DNVALGRIND -O2
+MVAPICH2 CXX          :	/usr/tce/spack/lib/spack/env/gcc/g++   -DNDEBUG -DNVALGRIND -O2
+MVAPICH2 F77          :	/usr/tce/spack/lib/spack/env/gcc/gfortran   -O2
+MVAPICH2 FC           :	/usr/tce/spack/lib/spack/env/gcc/gfortran   -O2
+
+  - HDF5 version: 1.12.1
+  - Conduit version: 0.9.2
+  - VTK version: 9.2.6
+  - RAJA version: 2024.2.2
+  - umpire version: 2024.2.1
+  - chai version: 2024.2.2
+  - adiak version: ..
+  - caliper version: ..
+  - METIS version: 5.1.0
+  - PARAMETIS version: 4.0.0
+  - scotch version: 7.0.3
+  - superlu_dist version: 6.3.0
+  - suitesparse version: 5.7.9
+  - hypre version: v2.31.0-12-g06da35b1a (master)
+  - trilinos version: 15.1.1
+  - Python3 version: 3.10.8
+Started at 2024-08-27 21:03:14.894361617
+Opened XML file: /usr/WS1/aronson1/ToLLNL/SPE10_with_burdens_fim.xml
+Included additionnal XML file: /usr/WS1/aronson1/ToLLNL/SPE10_with_burdens_base.xml
+Adding Solver of type MultiphasePoromechanics, named PoromechanicsSolver
+Adding Solver of type SolidMechanicsLagrangianSSLE, named mechanicsSolver
+Adding Solver of type CompositionalMultiphaseFVM, named twoPhaseFlow
+Adding Mesh: InternalMesh, mesh1
+Adding Geometric Object: Box, source
+Adding Geometric Object: Box, sink1
+Adding Geometric Object: Box, sink2
+Adding Geometric Object: Box, sink3
+Adding Geometric Object: Box, sink4
+Adding Event: SoloEvent, equilStep
+Adding Event: PeriodicEvent, solverApplications0
+Adding Event: PeriodicEvent, solverApplications1
+   TableFunction: permxFunc
+   TableFunction: permyFunc
+   TableFunction: permzFunc
+   TableFunction: poroFunc
+   TableFunction: initCO2CompFractionTable
+   TableFunction: initWaterCompFractionTable
+   TableFunction: initTempTable
+   TableFunction: waterRelativePermeabilityTable
+   TableFunction: gasRelativePermeabilityTable
+Adding Output: VTK, vtkOutput_512_inject
+Adding Object CellElementRegion named Reservoir from ObjectManager::Catalog.
+Adding Object CellElementRegion named Burden from ObjectManager::Catalog.
+   TableFunction: fluid_phaseModel1_PhillipsBrineDensity_table
+   TableFunction: fluid_phaseModel1_PhillipsBrineViscosity_table
+   TableFunction: fluid_phaseModel2_SpanWagnerCO2Density_table
+   TableFunction: fluid_phaseModel2_FenghourCO2Viscosity_table
+   TableFunction: fluid_CO2Solubility_co2Dissolution_table
+   TableFunction: fluid_CO2Solubility_waterVaporization_table
+
+--------------------------------------------------
+|       PoromechanicsSolver: linear solver       |
+--------------------------------------------------
+|  Parameter                          |  Value   |
+--------------------------------------------------
+|  Log level                          |  1       |
+|  Linear solver type                 |  gmres   |
+|  Preconditioner type                |  mgr     |
+|  Stop if error                      |  1       |
+|  Maximum iterations                 |  200     |
+|  Maximum iterations before restart  |  200     |
+|  Use adaptive tolerance             |  0       |
+|  Relative convergence tolerance     |  0.0001  |
+--------------------------------------------------
+
+
+PoromechanicsSolver: found CompositionalMultiphaseFVM solver named twoPhaseFlow
+PoromechanicsSolver: found SolidMechanicsLagrangianSSLE solver named mechanicsSolver
+mesh1: total number of nodes = 6845696
+mesh1: total number of elems = 6732000
+MPI Partition information:
+  MeshBody: mesh1 MeshLevel: FE1
+
+  |------------------------------------------------------------------------------------------------------------------------------------------------|
+  |                |             Nodes             |             Edges             |             Faces             |             Elems             |
+  |------------------------------------------------------------------------------------------------------------------------------------------------|
+  |min(local/total)|             0.82              |             0.84              |             0.86              |             0.88              |
+  |max(local/total)|             0.94              |             0.94              |             0.94              |             0.94              |
+  |------------------------------------------------------------------------------------------------------------------------------------------------|
+  |      Rank      |     local     |     ghost     |     local     |     ghost     |     local     |     ghost     |     local     |     ghost     |
+  |----------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|
+  |            min |       103,950 |         7,544 |       311,850 |        22,325 |       311,850 |        22,021 |       103,950 |         7,240 |
+  |            max |       112,840 |        22,638 |       331,129 |        59,903 |       323,890 |        52,050 |       105,600 |        14,784 |
+  |------------------------------------------------------------------------------------------------------------------------------------------------|
+  |              0 |       112,840 |         7,544 |       331,129 |        22,325 |       323,890 |        22,021 |       105,600 |         7,240 |
+  |              1 |       109,368 |        11,016 |       322,623 |        30,831 |       317,205 |        28,706 |       103,950 |         8,890 |
+  |              2 |       111,104 |        11,104 |       327,744 |        31,093 |       322,240 |        28,966 |       105,600 |         8,976 |
+  |              3 |       111,104 |         9,280 |       327,744 |        25,710 |       322,240 |        23,671 |       105,600 |         7,240 |
+  |              4 |       110,825 |        11,671 |       327,195 |        32,497 |       321,970 |        30,082 |       105,600 |         9,255 |
+  |              5 |       107,415 |        15,081 |       318,780 |        40,912 |       315,315 |        36,737 |       103,950 |        10,905 |
+  |              6 |       109,120 |        15,232 |       323,840 |        41,330 |       320,320 |        37,121 |       105,600 |        11,022 |
+  |              7 |       109,120 |        13,376 |       323,840 |        35,852 |       320,320 |        31,732 |       105,600 |         9,255 |
+  |              8 |       110,825 |        11,671 |       327,195 |        32,497 |       321,970 |        30,082 |       105,600 |         9,255 |
+  |              9 |       107,415 |        15,081 |       318,780 |        40,912 |       315,315 |        36,737 |       103,950 |        10,905 |
+  |             10 |       109,120 |        15,232 |       323,840 |        41,330 |       320,320 |        37,121 |       105,600 |        11,022 |
+  |             11 |       109,120 |        13,376 |       323,840 |        35,852 |       320,320 |        31,732 |       105,600 |         9,255 |
+  |             12 |       110,825 |         9,559 |       327,195 |        26,259 |       321,970 |        23,941 |       105,600 |         7,240 |
+  |             13 |       107,415 |        12,969 |       318,780 |        34,674 |       315,315 |        30,596 |       103,950 |         8,890 |
+  |             14 |       109,120 |        13,088 |       323,840 |        34,997 |       320,320 |        30,886 |       105,600 |         8,976 |
+  |             15 |       109,120 |        11,264 |       323,840 |        29,614 |       320,320 |        25,591 |       105,600 |         7,240 |
+  |             16 |       109,200 |        14,946 |       323,970 |        40,647 |       320,370 |        36,582 |       105,600 |        10,880 |
+  |             17 |       105,840 |        18,306 |       315,630 |        48,987 |       313,740 |        43,212 |       103,950 |        12,530 |
+  |             18 |       107,520 |        18,507 |       320,640 |        49,530 |       318,720 |        43,696 |       105,600 |        12,672 |
+  |             19 |       107,520 |        16,626 |       320,640 |        43,977 |       318,720 |        38,232 |       105,600 |        10,880 |
+  |             20 |       107,250 |        19,074 |       320,100 |        50,952 |       318,450 |        44,839 |       105,600 |        12,960 |
+  |             21 |       103,950 |        22,374 |       311,850 |        59,202 |       311,850 |        51,439 |       103,950 |        14,610 |
+  |             22 |       105,600 |        22,638 |       316,800 |        59,903 |       316,800 |        52,050 |       105,600 |        14,784 |
+  |             23 |       105,600 |        20,724 |       316,800 |        54,252 |       316,800 |        46,489 |       105,600 |        12,960 |
+  |             24 |       107,250 |        19,074 |       320,100 |        50,952 |       318,450 |        44,839 |       105,600 |        12,960 |
+  |             25 |       103,950 |        22,374 |       311,850 |        59,202 |       311,850 |        51,439 |       103,950 |        14,610 |
+  |             26 |       105,600 |        22,638 |       316,800 |        59,903 |       316,800 |        52,050 |       105,600 |        14,784 |
+  |             27 |       105,600 |        20,724 |       316,800 |        54,252 |       316,800 |        46,489 |       105,600 |        12,960 |
+  |             28 |       107,250 |        16,896 |       320,100 |        44,517 |       318,450 |        38,502 |       105,600 |        10,880 |
+  |             29 |       103,950 |        20,196 |       311,850 |        52,767 |       311,850 |        45,102 |       103,950 |        12,530 |
+  |             30 |       105,600 |        20,427 |       316,800 |        53,370 |       316,800 |        45,616 |       105,600 |        12,672 |
+  |             31 |       105,600 |        18,546 |       316,800 |        47,817 |       316,800 |        40,152 |       105,600 |        10,880 |
+  |             32 |       109,200 |        14,946 |       323,970 |        40,647 |       320,370 |        36,582 |       105,600 |        10,880 |
+  |             33 |       105,840 |        18,306 |       315,630 |        48,987 |       313,740 |        43,212 |       103,950 |        12,530 |
+  |             34 |       107,520 |        18,507 |       320,640 |        49,530 |       318,720 |        43,696 |       105,600 |        12,672 |
+  |             35 |       107,520 |        16,626 |       320,640 |        43,977 |       318,720 |        38,232 |       105,600 |        10,880 |
+  |             36 |       107,250 |        19,074 |       320,100 |        50,952 |       318,450 |        44,839 |       105,600 |        12,960 |
+  |             37 |       103,950 |        22,374 |       311,850 |        59,202 |       311,850 |        51,439 |       103,950 |        14,610 |
+  |             38 |       105,600 |        22,638 |       316,800 |        59,903 |       316,800 |        52,050 |       105,600 |        14,784 |
+  |             39 |       105,600 |        20,724 |       316,800 |        54,252 |       316,800 |        46,489 |       105,600 |        12,960 |
+  |             40 |       107,250 |        19,074 |       320,100 |        50,952 |       318,450 |        44,839 |       105,600 |        12,960 |
+  |             41 |       103,950 |        22,374 |       311,850 |        59,202 |       311,850 |        51,439 |       103,950 |        14,610 |
+  |             42 |       105,600 |        22,638 |       316,800 |        59,903 |       316,800 |        52,050 |       105,600 |        14,784 |
+  |             43 |       105,600 |        20,724 |       316,800 |        54,252 |       316,800 |        46,489 |       105,600 |        12,960 |
+  |             44 |       107,250 |        16,896 |       320,100 |        44,517 |       318,450 |        38,502 |       105,600 |        10,880 |
+  |             45 |       103,950 |        20,196 |       311,850 |        52,767 |       311,850 |        45,102 |       103,950 |        12,530 |
+  |             46 |       105,600 |        20,427 |       316,800 |        53,370 |       316,800 |        45,616 |       105,600 |        12,672 |
+  |             47 |       105,600 |        18,546 |       316,800 |        47,817 |       316,800 |        40,152 |       105,600 |        10,880 |
+  |             48 |       109,200 |        11,184 |       323,970 |        29,484 |       320,370 |        25,541 |       105,600 |         7,240 |
+  |             49 |       105,840 |        14,544 |       315,630 |        37,824 |       313,740 |        32,171 |       103,950 |         8,890 |
+  |             50 |       107,520 |        14,688 |       320,640 |        38,197 |       318,720 |        32,486 |       105,600 |         8,976 |
+  |------------------------------------------------------------------------------------------------------------------------------------------------|
+  |             51 |       107,520 |        12,864 |       320,640 |        32,814 |       318,720 |        27,191 |       105,600 |         7,240 |
+  |             52 |       107,250 |        15,246 |       320,100 |        39,592 |       318,450 |        33,602 |       105,600 |         9,255 |
+  |             53 |       103,950 |        18,546 |       311,850 |        47,842 |       311,850 |        40,202 |       103,950 |        10,905 |
+  |             54 |       105,600 |        18,752 |       316,800 |        48,370 |       316,800 |        40,641 |       105,600 |        11,022 |
+  |             55 |       105,600 |        16,896 |       316,800 |        42,892 |       316,800 |        35,252 |       105,600 |         9,255 |
+  |             56 |       107,250 |        15,246 |       320,100 |        39,592 |       318,450 |        33,602 |       105,600 |         9,255 |
+  |             57 |       103,950 |        18,546 |       311,850 |        47,842 |       311,850 |        40,202 |       103,950 |        10,905 |
+  |             58 |       105,600 |        18,752 |       316,800 |        48,370 |       316,800 |        40,641 |       105,600 |        11,022 |
+  |             59 |       105,600 |        16,896 |       316,800 |        42,892 |       316,800 |        35,252 |       105,600 |         9,255 |
+  |             60 |       107,250 |        13,134 |       320,100 |        33,354 |       318,450 |        27,461 |       105,600 |         7,240 |
+  |             61 |       103,950 |        16,434 |       311,850 |        41,604 |       311,850 |        34,061 |       103,950 |         8,890 |
+  |             62 |       105,600 |        16,608 |       316,800 |        42,037 |       316,800 |        34,406 |       105,600 |         8,976 |
+  |             63 |       105,600 |        14,784 |       316,800 |        36,654 |       316,800 |        29,111 |       105,600 |         7,240 |
+  MeshBody: mesh1 MeshLevel: multiPhaseTPFA
+
+  |------------------------------------------------------------------------------------------------------------------------------------------------|
+  |                |             Nodes             |             Edges             |             Faces             |             Elems             |
+  |------------------------------------------------------------------------------------------------------------------------------------------------|
+  |min(local/total)|             0.82              |             0.84              |             0.86              |             0.88              |
+  |max(local/total)|             0.94              |             0.94              |             0.94              |             0.94              |
+  |------------------------------------------------------------------------------------------------------------------------------------------------|
+  |      Rank      |     local     |     ghost     |     local     |     ghost     |     local     |     ghost     |     local     |     ghost     |
+  |----------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|
+  |            min |       103,950 |         7,544 |       311,850 |        22,325 |       311,850 |        22,021 |       103,950 |         7,240 |
+  |            max |       112,840 |        22,638 |       331,129 |        59,903 |       323,890 |        52,050 |       105,600 |        14,784 |
+  |------------------------------------------------------------------------------------------------------------------------------------------------|
+  |              0 |       112,840 |         7,544 |       331,129 |        22,325 |       323,890 |        22,021 |       105,600 |         7,240 |
+  |              1 |       109,368 |        11,016 |       322,623 |        30,831 |       317,205 |        28,706 |       103,950 |         8,890 |
+  |             32 |       109,200 |        14,946 |       323,970 |        40,647 |       320,370 |        36,582 |       105,600 |        10,880 |
+  |              2 |       111,104 |        11,104 |       327,744 |        31,093 |       322,240 |        28,966 |       105,600 |         8,976 |
+  |              3 |       111,104 |         9,280 |       327,744 |        25,710 |       322,240 |        23,671 |       105,600 |         7,240 |
+  |              4 |       110,825 |        11,671 |       327,195 |        32,497 |       321,970 |        30,082 |       105,600 |         9,255 |
+  |              5 |       107,415 |        15,081 |       318,780 |        40,912 |       315,315 |        36,737 |       103,950 |        10,905 |
+  |              6 |       109,120 |        15,232 |       323,840 |        41,330 |       320,320 |        37,121 |       105,600 |        11,022 |
+  |              7 |       109,120 |        13,376 |       323,840 |        35,852 |       320,320 |        31,732 |       105,600 |         9,255 |
+  |              8 |       110,825 |        11,671 |       327,195 |        32,497 |       321,970 |        30,082 |       105,600 |         9,255 |
+  |              9 |       107,415 |        15,081 |       318,780 |        40,912 |       315,315 |        36,737 |       103,950 |        10,905 |
+  |             10 |       109,120 |        15,232 |       323,840 |        41,330 |       320,320 |        37,121 |       105,600 |        11,022 |
+  |             33 |       105,840 |        18,306 |       315,630 |        48,987 |       313,740 |        43,212 |       103,950 |        12,530 |
+  |             34 |       107,520 |        18,507 |       320,640 |        49,530 |       318,720 |        43,696 |       105,600 |        12,672 |
+  |             35 |       107,520 |        16,626 |       320,640 |        43,977 |       318,720 |        38,232 |       105,600 |        10,880 |
+  |             11 |       109,120 |        13,376 |       323,840 |        35,852 |       320,320 |        31,732 |       105,600 |         9,255 |
+  |             36 |       107,250 |        19,074 |       320,100 |        50,952 |       318,450 |        44,839 |       105,600 |        12,960 |
+  |             37 |       103,950 |        22,374 |       311,850 |        59,202 |       311,850 |        51,439 |       103,950 |        14,610 |
+  |             38 |       105,600 |        22,638 |       316,800 |        59,903 |       316,800 |        52,050 |       105,600 |        14,784 |
+  |             39 |       105,600 |        20,724 |       316,800 |        54,252 |       316,800 |        46,489 |       105,600 |        12,960 |
+  |             40 |       107,250 |        19,074 |       320,100 |        50,952 |       318,450 |        44,839 |       105,600 |        12,960 |
+  |             41 |       103,950 |        22,374 |       311,850 |        59,202 |       311,850 |        51,439 |       103,950 |        14,610 |
+  |             12 |       110,825 |         9,559 |       327,195 |        26,259 |       321,970 |        23,941 |       105,600 |         7,240 |
+  |             42 |       105,600 |        22,638 |       316,800 |        59,903 |       316,800 |        52,050 |       105,600 |        14,784 |
+  |             13 |       107,415 |        12,969 |       318,780 |        34,674 |       315,315 |        30,596 |       103,950 |         8,890 |
+  |             14 |       109,120 |        13,088 |       323,840 |        34,997 |       320,320 |        30,886 |       105,600 |         8,976 |
+  |             15 |       109,120 |        11,264 |       323,840 |        29,614 |       320,320 |        25,591 |       105,600 |         7,240 |
+  |             16 |       109,200 |        14,946 |       323,970 |        40,647 |       320,370 |        36,582 |       105,600 |        10,880 |
+  |             17 |       105,840 |        18,306 |       315,630 |        48,987 |       313,740 |        43,212 |       103,950 |        12,530 |
+  |             18 |       107,520 |        18,507 |       320,640 |        49,530 |       318,720 |        43,696 |       105,600 |        12,672 |
+  |             19 |       107,520 |        16,626 |       320,640 |        43,977 |       318,720 |        38,232 |       105,600 |        10,880 |
+  |             43 |       105,600 |        20,724 |       316,800 |        54,252 |       316,800 |        46,489 |       105,600 |        12,960 |
+  |             44 |       107,250 |        16,896 |       320,100 |        44,517 |       318,450 |        38,502 |       105,600 |        10,880 |
+  |             45 |       103,950 |        20,196 |       311,850 |        52,767 |       311,850 |        45,102 |       103,950 |        12,530 |
+  |             20 |       107,250 |        19,074 |       320,100 |        50,952 |       318,450 |        44,839 |       105,600 |        12,960 |
+  |             46 |       105,600 |        20,427 |       316,800 |        53,370 |       316,800 |        45,616 |       105,600 |        12,672 |
+  |             47 |       105,600 |        18,546 |       316,800 |        47,817 |       316,800 |        40,152 |       105,600 |        10,880 |
+  |             48 |       109,200 |        11,184 |       323,970 |        29,484 |       320,370 |        25,541 |       105,600 |         7,240 |
+  |             49 |       105,840 |        14,544 |       315,630 |        37,824 |       313,740 |        32,171 |       103,950 |         8,890 |
+  |             50 |       107,520 |        14,688 |       320,640 |        38,197 |       318,720 |        32,486 |       105,600 |         8,976 |
+  |             51 |       107,520 |        12,864 |       320,640 |        32,814 |       318,720 |        27,191 |       105,600 |         7,240 |
+  |             52 |       107,250 |        15,246 |       320,100 |        39,592 |       318,450 |        33,602 |       105,600 |         9,255 |
+  |             21 |       103,950 |        22,374 |       311,850 |        59,202 |       311,850 |        51,439 |       103,950 |        14,610 |
+  |             53 |       103,950 |        18,546 |       311,850 |        47,842 |       311,850 |        40,202 |       103,950 |        10,905 |
+  |             54 |       105,600 |        18,752 |       316,800 |        48,370 |       316,800 |        40,641 |       105,600 |        11,022 |
+  |             55 |       105,600 |        16,896 |       316,800 |        42,892 |       316,800 |        35,252 |       105,600 |         9,255 |
+  |             22 |       105,600 |        22,638 |       316,800 |        59,903 |       316,800 |        52,050 |       105,600 |        14,784 |
+  |             23 |       105,600 |        20,724 |       316,800 |        54,252 |       316,800 |        46,489 |       105,600 |        12,960 |
+  |             24 |       107,250 |        19,074 |       320,100 |        50,952 |       318,450 |        44,839 |       105,600 |        12,960 |
+  |             25 |       103,950 |        22,374 |       311,850 |        59,202 |       311,850 |        51,439 |       103,950 |        14,610 |
+  |             26 |       105,600 |        22,638 |       316,800 |        59,903 |       316,800 |        52,050 |       105,600 |        14,784 |
+  |             27 |       105,600 |        20,724 |       316,800 |        54,252 |       316,800 |        46,489 |       105,600 |        12,960 |
+  |             28 |       107,250 |        16,896 |       320,100 |        44,517 |       318,450 |        38,502 |       105,600 |        10,880 |
+  |             29 |       103,950 |        20,196 |       311,850 |        52,767 |       311,850 |        45,102 |       103,950 |        12,530 |
+  |             56 |       107,250 |        15,246 |       320,100 |        39,592 |       318,450 |        33,602 |       105,600 |         9,255 |
+  |             30 |       105,600 |        20,427 |       316,800 |        53,370 |       316,800 |        45,616 |       105,600 |        12,672 |
+  |             57 |       103,950 |        18,546 |       311,850 |        47,842 |       311,850 |        40,202 |       103,950 |        10,905 |
+  |             58 |       105,600 |        18,752 |       316,800 |        48,370 |       316,800 |        40,641 |       105,600 |        11,022 |
+  |             59 |       105,600 |        16,896 |       316,800 |        42,892 |       316,800 |        35,252 |       105,600 |         9,255 |
+  |             60 |       107,250 |        13,134 |       320,100 |        33,354 |       318,450 |        27,461 |       105,600 |         7,240 |
+  |             61 |       103,950 |        16,434 |       311,850 |        41,604 |       311,850 |        34,061 |       103,950 |         8,890 |
+  |             62 |       105,600 |        16,608 |       316,800 |        42,037 |       316,800 |        34,406 |       105,600 |         8,976 |
+  |             31 |       105,600 |        18,546 |       316,800 |        47,817 |       316,800 |        40,152 |       105,600 |        10,880 |
+  |             63 |       105,600 |        14,784 |       316,800 |        36,654 |       316,800 |        29,111 |       105,600 |         7,240 |
+  |------------------------------------------------------------------------------------------------------------------------------------------------|
+regionQuadrature: meshBodyName, meshLevelName, regionName, subRegionName = mesh1, Level0, Burden, overburdenBlock
+mesh1/Level0/Burden/overburdenBlock/fluid allocated 8 quadrature points
+mesh1/Level0/Burden/overburdenBlock/porousRockBurdens allocated 8 quadrature points
+mesh1/Level0/Burden/overburdenBlock/relperm allocated 8 quadrature points
+regionQuadrature: meshBodyName, meshLevelName, regionName, subRegionName = mesh1, Level0, Burden, underburdenBlock
+mesh1/Level0/Burden/underburdenBlock/fluid allocated 8 quadrature points
+mesh1/Level0/Burden/underburdenBlock/porousRockBurdens allocated 8 quadrature points
+mesh1/Level0/Burden/underburdenBlock/relperm allocated 8 quadrature points
+regionQuadrature: meshBodyName, meshLevelName, regionName, subRegionName = mesh1, Level0, Reservoir, reservoirBlock
+mesh1/Level0/Reservoir/reservoirBlock/fluid allocated 8 quadrature points
+mesh1/Level0/Reservoir/reservoirBlock/porousRockReservoir allocated 8 quadrature points
+mesh1/Level0/Reservoir/reservoirBlock/relperm allocated 8 quadrature points
+mesh1: importing field data from mesh dataset
+   TableFunction: equil_underburdenBlock_water_table
+   TableFunction: equil_overburdenBlock_water_table
+   TableFunction: equil_reservoirBlock_water_table
+
+------------------------- TIMESTEP START -------------------------
+    - Time:       -(3168y, 319d, 04h01m04s) out of 1d, 00h00m00s (0% completed)
+                  (-100000000000 s / 86400 s)
+    - Delta Time: 3168y, 319d, 04h01m04s (100000000000 s)
+    - Cycle:      0
+--------------------------------------------------------------------
+
+Time: -1.00e+11 s, dt: 100000000000 s, Cycle: 0
+
+Task `equilStep`: at time -100000000000s, physics solver `PoromechanicsSolver` is set to perform stress initialization during the next time step(s)
+Task `equilStep`: at time -100000000000s, physics solver `mechanicsSolver` is resetting total displacement and velocity to zero
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  0
+        ( Rflow ) = ( 0.00e+00 )        ( Rsolid ) = ( 2.79e+02 )        ( R ) = ( 2.79e+02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 13 | Final Rel Res: 7.14266e-05 | Make Restrictor Time: 0.0950619 | Compute Auu Time: 0.845917 | SC Filter Time: 0.334277 | Setup Time: 12.3711 s | Solve Time: 10.1551 s
+        Last LinSolve(iter,res) = (  13, 7.14e-05 )
+        twoPhaseFlow: Max pressure change = 0.000 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.000 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  1
+        ( Rflow ) = ( 0.00e+00 )        ( Rsolid ) = ( 1.89e-02 )        ( R ) = ( 1.89e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 15 | Final Rel Res: 5.53632e-05 | Make Restrictor Time: 0.0929212 | Compute Auu Time: 0.77695 | SC Filter Time: 0.296995 | Setup Time: 11.3088 s | Solve Time: 11.2132 s
+        Last LinSolve(iter,res) = (  15, 5.54e-05 )
+        twoPhaseFlow: Max pressure change = 0.000 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.000 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  2
+        ( Rflow ) = ( 0.00e+00 )        ( Rsolid ) = ( 1.04e-06 )        ( R ) = ( 1.04e-06 )
+twoPhaseFlow: max relative pressure change during time step = 0.000 %
+twoPhaseFlow: max absolute phase volume fraction change during time step = 0.000
+PoromechanicsSolver: time-step required will be increased based on number of iterations.
+Task `equilStep`: at time 0s, physics solver `PoromechanicsSolver` has completed stress initialization
+Task `equilStep`: at time -100000000000s, physics solver `mechanicsSolver` is resetting total displacement and velocity to zero
+
+------------------------- TIMESTEP START -------------------------
+    - Time:       00h00m00s out of 1d, 00h00m00s (100% completed)
+                  (0 s / 86400 s)
+    - Delta Time: 00h16m40s (1000 s)
+    - Cycle:      1
+--------------------------------------------------------------------
+
+Time: 0.00e+00 s, dt: 1000 s, Cycle: 1
+
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  0
+        ( Rflow ) = ( 2.10e-01 )        ( Rsolid ) = ( 1.04e-06 )        ( R ) = ( 2.10e-01 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 44 | Final Rel Res: 8.9677e-05 | Make Restrictor Time: 0.104633 | Compute Auu Time: 0.768259 | SC Filter Time: 0.306765 | Setup Time: 11.5959 s | Solve Time: 33.0551 s
+        Last LinSolve(iter,res) = (  44, 8.97e-05 )
+        twoPhaseFlow: Max pressure change = 23765129.475 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 219.516 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 0.21572684762439173
+        PoromechanicsSolver: Max phase volume fraction change = 0.0369
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  1
+        ( Rflow ) = ( 1.65e-01 )        ( Rsolid ) = ( 8.19e-07 )        ( R ) = ( 1.65e-01 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 95 | Final Rel Res: 7.97982e-05 | Make Restrictor Time: 0.0867833 | Compute Auu Time: 0.796173 | SC Filter Time: 0.296175 | Setup Time: 12.2452 s | Solve Time: 73.21 s
+        Last LinSolve(iter,res) = (  95, 7.98e-05 )
+        twoPhaseFlow: Max pressure change = 34401092.498 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 223.841 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 0.22354419987939797
+        PoromechanicsSolver: Max phase volume fraction change = 0.0498
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  2
+        ( Rflow ) = ( 1.29e-01 )        ( Rsolid ) = ( 6.36e-07 )        ( R ) = ( 1.29e-01 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 47 | Final Rel Res: 6.75862e-05 | Make Restrictor Time: 0.105664 | Compute Auu Time: 0.773588 | SC Filter Time: 0.306435 | Setup Time: 12.6203 s | Solve Time: 35.4215 s
+        Last LinSolve(iter,res) = (  47, 6.76e-05 )
+        twoPhaseFlow: Max pressure change = 21952489.695 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 173.815 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 0.5254641822619458
+        PoromechanicsSolver: Max phase volume fraction change = 0.0888
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  3
+        ( Rflow ) = ( 5.94e-02 )        ( Rsolid ) = ( 2.42e-07 )        ( R ) = ( 5.94e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 98 | Final Rel Res: 8.74372e-05 | Make Restrictor Time: 0.0868178 | Compute Auu Time: 0.803517 | SC Filter Time: 0.29713 | Setup Time: 12.1385 s | Solve Time: 75.9266 s
+        Last LinSolve(iter,res) = (  98, 8.74e-05 )
+        twoPhaseFlow: Max pressure change = 8627783.288 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 94.976 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0924
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  4
+        ( Rflow ) = ( 3.46e-02 )        ( Rsolid ) = ( 9.01e-09 )        ( R ) = ( 3.46e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 47 | Final Rel Res: 9.73175e-05 | Make Restrictor Time: 0.0868568 | Compute Auu Time: 0.775034 | SC Filter Time: 0.298825 | Setup Time: 11.6157 s | Solve Time: 35.3725 s
+        Last LinSolve(iter,res) = (  47, 9.73e-05 )
+        twoPhaseFlow: Max pressure change = 193948.490 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 36.402 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0355
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  5
+        ( Rflow ) = ( 2.08e-03 )        ( Rsolid ) = ( 1.54e-10 )        ( R ) = ( 2.08e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 42 | Final Rel Res: 7.05476e-05 | Make Restrictor Time: 0.0869486 | Compute Auu Time: 0.783101 | SC Filter Time: 0.310402 | Setup Time: 12.2749 s | Solve Time: 31.5314 s
+        Last LinSolve(iter,res) = (  42, 7.05e-05 )
+        twoPhaseFlow: Max pressure change = 12799.616 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 1.864 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0018
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  6
+        ( Rflow ) = ( 4.74e-06 )        ( Rsolid ) = ( 8.29e-12 )        ( R ) = ( 4.74e-06 )
+twoPhaseFlow: max relative pressure change during time step = 319.738 %
+twoPhaseFlow: max absolute phase volume fraction change during time step = 0.161
+PoromechanicsSolver: time-step required will be decreased based on state change.
+
+------------------------- TIMESTEP START -------------------------
+    - Time:       00h16m40s out of 1d, 00h00m00s (100% completed)
+                  (1000 s / 86400 s)
+    - Delta Time: 00h01m30s (90.98143859025329 s)
+    - Cycle:      2
+--------------------------------------------------------------------
+
+Time: 1.00e+03 s, dt: 90.98143859025329 s, Cycle: 2
+
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  0
+        ( Rflow ) = ( 1.49e-02 )        ( Rsolid ) = ( 8.29e-12 )        ( R ) = ( 1.49e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 49 | Final Rel Res: 9.69543e-05 | Make Restrictor Time: 0.0869391 | Compute Auu Time: 0.794363 | SC Filter Time: 0.296349 | Setup Time: 11.6105 s | Solve Time: 36.8698 s
+        Last LinSolve(iter,res) = (  49, 9.70e-05 )
+        twoPhaseFlow: Max pressure change = 2064185.596 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 14.476 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0145
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  1
+        ( Rflow ) = ( 4.42e-04 )        ( Rsolid ) = ( 4.77e-10 )        ( R ) = ( 4.42e-04 )
+twoPhaseFlow: max relative pressure change during time step = 4.902 %
+twoPhaseFlow: max absolute phase volume fraction change during time step = 0.015
+PoromechanicsSolver: time-step required will be increased based on number of iterations.
+
+------------------------- TIMESTEP START -------------------------
+    - Time:       00h18m10s out of 1d, 00h00m00s (100% completed)
+                  (1090.9814385902532 s / 86400 s)
+    - Delta Time: 00h03m01s (181.96287718050658 s)
+    - Cycle:      3
+--------------------------------------------------------------------
+
+Time: 1.09e+03 s, dt: 181.96287718050658 s, Cycle: 3
+
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  0
+        ( Rflow ) = ( 2.83e-02 )        ( Rsolid ) = ( 4.77e-10 )        ( R ) = ( 2.83e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 47 | Final Rel Res: 7.18707e-05 | Make Restrictor Time: 0.0868319 | Compute Auu Time: 0.807255 | SC Filter Time: 0.296595 | Setup Time: 11.6179 s | Solve Time: 35.4072 s
+        Last LinSolve(iter,res) = (  47, 7.19e-05 )
+        twoPhaseFlow: Max pressure change = 3096504.381 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 27.237 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0271
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  1
+        ( Rflow ) = ( 9.09e-04 )        ( Rsolid ) = ( 4.92e-10 )        ( R ) = ( 9.09e-04 )
+twoPhaseFlow: max relative pressure change during time step = 9.568 %
+twoPhaseFlow: max absolute phase volume fraction change during time step = 0.027
+PoromechanicsSolver: time-step required will be increased based on state change.
+
+------------------------- TIMESTEP START -------------------------
+    - Time:       00h21m12s out of 1d, 00h00m00s (100% completed)
+                  (1272.9443157707599 s / 86400 s)
+    - Delta Time: 00h04m38s (278.9736063481866 s)
+    - Cycle:      4
+--------------------------------------------------------------------
+
+Time: 1.27e+03 s, dt: 278.9736063481866 s, Cycle: 4
+
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  0
+        ( Rflow ) = ( 3.94e-02 )        ( Rsolid ) = ( 4.92e-10 )        ( R ) = ( 3.94e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 46 | Final Rel Res: 9.82578e-05 | Make Restrictor Time: 0.0869225 | Compute Auu Time: 0.784802 | SC Filter Time: 0.296362 | Setup Time: 11.6896 s | Solve Time: 34.6098 s
+        Last LinSolve(iter,res) = (  46, 9.83e-05 )
+        twoPhaseFlow: Max pressure change = 2897012.586 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 36.922 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0385
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  1
+        ( Rflow ) = ( 2.05e-03 )        ( Rsolid ) = ( 6.05e-10 )        ( R ) = ( 2.05e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 43 | Final Rel Res: 7.59273e-05 | Make Restrictor Time: 0.086854 | Compute Auu Time: 0.779632 | SC Filter Time: 0.296825 | Setup Time: 12.0948 s | Solve Time: 32.3314 s
+        Last LinSolve(iter,res) = (  43, 7.59e-05 )
+        twoPhaseFlow: Max pressure change = 505263.470 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 1.980 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0021
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  2
+        ( Rflow ) = ( 1.45e-05 )        ( Rsolid ) = ( 2.12e-11 )        ( R ) = ( 1.45e-05 )
+twoPhaseFlow: max relative pressure change during time step = 14.337 %
+twoPhaseFlow: max absolute phase volume fraction change during time step = 0.037
+PoromechanicsSolver: time-step required will be increased based on state change.
+
+------------------------- TIMESTEP START -------------------------
+    - Time:       00h25m51s out of 1d, 00h00m00s (100% completed)
+                  (1551.9179221189465 s / 86400 s)
+    - Delta Time: 00h05m43s (343.8823183355727 s)
+    - Cycle:      5
+--------------------------------------------------------------------
+
+Time: 1.55e+03 s, dt: 343.8823183355727 s, Cycle: 5
+
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  0
+        ( Rflow ) = ( 4.10e-02 )        ( Rsolid ) = ( 2.12e-11 )        ( R ) = ( 4.10e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 47 | Final Rel Res: 9.66413e-05 | Make Restrictor Time: 0.087065 | Compute Auu Time: 0.793176 | SC Filter Time: 0.296375 | Setup Time: 11.687 s | Solve Time: 35.3995 s
+        Last LinSolve(iter,res) = (  47, 9.66e-05 )
+        twoPhaseFlow: Max pressure change = 2671620.290 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 40.877 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0396
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  1
+        ( Rflow ) = ( 1.88e-03 )        ( Rsolid ) = ( 9.93e-10 )        ( R ) = ( 1.88e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 45 | Final Rel Res: 8.55733e-05 | Make Restrictor Time: 0.0868462 | Compute Auu Time: 0.801944 | SC Filter Time: 0.297286 | Setup Time: 11.7032 s | Solve Time: 33.7796 s
+        Last LinSolve(iter,res) = (  45, 8.56e-05 )
+        twoPhaseFlow: Max pressure change = 326120.211 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 2.733 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0027
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  2
+        ( Rflow ) = ( 1.55e-05 )        ( Rsolid ) = ( 2.37e-11 )        ( R ) = ( 1.55e-05 )
+twoPhaseFlow: max relative pressure change during time step = 16.092 %
+twoPhaseFlow: max absolute phase volume fraction change during time step = 0.039
+PoromechanicsSolver: time-step required will be increased based on state change.
+
+------------------------- TIMESTEP START -------------------------
+    - Time:       00h31m35s out of 1d, 00h00m00s (100% completed)
+                  (1895.800240454519 s / 86400 s)
+    - Delta Time: 00h06m35s (395.3816445659151 s)
+    - Cycle:      6
+--------------------------------------------------------------------
+
+Time: 1.90e+03 s, dt: 395.3816445659151 s, Cycle: 6
+
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  0
+        ( Rflow ) = ( 3.91e-02 )        ( Rsolid ) = ( 2.37e-11 )        ( R ) = ( 3.91e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 48 | Final Rel Res: 6.55716e-05 | Make Restrictor Time: 0.0868785 | Compute Auu Time: 0.790621 | SC Filter Time: 0.296502 | Setup Time: 11.6894 s | Solve Time: 36.1623 s
+        Last LinSolve(iter,res) = (  48, 6.56e-05 )
+        twoPhaseFlow: Max pressure change = 4539569.340 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 38.445 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0373
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  1
+        ( Rflow ) = ( 9.49e-03 )        ( Rsolid ) = ( 2.36e-09 )        ( R ) = ( 9.49e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 109 | Final Rel Res: 9.99176e-05 | Make Restrictor Time: 0.102229 | Compute Auu Time: 0.792359 | SC Filter Time: 0.296966 | Setup Time: 11.6355 s | Solve Time: 84.5254 s
+        Last LinSolve(iter,res) = ( 109, 9.99e-05 )
+        twoPhaseFlow: Max pressure change = 1680126.772 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 6.830 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0070
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  2
+        ( Rflow ) = ( 1.70e-04 )        ( Rsolid ) = ( 6.37e-10 )        ( R ) = ( 1.70e-04 )
+twoPhaseFlow: max relative pressure change during time step = 20.408 %
+twoPhaseFlow: max absolute phase volume fraction change during time step = 0.038
+PoromechanicsSolver: time-step required will be decreased based on state change.
+
+------------------------- TIMESTEP START -------------------------
+    - Time:       00h38m11s out of 1d, 00h00m00s (100% completed)
+                  (2291.181885020434 s / 86400 s)
+    - Delta Time: 00h06m30s (390.0811415846695 s)
+    - Cycle:      7
+--------------------------------------------------------------------
+
+Time: 2.29e+03 s, dt: 390.0811415846695 s, Cycle: 7
+
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  0
+        ( Rflow ) = ( 3.24e-02 )        ( Rsolid ) = ( 6.37e-10 )        ( R ) = ( 3.24e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 47 | Final Rel Res: 9.55078e-05 | Make Restrictor Time: 0.102927 | Compute Auu Time: 0.792888 | SC Filter Time: 0.302014 | Setup Time: 12.6648 s | Solve Time: 35.401 s
+        Last LinSolve(iter,res) = (  47, 9.55e-05 )
+        twoPhaseFlow: Max pressure change = 3388177.614 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 32.691 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0444
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  1
+        ( Rflow ) = ( 3.60e-02 )        ( Rsolid ) = ( 2.71e-09 )        ( R ) = ( 3.60e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 124 | Final Rel Res: 9.80097e-05 | Make Restrictor Time: 0.0867989 | Compute Auu Time: 0.801355 | SC Filter Time: 0.297208 | Setup Time: 12.4767 s | Solve Time: 95.5375 s
+        Last LinSolve(iter,res) = ( 124, 9.80e-05 )
+        twoPhaseFlow: Max pressure change = 287732.964 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 25.120 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0245
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  2
+        ( Rflow ) = ( 6.68e-04 )        ( Rsolid ) = ( 3.12e-10 )        ( R ) = ( 6.68e-04 )
+twoPhaseFlow: max relative pressure change during time step = 14.399 %
+twoPhaseFlow: max absolute phase volume fraction change during time step = 0.033
+PoromechanicsSolver: time-step required will be increased based on state change.
+
+------------------------- TIMESTEP START -------------------------
+    - Time:       00h44m41s out of 1d, 00h00m00s (100% completed)
+                  (2681.2630266051037 s / 86400 s)
+    - Delta Time: 00h07m59s (479.62842439356143 s)
+    - Cycle:      8
+--------------------------------------------------------------------
+
+Time: 2.68e+03 s, dt: 479.62842439356143 s, Cycle: 8
+
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  0
+        ( Rflow ) = ( 3.45e-02 )        ( Rsolid ) = ( 3.12e-10 )        ( R ) = ( 3.45e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 47 | Final Rel Res: 9.34835e-05 | Make Restrictor Time: 0.086749 | Compute Auu Time: 0.799438 | SC Filter Time: 0.296939 | Setup Time: 12.2423 s | Solve Time: 35.3151 s
+        Last LinSolve(iter,res) = (  47, 9.35e-05 )
+        twoPhaseFlow: Max pressure change = 3325513.124 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 48.240 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0471
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  1
+        ( Rflow ) = ( 1.71e-02 )        ( Rsolid ) = ( 3.02e-09 )        ( R ) = ( 1.71e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 99 | Final Rel Res: 7.39866e-05 | Make Restrictor Time: 0.0868568 | Compute Auu Time: 0.802896 | SC Filter Time: 0.296766 | Setup Time: 11.7113 s | Solve Time: 76.607 s
+        Last LinSolve(iter,res) = (  99, 7.40e-05 )
+        twoPhaseFlow: Max pressure change = 218495.829 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 11.909 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0116
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  2
+        ( Rflow ) = ( 1.85e-04 )        ( Rsolid ) = ( 9.11e-11 )        ( R ) = ( 1.85e-04 )
+twoPhaseFlow: max relative pressure change during time step = 11.369 %
+twoPhaseFlow: max absolute phase volume fraction change during time step = 0.040
+PoromechanicsSolver: time-step required will be increased based on state change.
+
+------------------------- TIMESTEP START -------------------------
+    - Time:       00h52m40s out of 1d, 00h00m00s (100% completed)
+                  (3160.8914509986653 s / 86400 s)
+    - Delta Time: 00h11m13s (673.3435798457133 s)
+    - Cycle:      9
+--------------------------------------------------------------------
+
+Time: 3.16e+03 s, dt: 673.3435798457133 s, Cycle: 9
+
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  0
+        ( Rflow ) = ( 4.62e-02 )        ( Rsolid ) = ( 9.11e-11 )        ( R ) = ( 4.62e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 47 | Final Rel Res: 7.54046e-05 | Make Restrictor Time: 0.0869964 | Compute Auu Time: 0.802846 | SC Filter Time: 0.297278 | Setup Time: 11.6499 s | Solve Time: 35.4234 s
+        Last LinSolve(iter,res) = (  47, 7.54e-05 )
+        twoPhaseFlow: Max pressure change = 3418469.783 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 45.868 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0492
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  1
+        ( Rflow ) = ( 3.94e-02 )        ( Rsolid ) = ( 4.43e-09 )        ( R ) = ( 3.94e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 52 | Final Rel Res: 7.65693e-05 | Make Restrictor Time: 0.0869226 | Compute Auu Time: 0.791074 | SC Filter Time: 0.297066 | Setup Time: 11.6743 s | Solve Time: 39.0848 s
+        Last LinSolve(iter,res) = (  52, 7.66e-05 )
+        twoPhaseFlow: Max pressure change = 428072.415 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 26.038 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0254
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  2
+        ( Rflow ) = ( 9.62e-04 )        ( Rsolid ) = ( 4.80e-10 )        ( R ) = ( 9.62e-04 )
+twoPhaseFlow: max relative pressure change during time step = 12.797 %
+twoPhaseFlow: max absolute phase volume fraction change during time step = 0.045
+PoromechanicsSolver: time-step required will be increased based on state change.
+
+------------------------- TIMESTEP START -------------------------
+    - Time:       01h03m54s out of 1d, 00h00m00s (100% completed)
+                  (3834.2350308443783 s / 86400 s)
+    - Delta Time: 00h14m46s (886.0930454590703 s)
+    - Cycle:      10
+--------------------------------------------------------------------
+
+Time: 3.83e+03 s, dt: 886.0930454590703 s, Cycle: 10
+
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  0
+        ( Rflow ) = ( 4.88e-02 )        ( Rsolid ) = ( 4.80e-10 )        ( R ) = ( 4.88e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 49 | Final Rel Res: 9.01352e-05 | Make Restrictor Time: 0.087014 | Compute Auu Time: 0.790481 | SC Filter Time: 0.297422 | Setup Time: 11.7016 s | Solve Time: 36.9062 s
+        Last LinSolve(iter,res) = (  49, 9.01e-05 )
+        twoPhaseFlow: Max pressure change = 3184277.227 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 57.696 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0562
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  1
+        ( Rflow ) = ( 3.49e-02 )        ( Rsolid ) = ( 4.62e-09 )        ( R ) = ( 3.49e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 45 | Final Rel Res: 9.11389e-05 | Make Restrictor Time: 0.0869707 | Compute Auu Time: 0.78666 | SC Filter Time: 0.296872 | Setup Time: 11.6827 s | Solve Time: 33.6757 s
+        Last LinSolve(iter,res) = (  45, 9.11e-05 )
+        twoPhaseFlow: Max pressure change = 457211.525 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 26.152 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0255
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  2
+        ( Rflow ) = ( 1.01e-03 )        ( Rsolid ) = ( 1.09e-10 )        ( R ) = ( 1.01e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 44 | Final Rel Res: 8.62163e-05 | Make Restrictor Time: 0.0867999 | Compute Auu Time: 0.793446 | SC Filter Time: 0.296918 | Setup Time: 11.62 s | Solve Time: 33.0589 s
+        Last LinSolve(iter,res) = (  44, 8.62e-05 )
+        twoPhaseFlow: Max pressure change = 5090.019 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.982 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0010
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  3
+        ( Rflow ) = ( 1.11e-06 )        ( Rsolid ) = ( 4.13e-12 )        ( R ) = ( 1.11e-06 )
+twoPhaseFlow: max relative pressure change during time step = 12.366 %
+twoPhaseFlow: max absolute phase volume fraction change during time step = 0.049
+PoromechanicsSolver: time-step required will be increased based on state change.
+
+------------------------- TIMESTEP START -------------------------
+    - Time:       01h18m40s out of 1d, 00h00m00s (100% completed)
+                  (4720.328076303449 s / 86400 s)
+    - Delta Time: 00h19m48s (1188.5217013233453 s)
+    - Cycle:      11
+--------------------------------------------------------------------
+
+Time: 4.72e+03 s, dt: 1188.5217013233453 s, Cycle: 11
+
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  0
+        ( Rflow ) = ( 5.43e-02 )        ( Rsolid ) = ( 4.13e-12 )        ( R ) = ( 5.43e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 48 | Final Rel Res: 7.58583e-05 | Make Restrictor Time: 0.0871574 | Compute Auu Time: 0.789878 | SC Filter Time: 0.296473 | Setup Time: 11.72 s | Solve Time: 36.0288 s
+        Last LinSolve(iter,res) = (  48, 7.59e-05 )
+        twoPhaseFlow: Max pressure change = 2468439.275 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 54.757 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0735
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  1
+        ( Rflow ) = ( 5.96e-02 )        ( Rsolid ) = ( 3.30e-09 )        ( R ) = ( 5.96e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 49 | Final Rel Res: 8.89446e-05 | Make Restrictor Time: 0.0888788 | Compute Auu Time: 0.773738 | SC Filter Time: 0.301278 | Setup Time: 11.5961 s | Solve Time: 36.8502 s
+        Last LinSolve(iter,res) = (  49, 8.89e-05 )
+        twoPhaseFlow: Max pressure change = 254860.283 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 32.855 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0320
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  2
+        ( Rflow ) = ( 2.06e-03 )        ( Rsolid ) = ( 7.94e-11 )        ( R ) = ( 2.06e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 45 | Final Rel Res: 9.67852e-05 | Make Restrictor Time: 0.0868842 | Compute Auu Time: 0.785339 | SC Filter Time: 0.30093 | Setup Time: 11.7694 s | Solve Time: 33.8536 s
+        Last LinSolve(iter,res) = (  45, 9.68e-05 )
+        twoPhaseFlow: Max pressure change = 617.998 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 1.791 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0017
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  3
+        ( Rflow ) = ( 3.82e-06 )        ( Rsolid ) = ( 7.50e-12 )        ( R ) = ( 3.82e-06 )
+twoPhaseFlow: max relative pressure change during time step = 11.201 %
+twoPhaseFlow: max absolute phase volume fraction change during time step = 0.050
+PoromechanicsSolver: time-step required will be increased based on state change.
+
+------------------------- TIMESTEP START -------------------------
+    - Time:       01h38m28s out of 1d, 00h00m00s (100% completed)
+                  (5908.849777626794 s / 86400 s)
+    - Delta Time: 00h28m01s (1681.7580799679681 s)
+    - Cycle:      12
+--------------------------------------------------------------------
+
+Time: 5.91e+03 s, dt: 1681.7580799679681 s, Cycle: 12
+
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  0
+        ( Rflow ) = ( 6.02e-02 )        ( Rsolid ) = ( 7.50e-12 )        ( R ) = ( 6.02e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 50 | Final Rel Res: 8.67823e-05 | Make Restrictor Time: 0.0955464 | Compute Auu Time: 0.772552 | SC Filter Time: 0.296755 | Setup Time: 11.5944 s | Solve Time: 37.6733 s
+        Last LinSolve(iter,res) = (  50, 8.68e-05 )
+        twoPhaseFlow: Max pressure change = 2336150.646 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 95.750 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0934
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  1
+        ( Rflow ) = ( 7.08e-02 )        ( Rsolid ) = ( 2.93e-09 )        ( R ) = ( 7.08e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 46 | Final Rel Res: 9.66932e-05 | Make Restrictor Time: 0.0869185 | Compute Auu Time: 0.792625 | SC Filter Time: 0.297347 | Setup Time: 11.8034 s | Solve Time: 34.6586 s
+        Last LinSolve(iter,res) = (  46, 9.67e-05 )
+        twoPhaseFlow: Max pressure change = 1129225.960 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 48.010 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0468
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  2
+        ( Rflow ) = ( 4.15e-03 )        ( Rsolid ) = ( 1.17e-09 )        ( R ) = ( 4.15e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 38 | Final Rel Res: 7.26191e-05 | Make Restrictor Time: 0.0869049 | Compute Auu Time: 0.771217 | SC Filter Time: 0.297469 | Setup Time: 11.6465 s | Solve Time: 28.5112 s
+        Last LinSolve(iter,res) = (  38, 7.26e-05 )
+        twoPhaseFlow: Max pressure change = 15673.656 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 3.007 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0029
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  3
+        ( Rflow ) = ( 8.67e-06 )        ( Rsolid ) = ( 1.39e-11 )        ( R ) = ( 8.67e-06 )
+twoPhaseFlow: max relative pressure change during time step = 11.741 %
+twoPhaseFlow: max absolute phase volume fraction change during time step = 0.074
+PoromechanicsSolver: time-step required will be increased based on state change.
+
+------------------------- TIMESTEP START -------------------------
+    - Time:       02h06m30s out of 1d, 00h00m00s (100% completed)
+                  (7590.607857594762 s / 86400 s)
+    - Delta Time: 00h38m40s (2320.607415510875 s)
+    - Cycle:      13
+--------------------------------------------------------------------
+
+Time: 7.59e+03 s, dt: 2320.607415510875 s, Cycle: 13
+
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  0
+        ( Rflow ) = ( 8.68e-02 )        ( Rsolid ) = ( 1.39e-11 )        ( R ) = ( 8.68e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 47 | Final Rel Res: 9.6523e-05 | Make Restrictor Time: 0.0891316 | Compute Auu Time: 0.779425 | SC Filter Time: 0.296465 | Setup Time: 12.4418 s | Solve Time: 35.3716 s
+        Last LinSolve(iter,res) = (  47, 9.65e-05 )
+        twoPhaseFlow: Max pressure change = 3297269.022 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 120.514 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.1175
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  1
+        ( Rflow ) = ( 7.23e-02 )        ( Rsolid ) = ( 1.35e-08 )        ( R ) = ( 7.23e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 45 | Final Rel Res: 8.22148e-05 | Make Restrictor Time: 0.0868369 | Compute Auu Time: 0.78301 | SC Filter Time: 0.296664 | Setup Time: 12.6237 s | Solve Time: 33.7761 s
+        Last LinSolve(iter,res) = (  45, 8.22e-05 )
+        twoPhaseFlow: Max pressure change = 1483285.175 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 53.409 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0521
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  2
+        ( Rflow ) = ( 1.25e-02 )        ( Rsolid ) = ( 2.23e-09 )        ( R ) = ( 1.25e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 36 | Final Rel Res: 9.68097e-05 | Make Restrictor Time: 0.0884631 | Compute Auu Time: 0.778959 | SC Filter Time: 0.297087 | Setup Time: 12.1484 s | Solve Time: 26.9983 s
+        Last LinSolve(iter,res) = (  36, 9.68e-05 )
+        twoPhaseFlow: Max pressure change = 28729.990 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 10.108 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0099
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  3
+        ( Rflow ) = ( 1.29e-04 )        ( Rsolid ) = ( 6.63e-11 )        ( R ) = ( 1.29e-04 )
+twoPhaseFlow: max relative pressure change during time step = 17.001 %
+twoPhaseFlow: max absolute phase volume fraction change during time step = 0.085
+PoromechanicsSolver: time-step required will be increased based on state change.
+
+------------------------- TIMESTEP START -------------------------
+    - Time:       02h45m11s out of 1d, 00h00m00s (100% completed)
+                  (9911.215273105638 s / 86400 s)
+    - Delta Time: 00h42m58s (2578.385892199826 s)
+    - Cycle:      14
+--------------------------------------------------------------------
+
+Time: 9.91e+03 s, dt: 2578.385892199826 s, Cycle: 14
+
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  0
+        ( Rflow ) = ( 7.74e-02 )        ( Rsolid ) = ( 6.63e-11 )        ( R ) = ( 7.74e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 48 | Final Rel Res: 6.64294e-05 | Make Restrictor Time: 0.0869225 | Compute Auu Time: 0.779064 | SC Filter Time: 0.296725 | Setup Time: 12.7679 s | Solve Time: 36.1001 s
+        Last LinSolve(iter,res) = (  48, 6.64e-05 )
+        twoPhaseFlow: Max pressure change = 3145542.209 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 176.592 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.1722
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  1
+        ( Rflow ) = ( 1.16e-01 )        ( Rsolid ) = ( 1.09e-08 )        ( R ) = ( 1.16e-01 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 45 | Final Rel Res: 9.04442e-05 | Make Restrictor Time: 0.0870538 | Compute Auu Time: 0.789361 | SC Filter Time: 0.296811 | Setup Time: 11.6054 s | Solve Time: 33.8325 s
+        Last LinSolve(iter,res) = (  45, 9.04e-05 )
+        twoPhaseFlow: Max pressure change = 490415.035 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 64.221 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0626
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  2
+        ( Rflow ) = ( 2.67e-02 )        ( Rsolid ) = ( 6.65e-10 )        ( R ) = ( 2.67e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 37 | Final Rel Res: 9.4263e-05 | Make Restrictor Time: 0.0868348 | Compute Auu Time: 0.780111 | SC Filter Time: 0.298892 | Setup Time: 12.2864 s | Solve Time: 27.7332 s
+        Last LinSolve(iter,res) = (  37, 9.43e-05 )
+        twoPhaseFlow: Max pressure change = 9187.620 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 25.025 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0244
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  3
+        ( Rflow ) = ( 1.73e-03 )        ( Rsolid ) = ( 1.32e-10 )        ( R ) = ( 1.73e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 40 | Final Rel Res: 9.73669e-05 | Make Restrictor Time: 0.0867971 | Compute Auu Time: 0.806646 | SC Filter Time: 0.296271 | Setup Time: 11.7083 s | Solve Time: 30.093 s
+        Last LinSolve(iter,res) = (  40, 9.74e-05 )
+        twoPhaseFlow: Max pressure change = 507.091 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 2.039 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0020
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  4
+        ( Rflow ) = ( 7.15e-06 )        ( Rsolid ) = ( 6.90e-12 )        ( R ) = ( 7.15e-06 )
+twoPhaseFlow: max relative pressure change during time step = 11.128 %
+twoPhaseFlow: max absolute phase volume fraction change during time step = 0.092
+PoromechanicsSolver: time-step required will be increased based on state change.
+
+------------------------- TIMESTEP START -------------------------
+    - Time:       03h28m09s out of 1d, 00h00m00s (100% completed)
+                  (12489.601165305463 s / 86400 s)
+    - Delta Time: 01h01m01s (3661.028291956578 s)
+    - Cycle:      15
+--------------------------------------------------------------------
+
+Time: 1.25e+04 s, dt: 3661.028291956578 s, Cycle: 15
+
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  0
+        ( Rflow ) = ( 1.07e-01 )        ( Rsolid ) = ( 6.90e-12 )        ( R ) = ( 1.07e-01 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 46 | Final Rel Res: 7.12296e-05 | Make Restrictor Time: 0.0868683 | Compute Auu Time: 0.779757 | SC Filter Time: 0.297023 | Setup Time: 12.1566 s | Solve Time: 34.6523 s
+        Last LinSolve(iter,res) = (  46, 7.12e-05 )
+        twoPhaseFlow: Max pressure change = 2006689.622 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 160.719 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.1568
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  1
+        ( Rflow ) = ( 1.24e-01 )        ( Rsolid ) = ( 6.21e-09 )        ( R ) = ( 1.24e-01 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 52 | Final Rel Res: 9.10456e-05 | Make Restrictor Time: 0.0868703 | Compute Auu Time: 0.795427 | SC Filter Time: 0.296856 | Setup Time: 12.6398 s | Solve Time: 39.1338 s
+        Last LinSolve(iter,res) = (  52, 9.10e-05 )
+        twoPhaseFlow: Max pressure change = 822802.595 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 62.361 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0687
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  2
+        ( Rflow ) = ( 1.62e-02 )        ( Rsolid ) = ( 1.89e-09 )        ( R ) = ( 1.62e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 46 | Final Rel Res: 8.30115e-05 | Make Restrictor Time: 0.086828 | Compute Auu Time: 0.766375 | SC Filter Time: 0.297201 | Setup Time: 11.6346 s | Solve Time: 34.6 s
+        Last LinSolve(iter,res) = (  46, 8.30e-05 )
+        twoPhaseFlow: Max pressure change = 10094.934 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 15.309 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0149
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  3
+        ( Rflow ) = ( 3.13e-04 )        ( Rsolid ) = ( 1.21e-10 )        ( R ) = ( 3.13e-04 )
+twoPhaseFlow: max relative pressure change during time step = 10.154 %
+twoPhaseFlow: max absolute phase volume fraction change during time step = 0.113
+PoromechanicsSolver: time-step required will be increased based on state change.
+
+------------------------- TIMESTEP START -------------------------
+    - Time:       04h29m10s out of 1d, 00h00m00s (100% completed)
+                  (16150.62945726204 s / 86400 s)
+    - Delta Time: 01h25m54s (5154.589659552852 s)
+    - Cycle:      16
+--------------------------------------------------------------------
+
+Time: 1.62e+04 s, dt: 5154.589659552852 s, Cycle: 16
+
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  0
+        ( Rflow ) = ( 1.43e-01 )        ( Rsolid ) = ( 1.21e-10 )        ( R ) = ( 1.43e-01 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 50 | Final Rel Res: 6.625e-05 | Make Restrictor Time: 0.0869567 | Compute Auu Time: 0.776058 | SC Filter Time: 0.29665 | Setup Time: 12.5813 s | Solve Time: 37.6937 s
+        Last LinSolve(iter,res) = (  50, 6.62e-05 )
+        twoPhaseFlow: Max pressure change = 2157648.526 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 224.159 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.2186
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  1
+        ( Rflow ) = ( 1.62e-01 )        ( Rsolid ) = ( 1.53e-08 )        ( R ) = ( 1.62e-01 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 45 | Final Rel Res: 7.624e-05 | Make Restrictor Time: 0.101459 | Compute Auu Time: 0.775582 | SC Filter Time: 0.297002 | Setup Time: 11.7971 s | Solve Time: 33.8763 s
+        Last LinSolve(iter,res) = (  45, 7.62e-05 )
+        twoPhaseFlow: Max pressure change = 1348131.752 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 83.699 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0816
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  2
+        ( Rflow ) = ( 4.28e-02 )        ( Rsolid ) = ( 5.18e-09 )        ( R ) = ( 4.28e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 39 | Final Rel Res: 8.00875e-05 | Make Restrictor Time: 0.086913 | Compute Auu Time: 0.781052 | SC Filter Time: 0.296562 | Setup Time: 11.6681 s | Solve Time: 29.2561 s
+        Last LinSolve(iter,res) = (  39, 8.01e-05 )
+        twoPhaseFlow: Max pressure change = 40859.502 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 43.398 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0423
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  3
+        ( Rflow ) = ( 4.73e-03 )        ( Rsolid ) = ( 2.31e-10 )        ( R ) = ( 4.73e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 41 | Final Rel Res: 9.81764e-05 | Make Restrictor Time: 0.086806 | Compute Auu Time: 0.766926 | SC Filter Time: 0.297419 | Setup Time: 12.4437 s | Solve Time: 30.8491 s
+        Last LinSolve(iter,res) = (  41, 9.82e-05 )
+        twoPhaseFlow: Max pressure change = 130.866 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 1.350 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0013
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  4
+        ( Rflow ) = ( 6.13e-06 )        ( Rsolid ) = ( 2.77e-11 )        ( R ) = ( 6.13e-06 )
+twoPhaseFlow: max relative pressure change during time step = 10.536 %
+twoPhaseFlow: max absolute phase volume fraction change during time step = 0.133
+PoromechanicsSolver: time-step required will be increased based on state change.
+
+------------------------- TIMESTEP START -------------------------
+    - Time:       05h55m05s out of 1d, 00h00m00s (100% completed)
+                  (21305.219116814893 s / 86400 s)
+    - Delta Time: 01h50m23s (6623.94415407995 s)
+    - Cycle:      17
+--------------------------------------------------------------------
+
+Time: 2.13e+04 s, dt: 6623.94415407995 s, Cycle: 17
+
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  0
+        ( Rflow ) = ( 1.48e-01 )        ( Rsolid ) = ( 2.77e-11 )        ( R ) = ( 1.48e-01 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 46 | Final Rel Res: 6.9015e-05 | Make Restrictor Time: 0.0869389 | Compute Auu Time: 0.793949 | SC Filter Time: 0.296467 | Setup Time: 12.001 s | Solve Time: 34.6269 s
+        Last LinSolve(iter,res) = (  46, 6.90e-05 )
+        twoPhaseFlow: Max pressure change = 2267491.342 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 166.164 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.2277
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  1
+        ( Rflow ) = ( 1.96e-01 )        ( Rsolid ) = ( 1.13e-08 )        ( R ) = ( 1.96e-01 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 45 | Final Rel Res: 9.77956e-05 | Make Restrictor Time: 0.0869564 | Compute Auu Time: 0.768592 | SC Filter Time: 0.314129 | Setup Time: 13.2032 s | Solve Time: 33.8229 s
+        Last LinSolve(iter,res) = (  45, 9.78e-05 )
+        twoPhaseFlow: Max pressure change = 1000190.524 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 101.967 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.1138
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  2
+        ( Rflow ) = ( 2.61e-02 )        ( Rsolid ) = ( 4.05e-09 )        ( R ) = ( 2.61e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 39 | Final Rel Res: 8.59725e-05 | Make Restrictor Time: 0.0868217 | Compute Auu Time: 0.766379 | SC Filter Time: 0.298839 | Setup Time: 12.5872 s | Solve Time: 29.32 s
+        Last LinSolve(iter,res) = (  39, 8.60e-05 )
+        twoPhaseFlow: Max pressure change = 66570.820 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 40.018 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0390
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  3
+        ( Rflow ) = ( 2.08e-03 )        ( Rsolid ) = ( 3.45e-10 )        ( R ) = ( 2.08e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 40 | Final Rel Res: 9.89828e-05 | Make Restrictor Time: 0.0869158 | Compute Auu Time: 0.797199 | SC Filter Time: 0.2969 | Setup Time: 12.2584 s | Solve Time: 29.9731 s
+        Last LinSolve(iter,res) = (  40, 9.90e-05 )
+        twoPhaseFlow: Max pressure change = 216.887 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 2.704 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0026
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  4
+        ( Rflow ) = ( 8.54e-06 )        ( Rsolid ) = ( 2.04e-11 )        ( R ) = ( 8.54e-06 )
+twoPhaseFlow: max relative pressure change during time step = 11.040 %
+twoPhaseFlow: max absolute phase volume fraction change during time step = 0.143
+PoromechanicsSolver: time-step required will be increased based on state change.
+
+------------------------- TIMESTEP START -------------------------
+    - Time:       07h45m29s out of 1d, 00h00m00s (100% completed)
+                  (27929.163270894842 s / 86400 s)
+    - Delta Time: 02h16m05s (8165.081146041286 s)
+    - Cycle:      18
+--------------------------------------------------------------------
+
+Time: 2.79e+04 s, dt: 8165.081146041286 s, Cycle: 18
+
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  0
+        ( Rflow ) = ( 1.70e-01 )        ( Rsolid ) = ( 2.04e-11 )        ( R ) = ( 1.70e-01 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 47 | Final Rel Res: 7.23783e-05 | Make Restrictor Time: 0.0868918 | Compute Auu Time: 0.80052 | SC Filter Time: 0.296617 | Setup Time: 12.5107 s | Solve Time: 35.3403 s
+        Last LinSolve(iter,res) = (  47, 7.24e-05 )
+        twoPhaseFlow: Max pressure change = 2077751.246 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 370.715 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.3616
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  1
+        ( Rflow ) = ( 9.52e-01 )        ( Rsolid ) = ( 1.76e-08 )        ( R ) = ( 9.52e-01 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 38 | Final Rel Res: 8.47187e-05 | Make Restrictor Time: 0.0872349 | Compute Auu Time: 0.806504 | SC Filter Time: 0.297226 | Setup Time: 12.1528 s | Solve Time: 28.5766 s
+        Last LinSolve(iter,res) = (  38, 8.47e-05 )
+        twoPhaseFlow: Max pressure change = 675386.024 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 178.020 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.1737
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  2
+        ( Rflow ) = ( 2.05e-01 )        ( Rsolid ) = ( 9.89e-09 )        ( R ) = ( 2.05e-01 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 33 | Final Rel Res: 8.69752e-05 | Make Restrictor Time: 0.0869192 | Compute Auu Time: 0.80451 | SC Filter Time: 0.296448 | Setup Time: 11.7011 s | Solve Time: 24.752 s
+        Last LinSolve(iter,res) = (  33, 8.70e-05 )
+        twoPhaseFlow: Max pressure change = 96931.400 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 64.399 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0629
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  3
+        ( Rflow ) = ( 3.81e-02 )        ( Rsolid ) = ( 2.12e-09 )        ( R ) = ( 3.81e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 40 | Final Rel Res: 8.50083e-05 | Make Restrictor Time: 0.0868834 | Compute Auu Time: 0.781147 | SC Filter Time: 0.297474 | Setup Time: 12.4503 s | Solve Time: 30.007 s
+        Last LinSolve(iter,res) = (  40, 8.50e-05 )
+        twoPhaseFlow: Max pressure change = 894.398 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 17.954 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0175
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  4
+        ( Rflow ) = ( 5.21e-03 )        ( Rsolid ) = ( 3.46e-10 )        ( R ) = ( 5.21e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 37 | Final Rel Res: 7.73397e-05 | Make Restrictor Time: 0.0869521 | Compute Auu Time: 0.799229 | SC Filter Time: 0.29704 | Setup Time: 11.6399 s | Solve Time: 27.8468 s
+        Last LinSolve(iter,res) = (  37, 7.73e-05 )
+        twoPhaseFlow: Max pressure change = 67.462 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 2.982 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0029
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  5
+        ( Rflow ) = ( 2.52e-05 )        ( Rsolid ) = ( 3.91e-11 )        ( R ) = ( 2.52e-05 )
+twoPhaseFlow: max relative pressure change during time step = 7.936 %
+twoPhaseFlow: max absolute phase volume fraction change during time step = 0.167
+PoromechanicsSolver: time-step required will be increased based on state change.
+
+------------------------- TIMESTEP START -------------------------
+    - Time:       10h01m34s out of 1d, 00h00m00s (100% completed)
+                  (36094.244416936126 s / 86400 s)
+    - Delta Time: 02h33m01s (9181.341014088446 s)
+    - Cycle:      19
+--------------------------------------------------------------------
+
+Time: 3.61e+04 s, dt: 9181.341014088446 s, Cycle: 19
+
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  0
+        ( Rflow ) = ( 1.83e-01 )        ( Rsolid ) = ( 3.91e-11 )        ( R ) = ( 1.83e-01 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 45 | Final Rel Res: 9.94499e-05 | Make Restrictor Time: 0.0869026 | Compute Auu Time: 0.804435 | SC Filter Time: 0.297145 | Setup Time: 11.6894 s | Solve Time: 33.8671 s
+        Last LinSolve(iter,res) = (  45, 9.94e-05 )
+        twoPhaseFlow: Max pressure change = 1640708.537 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 231.760 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.2261
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  1
+        ( Rflow ) = ( 2.25e-01 )        ( Rsolid ) = ( 1.91e-08 )        ( R ) = ( 2.25e-01 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 45 | Final Rel Res: 7.96981e-05 | Make Restrictor Time: 0.0869382 | Compute Auu Time: 0.782582 | SC Filter Time: 0.297396 | Setup Time: 11.6525 s | Solve Time: 33.8172 s
+        Last LinSolve(iter,res) = (  45, 7.97e-05 )
+        twoPhaseFlow: Max pressure change = 646651.053 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 103.483 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.1009
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  2
+        ( Rflow ) = ( 6.30e-02 )        ( Rsolid ) = ( 1.31e-08 )        ( R ) = ( 6.30e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 41 | Final Rel Res: 9.58151e-05 | Make Restrictor Time: 0.0873617 | Compute Auu Time: 0.788216 | SC Filter Time: 0.296312 | Setup Time: 11.6787 s | Solve Time: 30.8451 s
+        Last LinSolve(iter,res) = (  41, 9.58e-05 )
+        twoPhaseFlow: Max pressure change = 67372.997 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 42.129 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0411
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  3
+        ( Rflow ) = ( 1.42e-02 )        ( Rsolid ) = ( 5.57e-10 )        ( R ) = ( 1.42e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 30 | Final Rel Res: 7.2996e-05 | Make Restrictor Time: 0.0870087 | Compute Auu Time: 0.807249 | SC Filter Time: 0.296186 | Setup Time: 11.7083 s | Solve Time: 22.5039 s
+        Last LinSolve(iter,res) = (  30, 7.30e-05 )
+        twoPhaseFlow: Max pressure change = 49648.209 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 10.759 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0105
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  4
+        ( Rflow ) = ( 1.78e-04 )        ( Rsolid ) = ( 1.12e-10 )        ( R ) = ( 1.78e-04 )
+twoPhaseFlow: max relative pressure change during time step = 5.972 %
+twoPhaseFlow: max absolute phase volume fraction change during time step = 0.168
+PoromechanicsSolver: time-step required will be increased based on state change.
+
+------------------------- TIMESTEP START -------------------------
+    - Time:       12h34m35s out of 1d, 00h00m00s (100% completed)
+                  (45275.58543102457 s / 86400 s)
+    - Delta Time: 02h51m01s (10261.310152666872 s)
+    - Cycle:      20
+--------------------------------------------------------------------
+
+Time: 4.53e+04 s, dt: 10261.310152666872 s, Cycle: 20
+
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  0
+        ( Rflow ) = ( 1.86e-01 )        ( Rsolid ) = ( 1.12e-10 )        ( R ) = ( 1.86e-01 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 47 | Final Rel Res: 7.39507e-05 | Make Restrictor Time: 0.097144 | Compute Auu Time: 0.780458 | SC Filter Time: 0.29601 | Setup Time: 12.1271 s | Solve Time: 35.3847 s
+        Last LinSolve(iter,res) = (  47, 7.40e-05 )
+        twoPhaseFlow: Max pressure change = 1630305.926 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 353.574 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.3449
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  1
+        ( Rflow ) = ( 1.03e+00 )        ( Rsolid ) = ( 1.43e-08 )        ( R ) = ( 1.03e+00 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 39 | Final Rel Res: 9.90016e-05 | Make Restrictor Time: 0.0869874 | Compute Auu Time: 0.776509 | SC Filter Time: 0.310859 | Setup Time: 11.6599 s | Solve Time: 29.3094 s
+        Last LinSolve(iter,res) = (  39, 9.90e-05 )
+        twoPhaseFlow: Max pressure change = 587615.839 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 167.614 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.1635
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  2
+        ( Rflow ) = ( 2.36e-01 )        ( Rsolid ) = ( 4.35e-08 )        ( R ) = ( 2.36e-01 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 35 | Final Rel Res: 6.96418e-05 | Make Restrictor Time: 0.0870686 | Compute Auu Time: 0.776835 | SC Filter Time: 0.310877 | Setup Time: 11.6658 s | Solve Time: 26.3001 s
+        Last LinSolve(iter,res) = (  35, 6.96e-05 )
+        twoPhaseFlow: Max pressure change = 46922.250 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 69.423 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0679
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  3
+        ( Rflow ) = ( 4.16e-02 )        ( Rsolid ) = ( 1.50e-09 )        ( R ) = ( 4.16e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 36 | Final Rel Res: 9.33711e-05 | Make Restrictor Time: 0.0869461 | Compute Auu Time: 0.77579 | SC Filter Time: 0.320517 | Setup Time: 11.648 s | Solve Time: 27.0144 s
+        Last LinSolve(iter,res) = (  36, 9.34e-05 )
+        twoPhaseFlow: Max pressure change = 2237.452 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 18.454 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0180
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  4
+        ( Rflow ) = ( 5.86e-03 )        ( Rsolid ) = ( 3.40e-10 )        ( R ) = ( 5.86e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 35 | Final Rel Res: 7.2684e-05 | Make Restrictor Time: 0.086919 | Compute Auu Time: 0.790926 | SC Filter Time: 0.296151 | Setup Time: 12.6509 s | Solve Time: 26.3013 s
+        Last LinSolve(iter,res) = (  35, 7.27e-05 )
+        twoPhaseFlow: Max pressure change = 32.301 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 3.155 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0031
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  5
+        ( Rflow ) = ( 3.47e-05 )        ( Rsolid ) = ( 4.00e-11 )        ( R ) = ( 3.47e-05 )
+twoPhaseFlow: max relative pressure change during time step = 5.106 %
+twoPhaseFlow: max absolute phase volume fraction change during time step = 0.167
+PoromechanicsSolver: time-step required will be increased based on state change.
+
+------------------------- TIMESTEP START -------------------------
+    - Time:       15h25m36s out of 1d, 00h00m00s (100% completed)
+                  (55536.89558369144 s / 86400 s)
+    - Delta Time: 03h12m06s (11526.319237343247 s)
+    - Cycle:      21
+--------------------------------------------------------------------
+
+Time: 5.55e+04 s, dt: 11526.319237343247 s, Cycle: 21
+
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  0
+        ( Rflow ) = ( 1.89e-01 )        ( Rsolid ) = ( 4.00e-11 )        ( R ) = ( 1.89e-01 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 49 | Final Rel Res: 7.89252e-05 | Make Restrictor Time: 0.0909028 | Compute Auu Time: 0.782125 | SC Filter Time: 0.296853 | Setup Time: 11.6813 s | Solve Time: 36.8589 s
+        Last LinSolve(iter,res) = (  49, 7.89e-05 )
+        twoPhaseFlow: Max pressure change = 1571519.209 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 334.912 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.3267
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  1
+        ( Rflow ) = ( 8.02e-01 )        ( Rsolid ) = ( 1.38e-08 )        ( R ) = ( 8.02e-01 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 44 | Final Rel Res: 7.64599e-05 | Make Restrictor Time: 0.0868983 | Compute Auu Time: 0.778066 | SC Filter Time: 0.296511 | Setup Time: 11.6543 s | Solve Time: 33.0805 s
+        Last LinSolve(iter,res) = (  44, 7.65e-05 )
+        twoPhaseFlow: Max pressure change = 503412.298 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 150.409 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.1467
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  2
+        ( Rflow ) = ( 1.79e-01 )        ( Rsolid ) = ( 8.65e-09 )        ( R ) = ( 1.79e-01 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 39 | Final Rel Res: 7.77137e-05 | Make Restrictor Time: 0.0869348 | Compute Auu Time: 0.775191 | SC Filter Time: 0.296902 | Setup Time: 11.6783 s | Solve Time: 29.3206 s
+        Last LinSolve(iter,res) = (  39, 7.77e-05 )
+        twoPhaseFlow: Max pressure change = 75136.968 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 66.151 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0645
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  3
+        ( Rflow ) = ( 4.11e-02 )        ( Rsolid ) = ( 1.79e-09 )        ( R ) = ( 4.11e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 40 | Final Rel Res: 9.03073e-05 | Make Restrictor Time: 0.0868341 | Compute Auu Time: 0.76662 | SC Filter Time: 0.296978 | Setup Time: 12.1518 s | Solve Time: 30.0936 s
+        Last LinSolve(iter,res) = (  40, 9.03e-05 )
+        twoPhaseFlow: Max pressure change = 11791.211 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 16.365 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0160
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  4
+        ( Rflow ) = ( 8.89e-03 )        ( Rsolid ) = ( 4.63e-10 )        ( R ) = ( 8.89e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 41 | Final Rel Res: 7.57758e-05 | Make Restrictor Time: 0.0867533 | Compute Auu Time: 0.778649 | SC Filter Time: 0.296083 | Setup Time: 11.6579 s | Solve Time: 30.7812 s
+        Last LinSolve(iter,res) = (  41, 7.58e-05 )
+        twoPhaseFlow: Max pressure change = 178.634 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 8.320 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0081
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  5
+        ( Rflow ) = ( 8.21e-05 )        ( Rsolid ) = ( 6.17e-11 )        ( R ) = ( 8.21e-05 )
+twoPhaseFlow: max relative pressure change during time step = 4.007 %
+twoPhaseFlow: max absolute phase volume fraction change during time step = 0.164
+PoromechanicsSolver: time-step required will be increased based on state change.
+
+------------------------- TIMESTEP START -------------------------
+    - Time:       18h37m43s out of 1d, 00h00m00s (100% completed)
+                  (67063.2148210347 s / 86400 s)
+    - Delta Time: 03h38m16s (13096.632031999523 s)
+    - Cycle:      22
+--------------------------------------------------------------------
+
+Time: 6.71e+04 s, dt: 13096.632031999523 s, Cycle: 22
+
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  0
+        ( Rflow ) = ( 1.88e-01 )        ( Rsolid ) = ( 6.17e-11 )        ( R ) = ( 1.88e-01 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 51 | Final Rel Res: 9.26231e-05 | Make Restrictor Time: 0.0869049 | Compute Auu Time: 0.800054 | SC Filter Time: 0.296502 | Setup Time: 11.6558 s | Solve Time: 38.4261 s
+        Last LinSolve(iter,res) = (  51, 9.26e-05 )
+        twoPhaseFlow: Max pressure change = 1551928.561 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 459.835 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.4485
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  1
+        ( Rflow ) = ( 1.45e+00 )        ( Rsolid ) = ( 1.47e-08 )        ( R ) = ( 1.45e+00 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 38 | Final Rel Res: 8.52193e-05 | Make Restrictor Time: 0.0869168 | Compute Auu Time: 0.801149 | SC Filter Time: 0.297044 | Setup Time: 12.6611 s | Solve Time: 28.5432 s
+        Last LinSolve(iter,res) = (  38, 8.52e-05 )
+        twoPhaseFlow: Max pressure change = 656775.314 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 222.593 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.2171
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  2
+        ( Rflow ) = ( 2.97e-01 )        ( Rsolid ) = ( 1.76e-08 )        ( R ) = ( 2.97e-01 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 34 | Final Rel Res: 9.77979e-05 | Make Restrictor Time: 0.0868975 | Compute Auu Time: 0.781585 | SC Filter Time: 0.296441 | Setup Time: 11.6543 s | Solve Time: 25.4835 s
+        Last LinSolve(iter,res) = (  34, 9.78e-05 )
+        twoPhaseFlow: Max pressure change = 40685.304 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 82.028 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0800
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  3
+        ( Rflow ) = ( 6.04e-02 )        ( Rsolid ) = ( 4.67e-09 )        ( R ) = ( 6.04e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 40 | Final Rel Res: 8.76244e-05 | Make Restrictor Time: 0.0869068 | Compute Auu Time: 0.76656 | SC Filter Time: 0.296712 | Setup Time: 12.5966 s | Solve Time: 30.1152 s
+        Last LinSolve(iter,res) = (  40, 8.76e-05 )
+        twoPhaseFlow: Max pressure change = 2282.176 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 18.034 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0176
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  4
+        ( Rflow ) = ( 2.72e-03 )        ( Rsolid ) = ( 7.12e-10 )        ( R ) = ( 2.72e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 38 | Final Rel Res: 6.89e-05 | Make Restrictor Time: 0.0872339 | Compute Auu Time: 0.777516 | SC Filter Time: 0.296792 | Setup Time: 12.1438 s | Solve Time: 28.4668 s
+        Last LinSolve(iter,res) = (  38, 6.89e-05 )
+        twoPhaseFlow: Max pressure change = 13.093 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 2.083 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0020
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  5
+        ( Rflow ) = ( 6.97e-06 )        ( Rsolid ) = ( 1.62e-11 )        ( R ) = ( 6.97e-06 )
+twoPhaseFlow: max relative pressure change during time step = 4.964 %
+twoPhaseFlow: max absolute phase volume fraction change during time step = 0.152
+PoromechanicsSolver: time-step required will be increased based on state change.
+
+------------------------- TIMESTEP START -------------------------
+    - Time:       22h15m59s out of 1d, 00h00m00s (100% completed)
+                  (80159.84685303422 s / 86400 s)
+    - Delta Time: 01h44m00s (6240.153146965778 s)
+    - Cycle:      23
+--------------------------------------------------------------------
+
+Time: 8.02e+04 s, dt: 6240.153146965778 s, Cycle: 23
+
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  0
+        ( Rflow ) = ( 7.58e-02 )        ( Rsolid ) = ( 1.62e-11 )        ( R ) = ( 7.58e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 50 | Final Rel Res: 7.22163e-05 | Make Restrictor Time: 0.0869045 | Compute Auu Time: 0.785776 | SC Filter Time: 0.296268 | Setup Time: 11.6697 s | Solve Time: 37.6787 s
+        Last LinSolve(iter,res) = (  50, 7.22e-05 )
+        twoPhaseFlow: Max pressure change = 667915.713 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 142.905 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.1394
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  1
+        ( Rflow ) = ( 2.39e-01 )        ( Rsolid ) = ( 3.24e-09 )        ( R ) = ( 2.39e-01 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 37 | Final Rel Res: 8.53216e-05 | Make Restrictor Time: 0.0868727 | Compute Auu Time: 0.767119 | SC Filter Time: 0.296742 | Setup Time: 12.0894 s | Solve Time: 27.8093 s
+        Last LinSolve(iter,res) = (  37, 8.53e-05 )
+        twoPhaseFlow: Max pressure change = 208830.559 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 67.821 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0662
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  2
+        ( Rflow ) = ( 3.60e-02 )        ( Rsolid ) = ( 1.05e-08 )        ( R ) = ( 3.60e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 44 | Final Rel Res: 8.27309e-05 | Make Restrictor Time: 0.105754 | Compute Auu Time: 0.782232 | SC Filter Time: 0.299985 | Setup Time: 11.6803 s | Solve Time: 33.0479 s
+        Last LinSolve(iter,res) = (  44, 8.27e-05 )
+        twoPhaseFlow: Max pressure change = 4597.513 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 18.834 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0184
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  3
+        ( Rflow ) = ( 3.45e-04 )        ( Rsolid ) = ( 2.67e-10 )        ( R ) = ( 3.45e-04 )
+twoPhaseFlow: max relative pressure change during time step = 2.205 %
+twoPhaseFlow: max absolute phase volume fraction change during time step = 0.080
+PoromechanicsSolver: time-step required will be increased based on state change.
+Cleaning up events
+PoromechanicsSolver, number of time steps: 24
+PoromechanicsSolver, number of successful nonlinear iterations: 76
+PoromechanicsSolver, number of successful linear iterations: 3545
+PoromechanicsSolver, number of time step cuts: 0
+PoromechanicsSolver, number of discarded nonlinear iterations: 0
+PoromechanicsSolver, number of discarded linear iterations: 0
+PoromechanicsSolver: apply solution time = 0.830514777 s (min), 2.072125424 s (max)
+PoromechanicsSolver: assemble time = 160.557441907 s (min), 161.836147597 s (max)
+PoromechanicsSolver: convergence check time = 0.196826102 s (min), 0.992700162 s (max)
+PoromechanicsSolver: linear solver create time = 83.994058134 s (min), 84.003862676 s (max)
+PoromechanicsSolver: linear solver setup time = 909.901799539 s (min), 909.940924465 s (max)
+PoromechanicsSolver: linear solver solve time = 2676.910760435 s (min), 2676.952568567 s (max)
+PoromechanicsSolver: linear solver total time = 3672.471272756 s (min), 3673.661463196 s (max)
+PoromechanicsSolver: update state time = 40.457153108 s (min), 40.54388694 s (max)
+
+-----------------------------------------------------------------------------------------------------------------
+|         Umpire Memory Pool  |   Min over ranks  |  Max  over ranks  |  Avg  over ranks  |     Sum over ranks  |
+|  (reserved / % over total)  |                   |                   |                   |                     |
+-----------------------------------------------------------------------------------------------------------------
+|                       HOST  |  2.6 GB   (1.1%)  |  2.8 GB   (1.1%)  |  2.7 GB   (1.1%)  |  174.3 GB   (1.1%)  |
+-----------------------------------------------------------------------------------------------------------------
+
+
+Finished at 2024-08-27 22:08:14.127493737
+total time            01h04m59s (3899.23313212 s)
+initialization time   00h00m04s (4.768560257 s)
+run time              01h04m53s (3893.802444151 s)
+Done

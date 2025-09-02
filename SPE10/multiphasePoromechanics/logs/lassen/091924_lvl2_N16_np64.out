@@ -1,0 +1,878 @@
+OMP_NUM_THREADS=1 lrun -N 16 -n 64 -g 1 /usr/workspace/aronson1/hypreBranchTest/GEOS/build-lassen-gcc-8-cuda-11-release/bin/geosx --input /usr/workspace/aronson1/ToLLNL/SPE10_with_burdens_fim.xml -x 4 -y 4 -z 4
+Num ranks: 64
+Max threads: 1
+GEOS version: 1.0.1 (feature/paludettomag1/hypre-sdc, sha1: 7a67fe26d)
+  - c++ compiler: gcc 8.3.1
+  - CUDA compiler version: 11.8
+  - openmp version: 201511
+  - MPI version: Open MPI v10.3.1.03rtm0, package: IBM Spectrum MPI, ident: IBM Spectrum MPI, repo rev: IBM_SPECTRUM_MPI_10.03.01.02_2020.08.03_XAA0, Unreleased developer copy
+  - HDF5 version: 1.12.1
+  - Conduit version: 0.9.2
+  - VTK version: 9.3.1
+  - RAJA version: 2024.7.0
+  - umpire version: 2024.07.0
+  - chai version: 2024.7.0
+  - adiak version: ..
+  - caliper version: ..
+  - METIS version: 5.1.0
+  - PARAMETIS version: 4.0.0
+  - scotch version: 7.0.3
+  - superlu_dist version: 6.3.0
+  - suitesparse version: 5.7.9
+  - hypre version: v2.31.0-52-ga5b155003 (geos-next)
+  - Python3 version: 3.10.8
+  - CUDAToolkit version: 11.8.89
+Started at 2024-09-19 19:12:51.611478477
+Opened XML file: /usr/WS1/aronson1/ToLLNL/SPE10_with_burdens_fim.xml
+Included additionnal XML file: /usr/WS1/aronson1/ToLLNL/SPE10_with_burdens_base.xml
+Adding Solver of type MultiphasePoromechanics, named PoromechanicsSolver
+Adding Solver of type SolidMechanicsLagrangianSSLE, named mechanicsSolver
+Adding Solver of type CompositionalMultiphaseFVM, named twoPhaseFlow
+Adding Mesh: InternalMesh, mesh1
+Adding Geometric Object: Box, source
+Adding Geometric Object: Box, sink1
+Adding Geometric Object: Box, sink2
+Adding Geometric Object: Box, sink3
+Adding Geometric Object: Box, sink4
+Adding Event: SoloEvent, equilStep
+Adding Event: PeriodicEvent, solverApplications0
+Adding Event: PeriodicEvent, solverApplications1
+   TableFunction: permxFunc
+   TableFunction: permyFunc
+   TableFunction: permzFunc
+   TableFunction: poroFunc
+   TableFunction: initCO2CompFractionTable
+   TableFunction: initWaterCompFractionTable
+   TableFunction: initTempTable
+   TableFunction: waterRelativePermeabilityTable
+   TableFunction: gasRelativePermeabilityTable
+Adding Output: VTK, vtkOutput_512_inject
+Adding Object CellElementRegion named Reservoir from ObjectManager::Catalog.
+Adding Object CellElementRegion named Burden from ObjectManager::Catalog.
+   TableFunction: fluid_phaseModel1_PhillipsBrineDensity_table
+   TableFunction: fluid_phaseModel1_PhillipsBrineViscosity_table
+   TableFunction: fluid_phaseModel2_SpanWagnerCO2Density_table
+   TableFunction: fluid_phaseModel2_FenghourCO2Viscosity_table
+   TableFunction: fluid_CO2Solubility_co2Dissolution_table
+   TableFunction: fluid_CO2Solubility_waterVaporization_table
+
+--------------------------------------------------
+|       PoromechanicsSolver: linear solver       |
+--------------------------------------------------
+|  Parameter                          |  Value   |
+--------------------------------------------------
+|  Log level                          |  1       |
+|  Linear solver type                 |  gmres   |
+|  Preconditioner type                |  mgr     |
+|  Stop if error                      |  1       |
+|  Maximum iterations                 |  200     |
+|  Maximum iterations before restart  |  50      |
+|  Use adaptive tolerance             |  0       |
+|  Relative convergence tolerance     |  0.0001  |
+--------------------------------------------------
+
+
+PoromechanicsSolver: found CompositionalMultiphaseFVM solver named twoPhaseFlow
+PoromechanicsSolver: found SolidMechanicsLagrangianSSLE solver named mechanicsSolver
+mesh1: total number of nodes = 6845696
+mesh1: total number of elems = 6732000
+MPI Partition information:
+  MeshBody: mesh1 MeshLevel: FE1
+
+  |------------------------------------------------------------------------------------------------------------------------------------------------|
+  |                |             Nodes             |             Edges             |             Faces             |             Elems             |
+  |------------------------------------------------------------------------------------------------------------------------------------------------|
+  |min(local/total)|             0.82              |             0.84              |             0.86              |             0.88              |
+  |max(local/total)|             0.94              |             0.94              |             0.94              |             0.94              |
+  |------------------------------------------------------------------------------------------------------------------------------------------------|
+  |      Rank      |     local     |     ghost     |     local     |     ghost     |     local     |     ghost     |     local     |     ghost     |
+  |----------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|
+  |            min |       103,950 |         7,544 |       311,850 |        22,325 |       311,850 |        22,021 |       103,950 |         7,240 |
+  |            max |       112,840 |        22,638 |       331,129 |        59,903 |       323,890 |        52,050 |       105,600 |        14,784 |
+  |------------------------------------------------------------------------------------------------------------------------------------------------|
+  |              0 |       112,840 |         7,544 |       331,129 |        22,325 |       323,890 |        22,021 |       105,600 |         7,240 |
+  |              1 |       109,368 |        11,016 |       322,623 |        30,831 |       317,205 |        28,706 |       103,950 |         8,890 |
+  |              2 |       111,104 |        11,104 |       327,744 |        31,093 |       322,240 |        28,966 |       105,600 |         8,976 |
+  |              3 |       111,104 |         9,280 |       327,744 |        25,710 |       322,240 |        23,671 |       105,600 |         7,240 |
+  |              4 |       110,825 |        11,671 |       327,195 |        32,497 |       321,970 |        30,082 |       105,600 |         9,255 |
+  |              5 |       107,415 |        15,081 |       318,780 |        40,912 |       315,315 |        36,737 |       103,950 |        10,905 |
+  |              9 |       107,415 |        15,081 |       318,780 |        40,912 |       315,315 |        36,737 |       103,950 |        10,905 |
+  |              6 |       109,120 |        15,232 |       323,840 |        41,330 |       320,320 |        37,121 |       105,600 |        11,022 |
+  |              8 |       110,825 |        11,671 |       327,195 |        32,497 |       321,970 |        30,082 |       105,600 |         9,255 |
+  |              7 |       109,120 |        13,376 |       323,840 |        35,852 |       320,320 |        31,732 |       105,600 |         9,255 |
+  |             10 |       109,120 |        15,232 |       323,840 |        41,330 |       320,320 |        37,121 |       105,600 |        11,022 |
+  |             16 |       109,200 |        14,946 |       323,970 |        40,647 |       320,370 |        36,582 |       105,600 |        10,880 |
+  |             20 |       107,250 |        19,074 |       320,100 |        50,952 |       318,450 |        44,839 |       105,600 |        12,960 |
+  |             11 |       109,120 |        13,376 |       323,840 |        35,852 |       320,320 |        31,732 |       105,600 |         9,255 |
+  |             12 |       110,825 |         9,559 |       327,195 |        26,259 |       321,970 |        23,941 |       105,600 |         7,240 |
+  |             21 |       103,950 |        22,374 |       311,850 |        59,202 |       311,850 |        51,439 |       103,950 |        14,610 |
+  |             17 |       105,840 |        18,306 |       315,630 |        48,987 |       313,740 |        43,212 |       103,950 |        12,530 |
+  |             22 |       105,600 |        22,638 |       316,800 |        59,903 |       316,800 |        52,050 |       105,600 |        14,784 |
+  |             24 |       107,250 |        19,074 |       320,100 |        50,952 |       318,450 |        44,839 |       105,600 |        12,960 |
+  |             18 |       107,520 |        18,507 |       320,640 |        49,530 |       318,720 |        43,696 |       105,600 |        12,672 |
+  |             23 |       105,600 |        20,724 |       316,800 |        54,252 |       316,800 |        46,489 |       105,600 |        12,960 |
+  |             25 |       103,950 |        22,374 |       311,850 |        59,202 |       311,850 |        51,439 |       103,950 |        14,610 |
+  |             34 |       107,520 |        18,507 |       320,640 |        49,530 |       318,720 |        43,696 |       105,600 |        12,672 |
+  |             19 |       107,520 |        16,626 |       320,640 |        43,977 |       318,720 |        38,232 |       105,600 |        10,880 |
+  |             26 |       105,600 |        22,638 |       316,800 |        59,903 |       316,800 |        52,050 |       105,600 |        14,784 |
+  |             13 |       107,415 |        12,969 |       318,780 |        34,674 |       315,315 |        30,596 |       103,950 |         8,890 |
+  |             48 |       109,200 |        11,184 |       323,970 |        29,484 |       320,370 |        25,541 |       105,600 |         7,240 |
+  |             50 |       107,520 |        14,688 |       320,640 |        38,197 |       318,720 |        32,486 |       105,600 |         8,976 |
+  |             49 |       105,840 |        14,544 |       315,630 |        37,824 |       313,740 |        32,171 |       103,950 |         8,890 |
+  |             38 |       105,600 |        22,638 |       316,800 |        59,903 |       316,800 |        52,050 |       105,600 |        14,784 |
+  |             33 |       105,840 |        18,306 |       315,630 |        48,987 |       313,740 |        43,212 |       103,950 |        12,530 |
+  |             27 |       105,600 |        20,724 |       316,800 |        54,252 |       316,800 |        46,489 |       105,600 |        12,960 |
+  |             14 |       109,120 |        13,088 |       323,840 |        34,997 |       320,320 |        30,886 |       105,600 |         8,976 |
+  |             51 |       107,520 |        12,864 |       320,640 |        32,814 |       318,720 |        27,191 |       105,600 |         7,240 |
+  |             37 |       103,950 |        22,374 |       311,850 |        59,202 |       311,850 |        51,439 |       103,950 |        14,610 |
+  |             32 |       109,200 |        14,946 |       323,970 |        40,647 |       320,370 |        36,582 |       105,600 |        10,880 |
+  |             40 |       107,250 |        19,074 |       320,100 |        50,952 |       318,450 |        44,839 |       105,600 |        12,960 |
+  |             48 |       109,200 |        11,184 |       323,970 |        29,484 |       320,370 |        25,541 |       105,600 |         7,240 |
+  |             49 |       105,840 |        14,544 |       315,630 |        37,824 |       313,740 |        32,171 |       103,950 |         8,890 |
+  |             50 |       107,520 |        14,688 |       320,640 |        38,197 |       318,720 |        32,486 |       105,600 |         8,976 |
+  |             51 |       107,520 |        12,864 |       320,640 |        32,814 |       318,720 |        27,191 |       105,600 |         7,240 |
+  |             15 |       109,120 |        11,264 |       323,840 |        29,614 |       320,320 |        25,591 |       105,600 |         7,240 |
+  |             35 |       107,520 |        16,626 |       320,640 |        43,977 |       318,720 |        38,232 |       105,600 |        10,880 |
+  |             36 |       107,250 |        19,074 |       320,100 |        50,952 |       318,450 |        44,839 |       105,600 |        12,960 |
+  |             41 |       103,950 |        22,374 |       311,850 |        59,202 |       311,850 |        51,439 |       103,950 |        14,610 |
+  |             28 |       107,250 |        16,896 |       320,100 |        44,517 |       318,450 |        38,502 |       105,600 |        10,880 |
+  |             39 |       105,600 |        20,724 |       316,800 |        54,252 |       316,800 |        46,489 |       105,600 |        12,960 |
+  |             60 |       107,250 |        13,134 |       320,100 |        33,354 |       318,450 |        27,461 |       105,600 |         7,240 |
+  |             43 |       105,600 |        20,724 |       316,800 |        54,252 |       316,800 |        46,489 |       105,600 |        12,960 |
+  |             29 |       103,950 |        20,196 |       311,850 |        52,767 |       311,850 |        45,102 |       103,950 |        12,530 |
+  |             52 |       107,250 |        15,246 |       320,100 |        39,592 |       318,450 |        33,602 |       105,600 |         9,255 |
+  |             61 |       103,950 |        16,434 |       311,850 |        41,604 |       311,850 |        34,061 |       103,950 |         8,890 |
+  |             30 |       105,600 |        20,427 |       316,800 |        53,370 |       316,800 |        45,616 |       105,600 |        12,672 |
+  |             42 |       105,600 |        22,638 |       316,800 |        59,903 |       316,800 |        52,050 |       105,600 |        14,784 |
+  |             53 |       103,950 |        18,546 |       311,850 |        47,842 |       311,850 |        40,202 |       103,950 |        10,905 |
+  |             62 |       105,600 |        16,608 |       316,800 |        42,037 |       316,800 |        34,406 |       105,600 |         8,976 |
+  |             56 |       107,250 |        15,246 |       320,100 |        39,592 |       318,450 |        33,602 |       105,600 |         9,255 |
+  |             31 |       105,600 |        18,546 |       316,800 |        47,817 |       316,800 |        40,152 |       105,600 |        10,880 |
+  |             54 |       105,600 |        18,752 |       316,800 |        48,370 |       316,800 |        40,641 |       105,600 |        11,022 |
+  |             63 |       105,600 |        14,784 |       316,800 |        36,654 |       316,800 |        29,111 |       105,600 |         7,240 |
+  |             57 |       103,950 |        18,546 |       311,850 |        47,842 |       311,850 |        40,202 |       103,950 |        10,905 |
+  |             44 |       107,250 |        16,896 |       320,100 |        44,517 |       318,450 |        38,502 |       105,600 |        10,880 |
+  |             55 |       105,600 |        16,896 |       316,800 |        42,892 |       316,800 |        35,252 |       105,600 |         9,255 |
+  |             45 |       103,950 |        20,196 |       311,850 |        52,767 |       311,850 |        45,102 |       103,950 |        12,530 |
+  |              4 |       110,825 |        11,671 |       327,195 |        32,497 |       321,970 |        30,082 |       105,600 |         9,255 |
+  |             58 |       105,600 |        18,752 |       316,800 |        48,370 |       316,800 |        40,641 |       105,600 |        11,022 |
+  |             59 |       105,600 |        16,896 |       316,800 |        42,892 |       316,800 |        35,252 |       105,600 |         9,255 |
+  |              5 |       107,415 |        15,081 |       318,780 |        40,912 |       315,315 |        36,737 |       103,950 |        10,905 |
+  |             46 |       105,600 |        20,427 |       316,800 |        53,370 |       316,800 |        45,616 |       105,600 |        12,672 |
+  |              6 |       109,120 |        15,232 |       323,840 |        41,330 |       320,320 |        37,121 |       105,600 |        11,022 |
+  |              8 |       110,825 |        11,671 |       327,195 |        32,497 |       321,970 |        30,082 |       105,600 |         9,255 |
+  |             47 |       105,600 |        18,546 |       316,800 |        47,817 |       316,800 |        40,152 |       105,600 |        10,880 |
+  |              9 |       107,415 |        15,081 |       318,780 |        40,912 |       315,315 |        36,737 |       103,950 |        10,905 |
+  |------------------------------------------------------------------------------------------------------------------------------------------------|
+  |              7 |       109,120 |        13,376 |       323,840 |        35,852 |       320,320 |        31,732 |       105,600 |         9,255 |
+  |             32 |       109,200 |        14,946 |       323,970 |        40,647 |       320,370 |        36,582 |       105,600 |        10,880 |
+  |             10 |       109,120 |        15,232 |       323,840 |        41,330 |       320,320 |        37,121 |       105,600 |        11,022 |
+  MeshBody: mesh1 MeshLevel: multiPhaseTPFA
+
+  |------------------------------------------------------------------------------------------------------------------------------------------------|
+  |                |             Nodes             |             Edges             |             Faces             |             Elems             |
+  |------------------------------------------------------------------------------------------------------------------------------------------------|
+  |min(local/total)|             0.82              |             0.84              |             0.86              |             0.88              |
+  |max(local/total)|             0.94              |             0.94              |             0.94              |             0.94              |
+  |------------------------------------------------------------------------------------------------------------------------------------------------|
+  |      Rank      |     local     |     ghost     |     local     |     ghost     |     local     |     ghost     |     local     |     ghost     |
+  |----------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|
+  |             20 |       107,250 |        19,074 |       320,100 |        50,952 |       318,450 |        44,839 |       105,600 |        12,960 |
+  |             33 |       105,840 |        18,306 |       315,630 |        48,987 |       313,740 |        43,212 |       103,950 |        12,530 |
+  |             11 |       109,120 |        13,376 |       323,840 |        35,852 |       320,320 |        31,732 |       105,600 |         9,255 |
+  |            min |       103,950 |         7,544 |       311,850 |        22,325 |       311,850 |        22,021 |       103,950 |         7,240 |
+  |            max |       112,840 |        22,638 |       331,129 |        59,903 |       323,890 |        52,050 |       105,600 |        14,784 |
+  |------------------------------------------------------------------------------------------------------------------------------------------------|
+  |              0 |       112,840 |         7,544 |       331,129 |        22,325 |       323,890 |        22,021 |       105,600 |         7,240 |
+  |             21 |       103,950 |        22,374 |       311,850 |        59,202 |       311,850 |        51,439 |       103,950 |        14,610 |
+  |             34 |       107,520 |        18,507 |       320,640 |        49,530 |       318,720 |        43,696 |       105,600 |        12,672 |
+  |             24 |       107,250 |        19,074 |       320,100 |        50,952 |       318,450 |        44,839 |       105,600 |        12,960 |
+  |             35 |       107,520 |        16,626 |       320,640 |        43,977 |       318,720 |        38,232 |       105,600 |        10,880 |
+  |             60 |       107,250 |        13,134 |       320,100 |        33,354 |       318,450 |        27,461 |       105,600 |         7,240 |
+  |             61 |       103,950 |        16,434 |       311,850 |        41,604 |       311,850 |        34,061 |       103,950 |         8,890 |
+  |              1 |       109,368 |        11,016 |       322,623 |        30,831 |       317,205 |        28,706 |       103,950 |         8,890 |
+  |             62 |       105,600 |        16,608 |       316,800 |        42,037 |       316,800 |        34,406 |       105,600 |         8,976 |
+  |             23 |       105,600 |        20,724 |       316,800 |        54,252 |       316,800 |        46,489 |       105,600 |        12,960 |
+  |              2 |       111,104 |        11,104 |       327,744 |        31,093 |       322,240 |        28,966 |       105,600 |         8,976 |
+  |             40 |       107,250 |        19,074 |       320,100 |        50,952 |       318,450 |        44,839 |       105,600 |        12,960 |
+  |             22 |       105,600 |        22,638 |       316,800 |        59,903 |       316,800 |        52,050 |       105,600 |        14,784 |
+  |             27 |       105,600 |        20,724 |       316,800 |        54,252 |       316,800 |        46,489 |       105,600 |        12,960 |
+  |              3 |       111,104 |         9,280 |       327,744 |        25,710 |       322,240 |        23,671 |       105,600 |         7,240 |
+  |             63 |       105,600 |        14,784 |       316,800 |        36,654 |       316,800 |        29,111 |       105,600 |         7,240 |
+  |             36 |       107,250 |        19,074 |       320,100 |        50,952 |       318,450 |        44,839 |       105,600 |        12,960 |
+  |             25 |       103,950 |        22,374 |       311,850 |        59,202 |       311,850 |        51,439 |       103,950 |        14,610 |
+  |             41 |       103,950 |        22,374 |       311,850 |        59,202 |       311,850 |        51,439 |       103,950 |        14,610 |
+  |             37 |       103,950 |        22,374 |       311,850 |        59,202 |       311,850 |        51,439 |       103,950 |        14,610 |
+  |             26 |       105,600 |        22,638 |       316,800 |        59,903 |       316,800 |        52,050 |       105,600 |        14,784 |
+  |             52 |       107,250 |        15,246 |       320,100 |        39,592 |       318,450 |        33,602 |       105,600 |         9,255 |
+  |             17 |       105,840 |        18,306 |       315,630 |        48,987 |       313,740 |        43,212 |       103,950 |        12,530 |
+  |------------------------------------------------------------------------------------------------------------------------------------------------|
+  |             12 |       110,825 |         9,559 |       327,195 |        26,259 |       321,970 |        23,941 |       105,600 |         7,240 |
+  |             56 |       107,250 |        15,246 |       320,100 |        39,592 |       318,450 |        33,602 |       105,600 |         9,255 |
+  |             28 |       107,250 |        16,896 |       320,100 |        44,517 |       318,450 |        38,502 |       105,600 |        10,880 |
+  |             44 |       107,250 |        16,896 |       320,100 |        44,517 |       318,450 |        38,502 |       105,600 |        10,880 |
+  |             13 |       107,415 |        12,969 |       318,780 |        34,674 |       315,315 |        30,596 |       103,950 |         8,890 |
+  |             16 |       109,200 |        14,946 |       323,970 |        40,647 |       320,370 |        36,582 |       105,600 |        10,880 |
+  |             30 |       105,600 |        20,427 |       316,800 |        53,370 |       316,800 |        45,616 |       105,600 |        12,672 |
+  |             38 |       105,600 |        22,638 |       316,800 |        59,903 |       316,800 |        52,050 |       105,600 |        14,784 |
+  |             43 |       105,600 |        20,724 |       316,800 |        54,252 |       316,800 |        46,489 |       105,600 |        12,960 |
+  |             53 |       103,950 |        18,546 |       311,850 |        47,842 |       311,850 |        40,202 |       103,950 |        10,905 |
+  |             45 |       103,950 |        20,196 |       311,850 |        52,767 |       311,850 |        45,102 |       103,950 |        12,530 |
+  |             57 |       103,950 |        18,546 |       311,850 |        47,842 |       311,850 |        40,202 |       103,950 |        10,905 |
+  |             14 |       109,120 |        13,088 |       323,840 |        34,997 |       320,320 |        30,886 |       105,600 |         8,976 |
+  |             29 |       103,950 |        20,196 |       311,850 |        52,767 |       311,850 |        45,102 |       103,950 |        12,530 |
+  |             39 |       105,600 |        20,724 |       316,800 |        54,252 |       316,800 |        46,489 |       105,600 |        12,960 |
+  |             54 |       105,600 |        18,752 |       316,800 |        48,370 |       316,800 |        40,641 |       105,600 |        11,022 |
+  |             46 |       105,600 |        20,427 |       316,800 |        53,370 |       316,800 |        45,616 |       105,600 |        12,672 |
+  |             58 |       105,600 |        18,752 |       316,800 |        48,370 |       316,800 |        40,641 |       105,600 |        11,022 |
+  |             42 |       105,600 |        22,638 |       316,800 |        59,903 |       316,800 |        52,050 |       105,600 |        14,784 |
+  |             18 |       107,520 |        18,507 |       320,640 |        49,530 |       318,720 |        43,696 |       105,600 |        12,672 |
+  |             15 |       109,120 |        11,264 |       323,840 |        29,614 |       320,320 |        25,591 |       105,600 |         7,240 |
+  |             19 |       107,520 |        16,626 |       320,640 |        43,977 |       318,720 |        38,232 |       105,600 |        10,880 |
+  |             47 |       105,600 |        18,546 |       316,800 |        47,817 |       316,800 |        40,152 |       105,600 |        10,880 |
+  |             31 |       105,600 |        18,546 |       316,800 |        47,817 |       316,800 |        40,152 |       105,600 |        10,880 |
+  |             59 |       105,600 |        16,896 |       316,800 |        42,892 |       316,800 |        35,252 |       105,600 |         9,255 |
+  |             55 |       105,600 |        16,896 |       316,800 |        42,892 |       316,800 |        35,252 |       105,600 |         9,255 |
+regionQuadrature: meshBodyName, meshLevelName, regionName, subRegionName = mesh1, Level0, Burden, overburdenBlock
+mesh1/Level0/Burden/overburdenBlock/fluid allocated 8 quadrature points
+mesh1/Level0/Burden/overburdenBlock/porousRockBurdens allocated 8 quadrature points
+mesh1/Level0/Burden/overburdenBlock/relperm allocated 8 quadrature points
+regionQuadrature: meshBodyName, meshLevelName, regionName, subRegionName = mesh1, Level0, Burden, underburdenBlock
+mesh1/Level0/Burden/underburdenBlock/fluid allocated 8 quadrature points
+mesh1/Level0/Burden/underburdenBlock/porousRockBurdens allocated 8 quadrature points
+mesh1/Level0/Burden/underburdenBlock/relperm allocated 8 quadrature points
+regionQuadrature: meshBodyName, meshLevelName, regionName, subRegionName = mesh1, Level0, Reservoir, reservoirBlock
+mesh1/Level0/Reservoir/reservoirBlock/fluid allocated 8 quadrature points
+mesh1/Level0/Reservoir/reservoirBlock/porousRockReservoir allocated 8 quadrature points
+mesh1/Level0/Reservoir/reservoirBlock/relperm allocated 8 quadrature points
+mesh1: importing field data from mesh dataset
+   TableFunction: equil_underburdenBlock_water_table
+   TableFunction: equil_overburdenBlock_water_table
+   TableFunction: equil_reservoirBlock_water_table
+
+------------------------- TIMESTEP START -------------------------
+    - Time:       -(3168y, 319d, 04h01m04s) out of 1d, 00h00m00s (0% completed)
+                  (-100000000000 s / 86400 s)
+    - Delta Time: 3168y, 319d, 04h01m04s (100000000000 s)
+    - Cycle:      0
+--------------------------------------------------------------------
+
+Time: -1.00e+11 s, dt: 100000000000 s, Cycle: 0
+
+Task `equilStep`: at time -100000000000s, physics solver `PoromechanicsSolver` is set to perform stress initialization during the next time step(s)
+Task `equilStep`: at time -100000000000s, physics solver `mechanicsSolver` is resetting total displacement and velocity to zero
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  0
+        ( Rflow ) = ( 0.00e+00 )        ( Rsolid ) = ( 2.79e+02 )        ( R ) = ( 2.79e+02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 15 | Final Rel Res: 7.4758e-05 | Setup Time: 0.527 s | Solve Time: 0.522 s
+        Last LinSolve(iter,res) = (  15, 7.48e-05 )
+        twoPhaseFlow: Max pressure change = 0.000 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.000 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  1
+        ( Rflow ) = ( 0.00e+00 )        ( Rsolid ) = ( 1.97e-02 )        ( R ) = ( 1.97e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | Success | Iterations: 22 | Final Rel Res: 7.8210e-05 | Setup Time: 0.625 s | Solve Time: 0.697 s
+        Last LinSolve(iter,res) = (  22, 7.82e-05 )
+        twoPhaseFlow: Max pressure change = 0.000 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.000 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  2
+        ( Rflow ) = ( 0.00e+00 )        ( Rsolid ) = ( 1.54e-06 )        ( R ) = ( 1.54e-06 )
+twoPhaseFlow: max relative pressure change during time step = 0.000 %
+twoPhaseFlow: max absolute phase volume fraction change during time step = 0.000
+PoromechanicsSolver: time-step required will be increased based on number of iterations.
+
+------------------------- TIMESTEP END -------------------------
+    - Cycle:      0
+    - N substeps: 1
+    - dt:  3168y, 319d, 04h01m04s (100000000000 s)
+------------------------------------------------------------------
+
+Task `equilStep`: at time 0s, physics solver `PoromechanicsSolver` has completed stress initialization
+Task `equilStep`: at time -100000000000s, physics solver `mechanicsSolver` is resetting total displacement and velocity to zero
+
+------------------------- TIMESTEP START -------------------------
+    - Time:       00h00m00s out of 1d, 00h00m00s (100% completed)
+                  (0 s / 86400 s)
+    - Delta Time: 00h01m40s (100 s)
+    - Cycle:      1
+--------------------------------------------------------------------
+
+Time: 0.00e+00 s, dt: 100 s, Cycle: 1
+
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  0
+        ( Rflow ) = ( 2.10e-02 )        ( Rsolid ) = ( 1.54e-06 )        ( R ) = ( 2.10e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.8252e-01 | Setup Time: 0.843 s | Solve Time: 8.544 s
+        Last LinSolve(iter,res) = ( 200, 9.83e-01 )
+        twoPhaseFlow: Max pressure change = 193979.182 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.722 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  1
+        ( Rflow ) = ( 2.03e-02 )        ( Rsolid ) = ( 1.53e-06 )        ( R ) = ( 2.03e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9865e-01 | Setup Time: 0.706 s | Solve Time: 8.435 s
+        Last LinSolve(iter,res) = ( 200, 9.99e-01 )
+        twoPhaseFlow: Max pressure change = 54385.602 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.202 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  2
+        ( Rflow ) = ( 2.01e-02 )        ( Rsolid ) = ( 1.53e-06 )        ( R ) = ( 2.01e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9974e-01 | Setup Time: 0.685 s | Solve Time: 8.541 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 11928.499 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.044 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  3
+        ( Rflow ) = ( 2.00e-02 )        ( Rsolid ) = ( 1.53e-06 )        ( R ) = ( 2.00e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9987e-01 | Setup Time: 0.876 s | Solve Time: 8.458 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 6249.557 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.023 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  4
+        ( Rflow ) = ( 2.01e-02 )        ( Rsolid ) = ( 1.53e-06 )        ( R ) = ( 2.01e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9995e-01 | Setup Time: 0.703 s | Solve Time: 8.432 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 4042.481 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.015 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  5
+        ( Rflow ) = ( 2.01e-02 )        ( Rsolid ) = ( 1.53e-06 )        ( R ) = ( 2.01e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9977e-01 | Setup Time: 0.759 s | Solve Time: 8.586 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 17054.990 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.063 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  6
+        ( Rflow ) = ( 2.00e-02 )        ( Rsolid ) = ( 1.53e-06 )        ( R ) = ( 2.00e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9984e-01 | Setup Time: 0.706 s | Solve Time: 8.359 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 8585.020 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.032 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  7
+        ( Rflow ) = ( 2.00e-02 )        ( Rsolid ) = ( 1.53e-06 )        ( R ) = ( 2.00e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9997e-01 | Setup Time: 0.720 s | Solve Time: 8.542 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 1118.804 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.004 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  8
+        ( Rflow ) = ( 2.00e-02 )        ( Rsolid ) = ( 1.53e-06 )        ( R ) = ( 2.00e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9990e-01 | Setup Time: 0.756 s | Solve Time: 8.547 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 6175.226 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.023 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter:  9
+        ( Rflow ) = ( 2.00e-02 )        ( Rsolid ) = ( 1.53e-06 )        ( R ) = ( 2.00e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9980e-01 | Setup Time: 0.696 s | Solve Time: 8.427 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 8154.386 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.030 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter: 10
+        ( Rflow ) = ( 2.00e-02 )        ( Rsolid ) = ( 1.53e-06 )        ( R ) = ( 2.00e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9988e-01 | Setup Time: 0.847 s | Solve Time: 8.370 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 13731.051 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.051 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter: 11
+        ( Rflow ) = ( 2.00e-02 )        ( Rsolid ) = ( 1.53e-06 )        ( R ) = ( 2.00e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9994e-01 | Setup Time: 0.680 s | Solve Time: 8.339 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 671.252 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.002 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter: 12
+        ( Rflow ) = ( 2.00e-02 )        ( Rsolid ) = ( 1.53e-06 )        ( R ) = ( 2.00e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9989e-01 | Setup Time: 0.681 s | Solve Time: 8.432 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 10172.170 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.038 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter: 13
+        ( Rflow ) = ( 2.00e-02 )        ( Rsolid ) = ( 1.53e-06 )        ( R ) = ( 2.00e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9993e-01 | Setup Time: 0.685 s | Solve Time: 8.349 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 3181.958 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.012 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter: 14
+        ( Rflow ) = ( 2.00e-02 )        ( Rsolid ) = ( 1.53e-06 )        ( R ) = ( 2.00e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9990e-01 | Setup Time: 0.701 s | Solve Time: 8.519 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 8180.524 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.030 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter: 15
+        ( Rflow ) = ( 2.00e-02 )        ( Rsolid ) = ( 1.53e-06 )        ( R ) = ( 2.00e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9988e-01 | Setup Time: 0.695 s | Solve Time: 8.431 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 5393.450 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.020 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter: 16
+        ( Rflow ) = ( 2.00e-02 )        ( Rsolid ) = ( 1.53e-06 )        ( R ) = ( 2.00e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9993e-01 | Setup Time: 0.696 s | Solve Time: 8.401 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 5850.380 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.022 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter: 17
+        ( Rflow ) = ( 2.00e-02 )        ( Rsolid ) = ( 1.53e-06 )        ( R ) = ( 2.00e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9997e-01 | Setup Time: 0.696 s | Solve Time: 8.414 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 1576.987 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.006 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter: 18
+        ( Rflow ) = ( 2.00e-02 )        ( Rsolid ) = ( 1.53e-06 )        ( R ) = ( 2.00e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9995e-01 | Setup Time: 0.691 s | Solve Time: 8.462 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 5164.293 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.019 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter: 19
+        ( Rflow ) = ( 2.00e-02 )        ( Rsolid ) = ( 1.53e-06 )        ( R ) = ( 2.00e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9985e-01 | Setup Time: 0.797 s | Solve Time: 8.370 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 13096.452 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.049 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter: 20
+        ( Rflow ) = ( 2.00e-02 )        ( Rsolid ) = ( 1.52e-06 )        ( R ) = ( 2.00e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9997e-01 | Setup Time: 0.687 s | Solve Time: 8.317 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 4055.910 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.015 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter: 21
+        ( Rflow ) = ( 2.00e-02 )        ( Rsolid ) = ( 1.53e-06 )        ( R ) = ( 2.00e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9992e-01 | Setup Time: 0.746 s | Solve Time: 8.390 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 2872.164 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.011 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter: 22
+        ( Rflow ) = ( 2.00e-02 )        ( Rsolid ) = ( 1.52e-06 )        ( R ) = ( 2.00e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9995e-01 | Setup Time: 0.692 s | Solve Time: 8.440 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 1061.411 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.004 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter: 23
+        ( Rflow ) = ( 2.00e-02 )        ( Rsolid ) = ( 1.52e-06 )        ( R ) = ( 2.00e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9993e-01 | Setup Time: 0.706 s | Solve Time: 8.409 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 9968.489 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.037 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  0, ConfigurationIter:  0, NewtonIter: 24
+        ( Rflow ) = ( 2.00e-02 )        ( Rsolid ) = ( 1.53e-06 )        ( R ) = ( 2.00e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9993e-01 | Setup Time: 0.758 s | Solve Time: 8.392 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 797.157 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.003 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+New dt = 50
+    Attempt:  1, ConfigurationIter:  0, NewtonIter:  0
+        ( Rflow ) = ( 1.05e-02 )        ( Rsolid ) = ( 1.54e-06 )        ( R ) = ( 1.05e-02 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.6388e-01 | Setup Time: 0.699 s | Solve Time: 8.398 s
+        Last LinSolve(iter,res) = ( 200, 9.64e-01 )
+        twoPhaseFlow: Max pressure change = 254875.963 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.837 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  1, ConfigurationIter:  0, NewtonIter:  1
+        ( Rflow ) = ( 9.69e-03 )        ( Rsolid ) = ( 1.49e-06 )        ( R ) = ( 9.69e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9656e-01 | Setup Time: 0.758 s | Solve Time: 8.451 s
+        Last LinSolve(iter,res) = ( 200, 9.97e-01 )
+        twoPhaseFlow: Max pressure change = 73261.860 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.240 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  1, ConfigurationIter:  0, NewtonIter:  2
+        ( Rflow ) = ( 9.46e-03 )        ( Rsolid ) = ( 1.49e-06 )        ( R ) = ( 9.46e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9879e-01 | Setup Time: 0.693 s | Solve Time: 8.480 s
+        Last LinSolve(iter,res) = ( 200, 9.99e-01 )
+        twoPhaseFlow: Max pressure change = 25614.168 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.084 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  1, ConfigurationIter:  0, NewtonIter:  3
+        ( Rflow ) = ( 9.38e-03 )        ( Rsolid ) = ( 1.49e-06 )        ( R ) = ( 9.38e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9953e-01 | Setup Time: 0.686 s | Solve Time: 8.495 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 6288.318 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.021 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  1, ConfigurationIter:  0, NewtonIter:  4
+        ( Rflow ) = ( 9.36e-03 )        ( Rsolid ) = ( 1.49e-06 )        ( R ) = ( 9.36e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9955e-01 | Setup Time: 0.681 s | Solve Time: 8.355 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 8559.266 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.028 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  1, ConfigurationIter:  0, NewtonIter:  5
+        ( Rflow ) = ( 9.33e-03 )        ( Rsolid ) = ( 1.49e-06 )        ( R ) = ( 9.33e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9977e-01 | Setup Time: 0.685 s | Solve Time: 8.507 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 1761.891 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.006 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  1, ConfigurationIter:  0, NewtonIter:  6
+        ( Rflow ) = ( 9.32e-03 )        ( Rsolid ) = ( 1.49e-06 )        ( R ) = ( 9.32e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9947e-01 | Setup Time: 0.693 s | Solve Time: 8.531 s
+        Last LinSolve(iter,res) = ( 200, 9.99e-01 )
+        twoPhaseFlow: Max pressure change = 26070.421 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.086 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  1, ConfigurationIter:  0, NewtonIter:  7
+        ( Rflow ) = ( 9.24e-03 )        ( Rsolid ) = ( 1.49e-06 )        ( R ) = ( 9.24e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9952e-01 | Setup Time: 0.759 s | Solve Time: 8.388 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 1938.363 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.006 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  1, ConfigurationIter:  0, NewtonIter:  8
+        ( Rflow ) = ( 9.24e-03 )        ( Rsolid ) = ( 1.49e-06 )        ( R ) = ( 9.24e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9956e-01 | Setup Time: 0.689 s | Solve Time: 8.535 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 792.245 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.003 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  1, ConfigurationIter:  0, NewtonIter:  9
+        ( Rflow ) = ( 9.23e-03 )        ( Rsolid ) = ( 1.49e-06 )        ( R ) = ( 9.23e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9970e-01 | Setup Time: 0.677 s | Solve Time: 8.409 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 5335.314 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.017 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  1, ConfigurationIter:  0, NewtonIter: 10
+        ( Rflow ) = ( 9.22e-03 )        ( Rsolid ) = ( 1.49e-06 )        ( R ) = ( 9.22e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9968e-01 | Setup Time: 0.823 s | Solve Time: 8.426 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 18864.272 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.062 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  1, ConfigurationIter:  0, NewtonIter: 11
+        ( Rflow ) = ( 9.28e-03 )        ( Rsolid ) = ( 1.49e-06 )        ( R ) = ( 9.28e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9979e-01 | Setup Time: 0.685 s | Solve Time: 8.396 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 10294.538 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.034 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  1, ConfigurationIter:  0, NewtonIter: 12
+        ( Rflow ) = ( 9.31e-03 )        ( Rsolid ) = ( 1.49e-06 )        ( R ) = ( 9.31e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9973e-01 | Setup Time: 0.767 s | Solve Time: 8.414 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 17807.178 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.058 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  1, ConfigurationIter:  0, NewtonIter: 13
+        ( Rflow ) = ( 9.25e-03 )        ( Rsolid ) = ( 1.49e-06 )        ( R ) = ( 9.25e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9978e-01 | Setup Time: 0.680 s | Solve Time: 8.550 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 1396.298 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.005 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  1, ConfigurationIter:  0, NewtonIter: 14
+        ( Rflow ) = ( 9.25e-03 )        ( Rsolid ) = ( 1.49e-06 )        ( R ) = ( 9.25e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9978e-01 | Setup Time: 0.724 s | Solve Time: 8.387 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 1763.974 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.006 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  1, ConfigurationIter:  0, NewtonIter: 15
+        ( Rflow ) = ( 9.24e-03 )        ( Rsolid ) = ( 1.48e-06 )        ( R ) = ( 9.24e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9979e-01 | Setup Time: 0.758 s | Solve Time: 8.386 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 2268.628 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.007 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  1, ConfigurationIter:  0, NewtonIter: 16
+        ( Rflow ) = ( 9.25e-03 )        ( Rsolid ) = ( 1.48e-06 )        ( R ) = ( 9.25e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9946e-01 | Setup Time: 0.695 s | Solve Time: 8.470 s
+        Last LinSolve(iter,res) = ( 200, 9.99e-01 )
+        twoPhaseFlow: Max pressure change = 9108.879 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.030 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  1, ConfigurationIter:  0, NewtonIter: 17
+        ( Rflow ) = ( 9.22e-03 )        ( Rsolid ) = ( 1.48e-06 )        ( R ) = ( 9.22e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9955e-01 | Setup Time: 0.773 s | Solve Time: 8.409 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 20617.964 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.068 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  1, ConfigurationIter:  0, NewtonIter: 18
+        ( Rflow ) = ( 9.16e-03 )        ( Rsolid ) = ( 1.48e-06 )        ( R ) = ( 9.16e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9959e-01 | Setup Time: 0.684 s | Solve Time: 8.467 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 12348.570 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.040 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  1, ConfigurationIter:  0, NewtonIter: 19
+        ( Rflow ) = ( 9.20e-03 )        ( Rsolid ) = ( 1.48e-06 )        ( R ) = ( 9.20e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9978e-01 | Setup Time: 0.681 s | Solve Time: 8.465 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 10447.079 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.034 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  1, ConfigurationIter:  0, NewtonIter: 20
+        ( Rflow ) = ( 9.23e-03 )        ( Rsolid ) = ( 1.48e-06 )        ( R ) = ( 9.23e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9984e-01 | Setup Time: 0.685 s | Solve Time: 8.507 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 4024.926 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.013 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  1, ConfigurationIter:  0, NewtonIter: 21
+        ( Rflow ) = ( 9.24e-03 )        ( Rsolid ) = ( 1.48e-06 )        ( R ) = ( 9.24e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9987e-01 | Setup Time: 0.686 s | Solve Time: 8.457 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 4796.102 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.016 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  1, ConfigurationIter:  0, NewtonIter: 22
+        ( Rflow ) = ( 9.23e-03 )        ( Rsolid ) = ( 1.48e-06 )        ( R ) = ( 9.23e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9982e-01 | Setup Time: 0.681 s | Solve Time: 8.428 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 1346.153 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.004 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  1, ConfigurationIter:  0, NewtonIter: 23
+        ( Rflow ) = ( 9.23e-03 )        ( Rsolid ) = ( 1.48e-06 )        ( R ) = ( 9.23e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9977e-01 | Setup Time: 0.755 s | Solve Time: 8.465 s
+        Last LinSolve(iter,res) = ( 200, 1.00e+00 )
+        twoPhaseFlow: Max pressure change = 11092.618 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.036 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+    Attempt:  1, ConfigurationIter:  0, NewtonIter: 24
+        ( Rflow ) = ( 9.19e-03 )        ( Rsolid ) = ( 1.48e-06 )        ( R ) = ( 9.19e-03 )
+        MGR preconditioner: numComponentsPerField = [3, 3]
+        Linear Solver | NotConverged | Iterations: 200 | Final Rel Res: 9.9927e-01 | Setup Time: 0.695 s | Solve Time: 8.389 s
+        Last LinSolve(iter,res) = ( 200, 9.99e-01 )
+        twoPhaseFlow: Max pressure change = 24619.752 Pa (before scaling)
+        twoPhaseFlow: Max component density change = 0.081 kg/m3 (before scaling)
+        PoromechanicsSolver: Global solution scaling factor = 1
+        PoromechanicsSolver: Max phase volume fraction change = 0.0000
+New dt = 25
+Convergence not achieved.
+***** ERROR
+***** LOCATION: /usr/WS1/aronson1/hypreBranchTest/GEOS/src/coreComponents/physicsSolvers/SolverBase.cpp:836
+***** Controlling expression (should be false): true
+***** Rank 8: Nonconverged solutions not allowed. Terminating...
+
+** StackTrace of 8 frames **
+Frame 0: geos::SolverBase::solverStep(double const&, double const&, int, geos::DomainPartition&)
+Frame 1: geos::CoupledSolver<geos::CompositionalMultiphaseBase, geos::SolidMechanicsLagrangianFEM>::solverStep(double const&, double const&, int, geos::DomainPartition&)
+Frame 2: geos::SolverBase::execute(double, double, int, int, double, geos::DomainPartition&)
+Frame 3: geos::EventBase::execute(double, double, int, int, double, geos::DomainPartition&)
+Frame 4: geos::EventManager::run(geos::DomainPartition&)
+Frame 5: geos::ProblemManager::runSimulation()
+Frame 6: geos::GeosxState::run()
+Frame 7: main
+Frame 8: /lib64/libc.so.6
+=====
+
+***** ERROR
+***** LOCATION: /usr/WS1/aronson1/hypreBranchTest/GEOS/src/coreComponents/physicsSolvers/SolverBase.cpp:836
+***** Controlling expression (should be false): true
+***** Rank 56: Nonconverged solutions not allowed. Terminating...
+
+** StackTrace of 8 frames **
+Frame 0: geos::SolverBase::solverStep(double const&, double const&, int, geos::DomainPartition&)
+Frame 1: geos::CoupledSolver<geos::CompositionalMultiphaseBase, geos::SolidMechanicsLagrangianFEM>::solverStep(double const&, double const&, int, geos::DomainPartition&)
+Frame 2: geos::SolverBase::execute(double, double, int, int, double, geos::DomainPartition&)
+Frame 3: geos::EventBase::execute(double, double, int, int, double, geos::DomainPartition&)
+Frame 4: geos::EventManager::run(geos::DomainPartition&)
+Frame 5: geos::ProblemManager::runSimulation()
+Frame 6: geos::GeosxState::run()
+Frame 7: main
+Frame 8: /lib64/libc.so.6
+=====
+
+***** ERROR
+***** LOCATION: /usr/WS1/aronson1/hypreBranchTest/GEOS/src/coreComponents/physicsSolvers/SolverBase.cpp:836
+***** Controlling expression (should be false): true
+***** Rank 57: Nonconverged solutions not allowed. Terminating...
+
+** StackTrace of 8 frames **
+Frame 0: geos::SolverBase::solverStep(double const&, double const&, int, geos::DomainPartition&)
+Frame 1: geos::CoupledSolver<geos::CompositionalMultiphaseBase, geos::SolidMechanicsLagrangianFEM>::solverStep(double const&, double const&, int, geos::DomainPartition&)
+Frame 2: geos::SolverBase::execute(double, double, int, int, double, geos::DomainPartition&)
+Frame 3: geos::EventBase::execute(double, double, int, int, double, geos::DomainPartition&)
+Frame 4: geos::EventManager::run(geos::DomainPartition&)
+Frame 5: geos::ProblemManager::runSimulation()
+Frame 6: geos::GeosxState::run()
+Frame 7: main
+Frame 8: /lib64/libc.so.6
+=====
+
+logout
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@lassen710>
+Subject: Job 6197073: <#!/bin/bash;#BSUB -nnodes 16 ;#BSUB -W 60 ;#BSUB -o lassen_N16_n64.out;#BSUB -e lassen_N16_n64.err;#BSUB -q pbatch;CMD="OMP_NUM_THREADS=1 lrun -N 16 -n 64  -g 1 /usr/workspace/aronson1/hypreBranchTest/GEOS/build-lassen-gcc-8-cuda-11-release/bin/geosx --input /usr/workspace/aronson1/ToLLNL/SPE10_with_burdens_fim.xml -x 4 -y 4 -z 4 " ;echo -e ${CMD};eval ${CMD}> in cluster <lassen> Exited
+
+Job <#!/bin/bash;#BSUB -nnodes 16 ;#BSUB -W 60 ;#BSUB -o lassen_N16_n64.out;#BSUB -e lassen_N16_n64.err;#BSUB -q pbatch;CMD="OMP_NUM_THREADS=1 lrun -N 16 -n 64  -g 1 /usr/workspace/aronson1/hypreBranchTest/GEOS/build-lassen-gcc-8-cuda-11-release/bin/geosx --input /usr/workspace/aronson1/ToLLNL/SPE10_with_burdens_fim.xml -x 4 -y 4 -z 4 " ;echo -e ${CMD};eval ${CMD}> was submitted from host <lassen708> by user <aronson1> in cluster <lassen> at Thu Sep 19 12:12:20 2024
+Job was executed on host(s) <1*lassen710>, in queue <pbatch>, as user <aronson1> in cluster <lassen> at Thu Sep 19 12:12:40 2024
+                            <40*lassen773>
+                            <40*lassen118>
+                            <40*lassen291>
+                            <40*lassen294>
+                            <40*lassen779>
+                            <40*lassen295>
+                            <40*lassen296>
+                            <40*lassen602>
+                            <40*lassen122>
+                            <40*lassen451>
+                            <40*lassen607>
+                            <40*lassen780>
+                            <40*lassen123>
+                            <40*lassen781>
+                            <40*lassen124>
+                            <40*lassen609>
+</g/g16/aronson1> was used as the home directory.
+</p/gpfs1/aronson1/SPE10> was used as the working directory.
+Started at Thu Sep 19 12:12:40 2024
+Terminated at Thu Sep 19 12:21:29 2024
+Results reported at Thu Sep 19 12:21:29 2024
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -nnodes 16
+#BSUB -W 60
+#BSUB -o lassen_N16_n64.out
+#BSUB -e lassen_N16_n64.err
+#BSUB -q pbatch
+CMD="OMP_NUM_THREADS=1 lrun -N 16 -n 64  -g 1 /usr/workspace/aronson1/hypreBranchTest/GEOS/build-lassen-gcc-8-cuda-11-release/bin/geosx --input /usr/workspace/aronson1/ToLLNL/SPE10_with_burdens_fim.xml -x 4 -y 4 -z 4 "
+echo -e ${CMD}
+eval ${CMD}
+
+
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   2.00 sec.
+    Max Memory :                                 60 MB
+    Average Memory :                             59.21 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   1426 MB
+    Max Processes :                              4
+    Max Threads :                                27
+    Run time :                                   529 sec.
+    Turnaround time :                            549 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <lassen_N16_n64.err> for stderr output of this job.

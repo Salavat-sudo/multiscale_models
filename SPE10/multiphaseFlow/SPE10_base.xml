@@ -1,0 +1,239 @@
+<?xml version="1.0" ?>
+
+<Problem>
+
+  <Geometry>
+
+    <Box
+      name="source"
+      xMin="{182.85, 335.25, -0.01}"
+      xMax="{189.00, 338.35, 5.0}"/>
+    <Box
+      name="sink1"
+      xMin="{-0.01, -0.01, -0.01}"
+      xMax="{6.126, 3.078, 51.90}"/>
+    <Box
+      name="sink2"
+      xMin="{-0.01, 667.482, -0.01}"
+      xMax="{6.126, 670.60, 51.90}"/>
+    <Box
+      name="sink3"
+      xMin="{359.634, -0.01, -0.01}"
+      xMax="{365.8, 3.048, 51.90}"/>
+    <Box
+      name="sink4"
+      xMin="{359.634, 667.482, -0.01}"
+      xMax="{365.8, 670.60, 51.90}"/>
+
+  </Geometry>
+
+  <Events
+    minTime="-1e11"
+    maxTime="86400">
+
+    <!--
+    <PeriodicEvent
+      name="outputs1"
+      beginTime="0"
+      endTime="8640000"
+      timeFrequency="864000"
+      target="/Outputs/vtkOutput_512_inject"
+    />
+    -->
+
+    <PeriodicEvent
+      name="solverApplications0"
+      beginTime="0"
+      endTime="1000"
+      maxEventDt="1000"
+      target="/Solvers/twoPhaseFlow"
+    />
+
+    <PeriodicEvent
+      name="solverApplications1"
+      beginTime="1000"
+      endTime="86400"
+      maxEventDt="86400"
+      target="/Solvers/twoPhaseFlow"
+    />
+  </Events>
+
+  <NumericalMethods>
+    <FiniteVolume>
+      <TwoPointFluxApproximation
+        name="multiPhaseTPFA"
+      />
+    </FiniteVolume>
+  </NumericalMethods>
+
+  <ElementRegions>
+    <CellElementRegion
+      name="Reservoir"
+      cellBlocks="{ reservoirBlock }"
+      materialList="{ fluid, porousRockReservoir, relperm, cappres }"/>
+
+  </ElementRegions>
+
+  <Constitutive>
+    <CO2BrinePhillipsFluid
+      name="fluid"
+      phaseNames="{gas, water}"
+      componentNames="{co2, water}"
+      componentMolarWeight="{44e-3, 18e-3}"
+      phasePVTParaFiles="{../common/pvtgas.txt, ../common/pvtliquid.txt}"
+      flashModelParaFile="../common/co2flash.txt" />
+
+    <TableRelativePermeability
+      name="relperm"
+      phaseNames="{gas, water}"
+      wettingNonWettingRelPermTableNames="{waterRelativePermeabilityTable, gasRelativePermeabilityTable}"/>
+
+    <CompressibleSolidConstantPermeability
+      name="porousRockReservoir"
+      solidModelName="nullSolid"
+      porosityModelName="rockPorosityReservoir"
+      permeabilityModelName="rockPermeabilityReservoir"/>
+
+    <NullModel
+      name="nullSolid"/>
+
+    <PressurePorosity
+      name="rockPorosityReservoir"
+      defaultReferencePorosity="0.1"
+      referencePressure="0.0"
+      compressibility="1.0e-9"/>
+
+    <ConstantPermeability
+      name="rockPermeabilityReservoir"
+      permeabilityComponents="{ 6.7593e-14, 6.7593e-14, 6.7593e-15 }"/>
+
+    <TableCapillaryPressure
+      name="cappres"
+      phaseNames="{ gas, water }"
+      wettingNonWettingCapPressureTableName="waterCapillaryPressureTable"/>
+
+  </Constitutive>
+
+  <FieldSpecifications>
+
+    <HydrostaticEquilibrium
+      name="equil"
+      objectPath="ElementRegions"
+      datumElevation="25.0"
+      datumPressure="1e7"
+      initialPhaseName="water"
+      componentNames="{co2, water}"
+      componentFractionVsElevationTableNames="{initCO2CompFractionTable, initWaterCompFractionTable}"
+      temperatureVsElevationTableName="initTempTable"/>
+
+    <FieldSpecification
+      name="permxReservoir"
+      component="0"
+      initialCondition="1"
+      setNames="{ all }"
+      objectPath="ElementRegions/Reservoir"
+      fieldName="rockPermeabilityReservoir_permeability"
+      functionName="permxFunc"
+      scale="9.869233e-16"/>
+    <FieldSpecification
+      name="permyReservoir"
+      component="1"
+      initialCondition="1"
+      setNames="{ all }"
+      objectPath="ElementRegions/Reservoir"
+      fieldName="rockPermeabilityReservoir_permeability"
+      functionName="permyFunc"
+      scale="9.869233e-16"/>
+    <FieldSpecification
+      name="permzReservoir"
+      component="2"
+      initialCondition="1"
+      setNames="{ all }"
+      objectPath="ElementRegions/Reservoir"
+      fieldName="rockPermeabilityReservoir_permeability"
+      functionName="permzFunc"
+      scale="9.869233e-16"/>
+
+    <FieldSpecification
+      name="referencePorosityReservoir"
+      initialCondition="1"
+      setNames="{ all }"
+      objectPath="ElementRegions/Reservoir"
+      fieldName="rockPorosityReservoir_referencePorosity"
+      functionName="poroFunc"
+      scale="1.0"/>
+
+    <SourceFlux
+      name="sourceTerm"
+      setNames="{ source }"
+      objectPath="ElementRegions/Reservoir"
+      component="0"
+      scale="-1.0"/>
+
+
+  </FieldSpecifications>
+
+  <Functions>
+    <TableFunction
+      name="permxFunc"
+      inputVarNames="{elementCenter}"
+      coordinateFiles="{../common/xlin.geos,../common/ylin.geos,../common/zlin.geos}"
+      voxelFile="../common/permx.geos"
+      interpolation="linear" />
+    <TableFunction
+      name="permyFunc"
+      inputVarNames="{elementCenter}"
+      coordinateFiles="{../common/xlin.geos,../common/ylin.geos,../common/zlin.geos}"
+      voxelFile="../common/permy.geos"
+      interpolation="linear" />
+    <TableFunction
+      name="permzFunc"
+      inputVarNames="{elementCenter}"
+      coordinateFiles="{../common/xlin.geos,../common/ylin.geos,../common/zlin.geos}"
+      voxelFile="../common/permz.geos"
+      interpolation="linear" />
+    <TableFunction
+      name="poroFunc"
+      inputVarNames="{elementCenter}"
+      coordinateFiles="{../common/xlin.geos,../common/ylin.geos,../common/zlin.geos}"
+      voxelFile="../common/newNewPoro.geos"
+      interpolation="linear" />
+
+    <TableFunction
+      name="initCO2CompFractionTable"
+      coordinates="{-300.0, 352.0}"
+      values="{0.0, 0.0}"/>
+
+    <TableFunction
+      name="initWaterCompFractionTable"
+      coordinates="{-300.0, 352.0}"
+      values="{1.0, 1.0}"/>
+
+    <TableFunction
+      name="initTempTable"
+      coordinates="{-300.0, 352.0}"
+      values="{350.0, 350.0}"/>
+
+    <TableFunction
+      name="waterRelativePermeabilityTable"
+      coordinates="{ 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1.0 }"
+      values="{ 0, 0, 0.0118, 0.0333, 0.0612, 0.0943, 0.1318, 0.1732, 0.2183, 0.2667, 0.3182, 0.3727, 0.4300, 0.4899, 0.5524, 0.6173, 0.6847, 0.7542, 0.8261, 0.9000, 0.9760 }"/>
+    <TableFunction
+      name="gasRelativePermeabilityTable"
+      coordinates="{ 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1.0 }"
+      values="{ 0, 0, 0.0118, 0.0333, 0.0612, 0.0943, 0.1318, 0.1732, 0.2183, 0.2667, 0.3182, 0.3727, 0.4300, 0.4899, 0.5524, 0.6173, 0.6847, 0.7542, 0.8261, 0.9000, 0.9760 }"/>
+    <TableFunction
+      name="waterCapillaryPressureTable"
+      coordinates="{ 0.2, 0.21, 0.22, 0.23, 0.24, 0.25, 0.26, 0.27, 0.28, 0.29, 0.3, 0.31, 0.32, 0.33, 0.34, 0.35, 0.36, 0.37, 0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49, 0.5, 0.51, 0.52, 0.53, 0.54, 0.55, 0.56, 0.57, 0.58, 0.59, 0.6, 0.61, 0.62, 0.63, 0.64, 0.65, 0.66, 0.67, 0.68, 0.69, 0.7, 0.71, 0.72, 0.73, 0.74, 0.75, 0.76, 0.77, 0.78, 0.79, 0.8, 0.81, 0.82, 0.83, 0.84, 0.85, 0.86, 0.87, 0.88, 0.89, 0.9, 0.91, 0.92, 0.93, 0.94, 0.95 }"
+      values="{ 83711.73071, 72474.48714, 61237.24357, 50000, 43301.27019, 38729.83346, 35355.33906, 32732.68354, 30618.62178, 28867.51346, 27386.12788, 26111.64839, 25000, 24019.22307, 23145.50249, 22360.67977, 21650.63509, 21004.20126, 20412.41452, 19867.98536, 19364.91673, 18898.22365, 18463.72365, 18057.87796, 17677.66953, 17320.50808, 16984.15551, 16666.66667, 16366.34177, 16081.68802, 15811.3883, 15554.27542, 15309.31089, 15075.56723, 14852.21314, 14638.50109, 14433.75673, 14237.36994, 14048.78717, 13867.50491, 13693.06394, 13525.04452, 13363.0621, 13206.76359, 13055.8242, 12909.94449, 12768.84796, 12632.27882, 12500, 12371.79148, 12247.44871, 12126.78125, 12009.61154, 11895.77379, 11785.11302, 11677.48416, 11572.75125, 11470.78669, 11371.47065, 11274.69042, 11180.33989, 11088.31906, 10998.53363, 10910.89451, 10825.31755, 10741.72311, 10660.03582, 10580.18424, 10502.10063, 10425.7207, 10350.98339, 10277.83065, 10206.20726, 10136.06068, 10067.34083, 10000 }"/>
+  </Functions>
+
+  <Outputs>
+
+    <VTK
+      name="vtkOutput"
+    />
+
+  </Outputs>
+
+</Problem>

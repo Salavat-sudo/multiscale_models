@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+
+<Problem>
+
+  <Mesh>
+    <InternalMesh
+      name="mesh1"
+      elementTypes="{ C3D8 }"
+      xCoords="{ 0, 365.76 }"
+      yCoords="{ 0, 670.56 }"
+      zCoords="{ 0, 51.816 }"
+      nx="{ 120 }"
+      ny="{ 110 }"
+      nz="{ 42 }"
+      cellBlockNames="{ reservoirBlock}"/>
+  </Mesh>
+
+  <Included>
+    <File name="./SPE10_base.xml" />
+  </Included>
+
+  <Solvers
+    gravityVector="{0.0, 0.0, -9.81}">
+
+    <CompositionalMultiphaseFVM
+      name="twoPhaseFlow"
+      logLevel="1"
+      discretization="multiPhaseTPFA"
+      targetRegions="{ Reservoir }"
+      temperature="350.0"
+      useMass="1">
+      <NonlinearSolverParameters
+        newtonMaxIter="25"
+        newtonTol="1.0e-3"
+        maxTimeStepCuts="2"
+        maxAllowedResidualNorm="1e+15"
+        lineSearchAction="None"/>
+        <LinearSolverParameters
+          solverType="gmres"
+          preconditionerType="mgr"
+          krylovTol="1e-4"
+          krylovMaxIter="200"
+          krylovAdaptiveTol="0"
+          krylovWeakestTol="0.1"
+          logLevel="1"/>
+    </CompositionalMultiphaseFVM>
+  </Solvers>
+
+
+</Problem>

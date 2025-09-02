@@ -131,6 +131,8 @@ classdef PermxMeshv1
             PermxFlat = reshape(permute(obj.permx, [2 1]), [], 1);
             PermxFull = repmat(PermxFlat, obj.nz, 1);
             dlmwrite(fullfile(folder, 'permx.geos'), PermxFull, 'delimiter', '\n', 'precision', 6);
+            dlmwrite(fullfile(folder, 'permy.geos'), PermxFull, 'delimiter', '\n', 'precision', 6);
+            dlmwrite(fullfile(folder, 'permz.geos'), PermxFull, 'delimiter', '\n', 'precision', 6);
         end
     end
 end

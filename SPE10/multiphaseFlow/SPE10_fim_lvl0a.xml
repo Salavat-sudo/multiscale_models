@@ -1,0 +1,75 @@
+<?xml version="1.0" ?>
+
+<Problem>
+
+  <Mesh>
+    <InternalMesh
+      name="mesh1"
+      elementTypes="{ C3D8 }"
+      xCoords="{ 0, 365.76 }"
+      yCoords="{ 0, 670.56 }"
+      zCoords="{ 0, 51.816 }"
+      nx="{ 30 }"
+      ny="{ 55 }"
+      nz="{ 21 }"
+      cellBlockNames="{ reservoirBlock}"/>
+  </Mesh>
+
+  <Included>
+    <File name="./SPE10_base2.xml" />
+  </Included>
+
+  <Solvers
+    gravityVector="{0.0, 0.0, -9.81}">
+
+    <CompositionalMultiphaseFVM
+      name="twoPhaseFlow"
+      logLevel="1"
+      discretization="multiPhaseTPFA"
+      targetRegions="{ Reservoir }"
+      temperature="350.0"
+      useMass="1">
+      <NonlinearSolverParameters
+        newtonMaxIter="25"
+        newtonTol="1.0e-3"
+        maxTimeStepCuts="2"
+        maxAllowedResidualNorm="1e+15"
+        lineSearchAction="None"/>
+        <LinearSolverParameters
+          solverType="gmres"
+          preconditionerType="mgr"
+          krylovTol="1e-4"
+          krylovMaxIter="200"
+          krylovAdaptiveTol="0"
+          krylovWeakestTol="0.1"
+          logLevel="1"/>
+    </CompositionalMultiphaseFVM>
+  </Solvers>
+
+  <!-- Add this Outputs section -->
+  <Outputs>
+    <VTK
+      name="vtkOutput"
+      plotFileRoot="SPE10_fim_lvl0a"
+      plotLevel="2"
+      format="binary"/>
+  </Outputs>
+
+  <!-- Add this Events section to trigger output -->
+  <Events maxTime="8640000">
+    <!-- Output every time step -->
+    <PeriodicEvent
+      name="outputs"
+      cycleFrequency="1"
+      target="/Outputs/vtkOutput"/>
+      
+    <!-- Or output every 10 time steps -->
+    <!--
+    <PeriodicEvent
+      name="outputs"
+      cycleFrequency="10"
+      target="/Outputs/vtkOutput"/>
+    -->
+  </Events>
+
+</Problem>
